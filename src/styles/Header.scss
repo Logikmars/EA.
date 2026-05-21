@@ -1,0 +1,21 @@
+.Header{
+    width: 100%;
+    border-bottom: 1px solid $c_trasnparent_gray;
+
+    &_container{
+        width: 100vw;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px $pr_l;
+        max-width: 1500px;
+        margin: 0 auto;
+    }
+
+    &_nav{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: $gap_l;
+    }
+}

@@ -1,0 +1,17 @@
+.Cooperation{
+    min-height: 100vh;
+    width: 100%;
+    background-color: $c_white_mint;
+
+    &_container{
+        padding: $pt_xl $pr_l;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: $gap_xl;
+    }
+
+    &_list{
+        
+    }
+}

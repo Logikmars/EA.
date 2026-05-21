@@ -1,0 +1,33 @@
+.Info{
+    width: 100vw;
+    min-height: 100vh;
+    background-color: $c_primary_black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    &_container{
+        padding: $pt_2xl $pr_l;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: space-between;
+        gap: 40px;
+    }
+
+    &_list{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: $gap_l;
+    }
+
+    &_text{
+        display: flex;
+        flex-direction: column;
+        gap: $gap_xs;
+        max-width: 1000px;
+    }
+}

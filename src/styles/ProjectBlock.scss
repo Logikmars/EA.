@@ -1,0 +1,15 @@
+.ProjectBlock{
+    width: 100%;
+    max-width: 460px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: $gap_2xs;
+    justify-content: center;
+
+    min-height: 501px;
+
+    &_image{
+        width: 100%;
+        height: auto;
+    }
+}

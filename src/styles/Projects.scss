@@ -1,0 +1,23 @@
+.Projects{
+    display: flex;
+    width: 100%;
+    padding: $pt_xl $pr_l;
+    flex-direction: column;
+    gap: $gap_xl;
+
+    &_top{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+    }
+
+    &_list{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: $gap_l;
+    }
+}

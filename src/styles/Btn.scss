@@ -1,0 +1,48 @@
+.Btn{
+    border-radius: $brad_8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50px;
+    padding: 0px $pt_s;
+    cursor: pointer;
+    transition: color 300ms, background-color 300ms;
+
+    &_color{
+        &_blue{
+            background-color: $c_primary_blue;
+        }
+
+        &_transparent{
+            background-color: transparent;
+            border: 1px solid $c_trasnparent_gray;
+        }
+    }
+
+
+    &_fs{
+        &_xs{
+            font-size: $fs_xs;
+        }
+    }
+
+    &_fw{
+        &_medium{
+            font-weight: $fw_medium;
+        }
+    }
+
+    &_text{
+        &_black{
+            color: $c_primary_black;
+        }
+    }
+
+
+
+
+    &:hover{
+        background-color: $c_trasnparent_gray;
+        color: $c_primary_black;
+    }
+}

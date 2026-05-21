@@ -1,0 +1,52 @@
+.Hero{
+    min-height: calc(100vh - 80px);
+    width: 100%;
+    padding: 0 $pr_l;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+
+    &_info{
+        padding: 40px 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        gap: $gap_xs;
+        &_text{
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: start;
+            gap: $gap_m;
+        }
+
+        &_social{
+            width: 100%;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: $gap_xs;
+        }
+
+        &_img{
+            width: 50%;
+            position: relative;
+            display: flex;
+            justify-content: start;
+            width: 40%;
+            max-width: 550px;
+            aspect-ratio: 4 / 5;
+
+            img{
+                object-fit: cover;
+                border-radius: $brad_12;
+            }
+        }
+    }
+
+    &_list{
+        width: 100%;
+        border-top: 1px solid $c_trasnparent_gray;
+    }
+}
