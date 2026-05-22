@@ -1,6 +1,7 @@
 import Cooperation from "@/components/sections/Cooperation";
 import Hero from "@/components/sections/Hero";
 import Info from "@/components/sections/Info";
+import Media from "@/components/sections/Media";
 import Projects from "@/components/sections/Projects";
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
       <Info />
       <Projects />
       <Cooperation />
+      <Media />
     </div>
   );
 }

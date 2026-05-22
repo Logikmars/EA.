@@ -1,9 +1,13 @@
 .CooperationBlock{
-    width: 100%;
+    width: calc(100% / 3 - 40px);
     padding: $pr_xl;
     display: flex;
     flex-wrap: wrap;
+    align-content: space-between;
     gap: $gap_l;
+    min-height: 580px;
+    background-color: $c_primary_white;
+    border-radius: $brad_12;
 
     &_img{
         width: 64px;
@@ -11,7 +15,19 @@
         background-color: $c_white_mint;
         display: flex;
         justify-content: center;
-        align-content: center;
+        align-items: center;
         border-radius: $brad_8;
+        &_image{
+            width: 32px;
+            height: 32px;
+        }
+    }
+
+    &_text{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        gap: $gap_xs;
     }
 }

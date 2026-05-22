@@ -22,6 +22,8 @@ export default ({
     type = 'button',
     href,
 
+    w100,
+
 }) => {
 
     const className = clsx('Btn', {
@@ -33,6 +35,7 @@ export default ({
         'Btn_text_black': text_black,
         'Btn_fs_xs': fs_xs,
         'Btn_fw_medium': fw_medium,
+        'Btn_w100': w100
     });
 
     return (
