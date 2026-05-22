@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import '../../styles/Btn.scss';
 import clsx from 'clsx';
 
@@ -19,6 +20,7 @@ export default ({
     fw_medium,
 
     type = 'button',
+    href,
 
 }) => {
 
@@ -34,6 +36,10 @@ export default ({
     });
 
     return (
+        href ? <Link className={className} href={href}>
+            {children}
+        </Link>
+        :
         <button className={className} onClick={onClick} type={type}>
             {children}
         </button>
