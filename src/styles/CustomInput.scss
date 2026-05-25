@@ -1,0 +1,55 @@
+.CustomInput{
+    width: calc(100% - $gap_s);
+    background-color: $c_black_transparent;
+    border: 1px solid $c_stroke_gray;
+    color: $c_form_text;
+    padding: 20px 24px;
+    outline: none;
+    font-size: $fs_m;
+    font-weight: $fw_medium;
+    border-radius: $brad_8;
+    transition:
+        border-color 300ms ease,
+        background-color 300ms ease,
+        box-shadow 300ms ease,
+        color 300ms ease,
+        transform 180ms ease;
+
+    &::placeholder{
+        color: $c_form_text;
+        transition: color 300ms ease, transform 300ms ease;
+    }
+
+    &:hover{
+        border-color: rgba(255, 255, 255, 0.28);
+        background-color: rgba(255, 255, 255, 0.07);
+    }
+
+    &:focus{
+        border-color: $c_primary_blue;
+        background-color: rgba(255, 255, 255, 0.085);
+        box-shadow:
+            0 0 0 4px rgba(10, 102, 255, 0.16),
+            0 14px 34px rgba(10, 102, 255, 0.12);
+        color: $c_primary_white;
+        transform: translateY(-2px);
+
+        &::placeholder{
+            color: rgba(255, 255, 255, 0.68);
+            transform: translateX(4px);
+        }
+    }
+
+    &:active{
+        transform: translateY(0) scale(0.995);
+    }
+
+    &_w50{
+        width: calc(50% - $gap_s);
+    }
+
+    &_textarea{
+        min-height: 150px;
+        font-family: "Inter";
+    }
+}

@@ -1,0 +1,31 @@
+.MainForm{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $c_primary_black;
+    &_container{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        gap: $gap_s;
+        align-items: start;
+        padding: $pt_2xl $pr_xl;
+    }
+
+    &_text, &_form{
+        width: calc(50% - $gap_s);
+        display: flex;
+        flex-direction: column;
+    }
+
+    &_text{
+        gap: $gap_m;
+    }
+
+    &_form{
+        gap: $gap_s;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}

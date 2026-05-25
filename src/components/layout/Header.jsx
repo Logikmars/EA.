@@ -37,7 +37,7 @@ export default () => {
                         ))
                     }
                 </nav>
-                <Btn color_blue fs_xs fw_medium>
+                <Btn color_blue fs_xs fw_medium href={'/invite'}>
                     Contact Eduard
                 </Btn>
             </div>
