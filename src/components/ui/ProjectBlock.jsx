@@ -1,15 +1,20 @@
 import '../../styles/ProjectBlock.scss';
 import Image from "next/image";
 import Text from './Text';
+import Link from 'next/link';
 
 export default ({
     img,
     title, 
     description,
-    alt
+    alt,
+    href = '#'
 }) => {
+
+    const shortDescription = description.length > 100 ? `${description.slice(0, 100)}...` : description;
+
     return (
-        <div className='ProjectBlock'>
+        <Link className='ProjectBlock' href={href}>
             <Image
                 src={img}
                 alt={alt}
@@ -22,8 +27,8 @@ export default ({
                 {title}
             </Text>
             <Text light_gray fs_m tac>
-                {description}
+                {shortDescription}
             </Text>
-        </div>
+        </Link>
     )
 }

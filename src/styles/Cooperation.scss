@@ -9,6 +9,10 @@
         display: flex;
         flex-direction: column;
         gap: $gap_xl;
+        @media(max-width: 900px){
+            padding: $pt_l $pr_s;
+            gap: $gap_xs;
+        }
     }
 
     &_list{

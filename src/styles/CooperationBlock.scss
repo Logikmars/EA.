@@ -9,6 +9,17 @@
     background-color: $c_primary_white;
     border-radius: $brad_12;
 
+    @media(max-width: 1120px){
+        width: calc(100% / 2 - 40px);
+        gap: $gap_xs;
+    }
+
+    @media(max-width: 750px){
+        width: calc(100% - 40px);
+        min-height: 250px;
+        padding: $pr_s;
+    }
+
     &_img{
         width: 64px;
         height: 64px;

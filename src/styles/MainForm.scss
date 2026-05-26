@@ -12,21 +12,38 @@
         gap: $gap_s;
         align-items: start;
         padding: $pt_2xl $pr_xl;
+        @media(max-width: 900px){
+            padding: $pt_l $pr_s;
+            gap: $gap_xs;
+            flex-direction: column;
+        }
     }
 
     &_text, &_form{
         width: calc(50% - $gap_s);
         display: flex;
         flex-direction: column;
+        @media(max-width: 900px){
+            width: 100%;
+            h2{
+                font-size: $fs_xl;
+            }
+        }
     }
 
     &_text{
         gap: $gap_m;
+        @media(max-width: 900px){
+            order: 0;
+        }
     }
 
     &_form{
         gap: $gap_s;
         flex-direction: row;
         flex-wrap: wrap;
+        @media(max-width: 900px){
+            order: 1;
+        }
     }
 }

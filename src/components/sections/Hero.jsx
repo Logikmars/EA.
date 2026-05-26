@@ -1,41 +1,43 @@
 import '../../styles/Hero.scss';
-import Image from "next/image";
+import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import Text from '../ui/Text';
 import SocialBar from '../ui/SocialBar';
 import Btn from '../ui/Btn';
 import RunningLine from '../ui/RunningLine';
 
-export default () => {
+const Hero = () => {
+    const t = useTranslations('Hero');
 
     return (
         <section className='Hero container' id='top'>
             <div className='Hero_info'>
                 <div className='Hero_info_text'>
                     <Text h1 fs_2xl fw_bold>
-                        Едуард Ахрамович
+                        {t('name')}
                     </Text>
                     <Text fs_xl light_gray fw_medium>
-                        Підприємець з досвідом 30+ років, <br /> Засновник & ex-CEO Art Nation.
+                        {t('subtitle')}
                     </Text>
-                    <Text fs_m >
-                        Створюю продукти-блокбастери та програми лояльності по всьому світу.  Поєдную бізнес-стратегію з креативним баченням, щоб трансформувати ринки.
+                    <Text fs_m>
+                        {t('description')}
                     </Text>
                     <div className='Hero_info_social'>
                         <Btn color_blue fw_medium>
-                            Запросити Едуарда
+                            {t('invite')}
                         </Btn>
                         <Btn color_transparent text_black fw_medium>
-                            Отримати консультацію
+                            {t('consultation')}
                         </Btn>
                     </div>
                     <SocialBar />
                 </div>
                 <div className='Hero_info_img'>
                     <Image
-                        src="/imgs/EduardAkhramovych.webp"
-                        alt="Hero image"
+                        src='/imgs/EduardAkhramovych.webp'
+                        alt={t('imageAlt')}
                         fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1400px) 40vw, 550px"
+                        sizes='(max-width: 768px) 100vw, (max-width: 1400px) 40vw, 550px'
                         priority
                     />
                 </div>
@@ -44,5 +46,7 @@ export default () => {
                 <RunningLine />
             </div>
         </section>
-    )
-}
+    );
+};
+
+export default Hero;

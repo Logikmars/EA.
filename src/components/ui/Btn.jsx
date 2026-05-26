@@ -1,8 +1,9 @@
 import Link from 'next/link';
+import { Link as IntlLink } from '@/i18n/navigation';
 import '../../styles/Btn.scss';
 import clsx from 'clsx';
 
-export default ({
+const Btn = ({
     children,
 
     onClick,
@@ -38,13 +39,30 @@ export default ({
         'Btn_w100': w100
     });
 
+    const isPlainLink = href && (
+        href.startsWith('#')
+        || href.startsWith('http')
+        || href.startsWith('mailto:')
+        || href.startsWith('tel:')
+    );
+
     return (
-        href ? <Link className={className} href={href}>
-            {children}
-        </Link>
-        :
-        <button className={className} onClick={onClick} type={type}>
-            {children}
-        </button>
-    )
-}
+        href ? (
+            isPlainLink ? (
+                <Link className={className} href={href} onClick={onClick}>
+                    {children}
+                </Link>
+            ) : (
+                <IntlLink className={className} href={href} onClick={onClick}>
+                    {children}
+                </IntlLink>
+            )
+        ) : (
+            <button className={className} onClick={onClick} type={type}>
+                {children}
+            </button>
+        )
+    );
+};
+
+export default Btn;

@@ -1,0 +1,15 @@
+.MediaPage{
+    width: 100%;
+    min-height: calc(100vh - 75px - 44px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $gap_m;
+    padding: $pt_m $pr_l; 
+    &_list{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: $gap_m;
+    }
+}

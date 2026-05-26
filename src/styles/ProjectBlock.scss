@@ -8,8 +8,31 @@
 
     min-height: 501px;
 
+    align-content: start;
+
+    transition: background-color 300ms, scale 300ms, box-shadow 300ms;
+
+    @media(max-width: 1000px){
+        min-height: 450px;
+    }
+
+    @media(max-width: 400px){
+        min-height: 0px;
+    }
+
     &_image{
         width: 100%;
         height: auto;
+    }
+
+    &:hover{
+        background-color: $c_trasnparent_gray;
+        // scale: 1.03;
+        box-shadow: 0 0 24px $c_primary_black;
+
+        @media(max-width: 1000px){
+            background-color: transparent;
+            box-shadow: none;
+        }
     }
 }

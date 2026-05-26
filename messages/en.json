@@ -1,0 +1,158 @@
+{
+  "Header": {
+    "homeAriaLabel": "Go to top of homepage",
+    "links": {
+      "about": "About",
+      "projects": "Projects",
+      "collaboration": "Collaboration",
+      "media": "Media"
+    },
+    "contact": "Contact Eduard",
+    "languageSwitcher": "Language switcher",
+    "languages": {
+      "ua": "UA",
+      "en": "ENG"
+    }
+  },
+  "Hero": {
+    "name": "Eduard Akhramovych",
+    "subtitle": "Entrepreneur with 30+ years of experience, founder and former CEO of Art Nation.",
+    "description": "I build blockbuster products and loyalty programs for global audiences. I combine business strategy with creative vision to help brands reshape their markets.",
+    "invite": "Invite Eduard",
+    "consultation": "Get a consultation",
+    "imageAlt": "Portrait of Eduard Akhramovych"
+  },
+  "Info": {
+    "stats": {
+      "years": {
+        "amount": "30+",
+        "description": "years in business and marketing"
+      },
+      "ventures": {
+        "amount": "10+",
+        "description": "successfully launched businesses"
+      },
+      "campaigns": {
+        "amount": "40+",
+        "description": "loyalty campaigns across 6 countries"
+      }
+    },
+    "paragraphs": {
+      "first": "Throughout my career, I have aimed to unite creative ambition with disciplined business execution. Building companies is not only about spreadsheets, but about understanding the human needs that move markets.",
+      "second": "From launching local startups to leading international loyalty businesses serving millions of consumers, my approach has stayed the same: bold vision, backed by systematic execution.",
+      "third": "Today I am focused on growing Art Nation and helping businesses overcome difficult growth challenges with practical, high-impact solutions."
+    }
+  },
+  "Projects": {
+    "title": "Projects",
+    "all": "All projects"
+  },
+  "ProjectsPage": {
+    "title": "All projects"
+  },
+  "ProjectItems": {
+    "national-multimedia-company": {
+      "title": "National multimedia company",
+      "description": "Built a distribution network of 4,573 retail points for licensed compact discs. By 2007, the annual turnover reached 20 million USD with a catalog of more than 30,000 products.",
+      "alt": "National multimedia company"
+    },
+    "art-nation": {
+      "title": "Art Nation",
+      "description": "Sold more than 255 million collectible products. The company works with leading retailers in Ukraine and the CIS, while clients generate more than 200 billion UAH in annual turnover.",
+      "alt": "Art Nation"
+    },
+    "book-of-records-ukraine": {
+      "title": "Book of Records of Ukraine",
+      "description": "Set a national record in children's book sales with 1,241,000 copies sold in 2018.",
+      "alt": "Book of Records of Ukraine"
+    },
+    "book-of-records-moldova": {
+      "title": "Book of Records of Moldova",
+      "description": "Expanded a proven publishing and licensing model to a neighboring market, adapting the product strategy for local demand and growth.",
+      "alt": "Book of Records of Moldova"
+    }
+  },
+  "Cooperation": {
+    "title": "Collaboration",
+    "items": {
+      "lecture": {
+        "title": "Lecture",
+        "description": "Learn the principles behind blockbuster products, systematic sales structures, channel thinking, gamification, cross-promotions, collaborations and marketing strategies that truly engage people.",
+        "button": "Book a lecture"
+      },
+      "speech": {
+        "title": "Public talk",
+        "description": "Looking for an experienced expert for your business event? Eduard shares practical insights on marketing, sales, gamification, loyalty and brand licensing.",
+        "button": "Invite to speak"
+      },
+      "consulting": {
+        "title": "Consultation",
+        "description": "Need clarity on scaling, business models or monetizing a creative project? Eduard can review your case and suggest practical next steps.",
+        "button": "Get a consultation"
+      }
+    }
+  },
+  "Media": {
+    "title": "Media",
+    "all": "All media"
+  },
+  "MediaPage": {
+    "title": "All media"
+  },
+  "MediaItems": {
+    "retail-future": {
+      "type": "video",
+      "text": "The future of retail and consumer loyalty",
+      "alt": "Retail future media cover"
+    },
+    "loyalty-campaigns": {
+      "type": "article",
+      "text": "Why most loyalty campaigns fail in the first year",
+      "alt": "Loyalty campaigns article cover"
+    },
+    "building-art-nation": {
+      "type": "interview",
+      "text": "Building Art Nation: from concept to empire",
+      "alt": "Art Nation interview cover"
+    },
+    "european-expansion": {
+      "type": "podcast",
+      "text": "Navigating European market expansion",
+      "alt": "European expansion podcast cover"
+    },
+    "brand-licensing": {
+      "type": "podcast",
+      "text": "How brand licensing becomes a growth engine",
+      "alt": "Brand licensing podcast cover"
+    },
+    "creative-business": {
+      "type": "podcast",
+      "text": "Creative business models that scale beyond trends",
+      "alt": "Creative business podcast cover"
+    }
+  },
+  "MainForm": {
+    "title": "Let's build something big.",
+    "description": "Whether you need a keynote speaker for your next major event or a strategic consultation to break through your company's growth ceiling, let's connect.",
+    "fields": {
+      "name": "Full name",
+      "email": "Email address",
+      "phone": "Phone number",
+      "link": "Telegram / LinkedIn",
+      "message": "Tell me something..."
+    },
+    "submit": "Send request"
+  },
+  "SEO": {
+    "siteTitle": "Eduard Akhramovych",
+    "siteDescription": "Entrepreneur, speaker and founder of Art Nation.",
+    "homeTitle": "Eduard Akhramovych",
+    "homeDescription": "Entrepreneur, speaker and founder of Art Nation. Explore projects, media and collaboration opportunities.",
+    "inviteTitle": "Invite Eduard",
+    "inviteDescription": "Book Eduard Akhramovych for speaking, consulting or strategic collaboration.",
+    "mediaTitle": "Media",
+    "mediaDescription": "Interviews, articles, videos and podcasts featuring Eduard Akhramovych.",
+    "projectsTitle": "Projects",
+    "projectsDescription": "Selected projects and business milestones of Eduard Akhramovych."
+  }
+}

@@ -2,6 +2,15 @@
     width: calc(100% / 4 - 30px);
     display: flex;
     flex-direction: column;
+    transition: background-color 300ms, scale 300ms, box-shadow 300ms;
+    
+    @media(max-width: 1000px){
+        width: calc(100% / 2 - 30px);
+    }
+
+    @media(max-width: 700px){
+        width: 100%;
+    }
 
     &_content{
         width: 100%;
@@ -27,6 +36,18 @@
             padding: 7px 16px;
             background-color: $c_primary_white;
             border-radius: 50px;
+        }
+    }
+
+    &:hover{
+        background-color: $c_trasnparent_gray;
+        box-shadow: 0 0 24px $c_primary_black;
+        border: 2px solid $c_trasnparent_gray;
+
+        @media(max-width: 1000px){
+            background-color: transparent;
+            box-shadow: none;
+            border: none;
         }
     }
 }
