@@ -1,4 +1,5 @@
 import '../../styles/Header.scss';
+import Link from 'next/link';
 import Btn from '../ui/Btn';
 import Text from '../ui/Text';
 export default () => {
@@ -6,28 +7,30 @@ export default () => {
     const links = [
         {
             title: 'About',
-            href: '#'
+            href: '/#about'
         },
         {
             title: 'Projects',
-            href: '#'
+            href: '/#projects'
         },
         {
             title: 'Collaboration',
-            href: '#'
+            href: '/#collaboration'
         },
         {
             title: 'Media',
-            href: '#'
+            href: '/#media'
         }
     ]
 
     return (
         <header className='Header'>
             <div className='Header_container container'>
-                <Text h1 fs_l fw_bold>
-                    EA.
-                </Text>
+                <Link className='Header_logo' href='/#top' aria-label='Go to top of homepage'>
+                    <Text h1 fs_l fw_bold>
+                        EA.
+                    </Text>
+                </Link>
                 <nav className='Header_nav'>
                     {
                         links.map((el, index) => (

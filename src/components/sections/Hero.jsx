@@ -8,7 +8,7 @@ import RunningLine from '../ui/RunningLine';
 export default () => {
 
     return (
-        <section className='Hero container'>
+        <section className='Hero container' id='top'>
             <div className='Hero_info'>
                 <div className='Hero_info_text'>
                     <Text h1 fs_2xl fw_bold>

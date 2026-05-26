@@ -1,0 +1,32 @@
+.ProjectsPage{
+    width: 100%;
+    min-height: calc(100vh - 75px - 44px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $gap_l;
+    padding: $pt_m $pr_l; 
+    &_list{
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        justify-items: center;
+        gap: $gap_l;
+    }
+}
+
+@media (max-width: 1024px){
+    .ProjectsPage{
+        &_list{
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+}
+
+@media (max-width: 640px){
+    .ProjectsPage{
+        &_list{
+            grid-template-columns: 1fr;
+        }
+    }
+}

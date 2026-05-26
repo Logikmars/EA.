@@ -31,7 +31,7 @@ export default () => {
     ]
 
     return (
-        <section className='Cooperation'>
+        <section className='Cooperation' id='collaboration'>
             <div className='Cooperation_container container'>
                 <Text h2 fw_semibold fs_2xl>
                     СПІВПРАЦЯ

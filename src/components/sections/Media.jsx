@@ -36,7 +36,7 @@ export default () => {
     ]
     
     return (
-        <section className='Media container'>
+        <section className='Media container' id='media'>
             <div className='Media_top'>
                 <Text h2 fw_semibold fs_2xl>
                     Медіа
