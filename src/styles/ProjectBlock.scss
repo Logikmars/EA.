@@ -5,12 +5,44 @@
     flex-wrap: wrap;
     gap: $gap_2xs;
     justify-content: center;
-
     min-height: 501px;
-
     align-content: start;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    padding: 14px;
+    border-radius: 28px;
+    background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.86),
+        rgba(255, 255, 255, 0.58)
+    );
+    border: 1px solid rgba(11, 11, 11, 0.08);
+    box-shadow: 0 16px 32px rgba(11, 11, 11, 0.06);
+    transition:
+        transform 350ms ease,
+        box-shadow 350ms ease,
+        border-color 350ms ease,
+        background-color 350ms ease;
 
-    transition: background-color 300ms, scale 300ms, box-shadow 300ms;
+    &::before{
+        content: '';
+        position: absolute;
+        inset: -35%;
+        z-index: 0;
+        background:
+            radial-gradient(circle at 20% 18%, rgba(10, 102, 255, 0.15), transparent 30%),
+            radial-gradient(circle at 82% 14%, rgba(255, 255, 255, 0.72), transparent 22%),
+            radial-gradient(circle at 50% 100%, rgba(11, 11, 11, 0.08), transparent 42%);
+        animation: projectBlockAura 10s ease-in-out infinite alternate;
+        opacity: 0.8;
+        pointer-events: none;
+    }
+
+    > *{
+        position: relative;
+        z-index: 1;
+    }
 
     @media(max-width: 1000px){
         min-height: 450px;
@@ -23,16 +55,46 @@
     &_image{
         width: 100%;
         height: auto;
+        display: block;
+        border-radius: 22px;
+        transform: scale(1);
+        transition: transform 450ms ease, filter 450ms ease;
     }
 
     &:hover{
-        background-color: $c_trasnparent_gray;
-        // scale: 1.03;
-        box-shadow: 0 0 24px $c_primary_black;
+        transform: translateY(-8px);
+        border-color: rgba(10, 102, 255, 0.18);
+        box-shadow:
+            0 24px 44px rgba(11, 11, 11, 0.12),
+            0 0 0 1px rgba(10, 102, 255, 0.06);
+
+        &::before{
+            opacity: 1;
+        }
+
+        .ProjectBlock_image{
+            transform: scale(1.03);
+            filter: saturate(1.05) contrast(1.03);
+        }
 
         @media(max-width: 1000px){
-            background-color: transparent;
-            box-shadow: none;
+            transform: none;
+            box-shadow: 0 16px 32px rgba(11, 11, 11, 0.06);
+            border-color: rgba(11, 11, 11, 0.08);
+
+            .ProjectBlock_image{
+                transform: none;
+                filter: none;
+            }
         }
+    }
+}
+
+@keyframes projectBlockAura{
+    0%{
+        transform: translate3d(-2%, -1%, 0) scale(1);
+    }
+    100%{
+        transform: translate3d(3%, 2%, 0) scale(1.08);
     }
 }

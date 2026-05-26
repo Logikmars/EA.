@@ -1,16 +1,55 @@
-import MediaStore from '@/stores/MediaStore';
+'use client';
+
 import '../../styles/Media.scss';
-import { useTranslations } from 'next-intl';
+import { getMediaItems } from '@/lib/content';
+import { useLayoutEffect, useRef } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 import Btn from '../ui/Btn';
 import MediaBlock from '../ui/MediaBlock';
 import Text from '../ui/Text';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const Media = () => {
+    const rootRef = useRef(null);
     const t = useTranslations('Media');
-    const mediaT = useTranslations('MediaItems');
+    const locale = useLocale();
+    const mediaItems = getMediaItems(locale);
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    useLayoutEffect(() => {
+        const root = rootRef.current;
+
+        if (!root) return;
+
+        const ctx = gsap.context(() => {
+            const blocks = gsap.utils.toArray('.Media_list .MediaBlock');
+
+            gsap.set(blocks, {
+                opacity: 0,
+                y: 96,
+            });
+
+            gsap.to(blocks, {
+                opacity: 1,
+                y: 0,
+                ease: 'power3.out',
+                stagger: 0.16,
+                scrollTrigger: {
+                    trigger: root,
+                    start: 'top 78%',
+                    end: 'bottom 100%',
+                    scrub: 1,
+                }
+            });
+        }, root);
+
+        return () => ctx.revert();
+    }, []);
 
     return (
-        <section className='Media container' id='media'>
+        <section className='Media container' id='media' ref={rootRef}>
             <div className='Media_top'>
                 <Text h2 fw_semibold fs_2xl>
                     {t('title')}
@@ -20,14 +59,15 @@ const Media = () => {
                 </Btn>
             </div>
             <div className='Media_list'>
-                {MediaStore.medias.slice(0, 4).map((el) => (
+                {mediaItems.slice(0, 4).map((media) => (
                     <MediaBlock
-                        type={mediaT(`${el.id}.type`)}
-                        img={el.img}
-                        text={mediaT(`${el.id}.text`)}
-                        href={el.href}
-                        alt={mediaT(`${el.id}.alt`)}
-                        key={el.id}
+                        id={media.slug}
+                        type={media.type}
+                        img={media.img}
+                        text={media.title}
+                        href={`/media/${media.slug}`}
+                        alt={media.title}
+                        key={media.slug}
                     />
                 ))}
             </div>

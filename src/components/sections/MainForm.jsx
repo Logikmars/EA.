@@ -1,13 +1,16 @@
 'use client';
 
 import '../../styles/MainForm.scss';
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import CustomInput from '../ui/CustomInput';
 import Text from '../ui/Text';
 import Btn from '../ui/Btn';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const MainForm = () => {
+    const rootRef = useRef(null);
     const t = useTranslations('MainForm');
 
     const [formData, setFormData] = useState({
@@ -32,6 +35,8 @@ const MainForm = () => {
 
         console.log(formData);
     };
+
+    gsap.registerPlugin(ScrollTrigger);
 
     const inputs = [
         {
@@ -74,8 +79,60 @@ const MainForm = () => {
         },
     ];
 
+    useLayoutEffect(() => {
+        const root = rootRef.current;
+
+        if (!root) return;
+
+        const ctx = gsap.context(() => {
+            const fields = gsap.utils.toArray('.MainForm_form .CustomInput');
+            const button = root.querySelector('.MainForm_form .Btn');
+
+            fields.forEach((field, index) => {
+                const isLastField = index === fields.length - 1;
+                const fromState = {
+                    opacity: 0,
+                    x: isLastField ? 0 : index % 2 === 0 ? -120 : 120,
+                    y: isLastField ? 120 : 0,
+                };
+
+                gsap.fromTo(field, fromState, {
+                    opacity: 1,
+                    x: 0,
+                    y: 0,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: root,
+                        start: 'top 80%',
+                        end: 'bottom 70%',
+                        scrub: 1,
+                    }
+                });
+            });
+
+            if (button) {
+                gsap.fromTo(button, {
+                    opacity: 0,
+                    y: 120,
+                }, {
+                    opacity: 1,
+                    y: 0,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: root,
+                        start: 'top 80%',
+                        end: 'bottom 70%',
+                        scrub: 1,
+                    }
+                });
+            }
+        }, root);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <section className='MainForm'>
+        <section className='MainForm' id='contact' ref={rootRef}>
             <div className='MainForm_container container'>
                 <div className='MainForm_text'>
                     <Text h2 white fw_semibold fs_3xl>

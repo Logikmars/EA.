@@ -2,6 +2,8 @@
 
 import '../../styles/Header.scss';
 import { Link, usePathname } from '@/i18n/navigation';
+import NextLink from 'next/link';
+import { routing } from '@/i18n/routing';
 import { useLocale, useTranslations } from 'next-intl';
 import { Fragment, useEffect, useState } from 'react';
 import Btn from '../ui/Btn';
@@ -12,6 +14,7 @@ const Header = () => {
     const locale = useLocale();
     const pathname = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const knownPaths = ['/', '/projects', '/media', '/invite'];
 
     const links = [
         {
@@ -60,15 +63,23 @@ const Header = () => {
         };
     }, [isMenuOpen]);
 
+    const localeSwitcherPath = knownPaths.some((path) => pathname === path || pathname.startsWith(`${path}/`))
+        ? pathname
+        : '/';
+
     const closeMenu = () => {
         setIsMenuOpen(false);
     };
+
+    const getLocaleHref = (targetLocale) => (
+        `/${targetLocale}${localeSwitcherPath === '/' ? '' : localeSwitcherPath}`
+    );
 
     return (
         <header className='Header'>
             <div className='Header_container container'>
                 <Link className='Header_logo' href='/#top' aria-label={t('homeAriaLabel')}>
-                    <Text h1 fs_l fw_bold>
+                    <Text fs_l fw_bold>
                         EA.
                     </Text>
                 </Link>
@@ -83,16 +94,25 @@ const Header = () => {
                     <div className='Header_langs' aria-label={t('languageSwitcher')}>
                         {languages.map((language, index) => (
                             <Fragment key={language.locale}>
-                                <Link
-                                    className={`Header_lang${language.locale === locale ? ' Header_lang__active' : ''}`}
-                                    href={pathname}
-                                    locale={language.locale}
-                                    aria-current={language.locale === locale ? 'page' : undefined}
-                                >
-                                    <span className='Header_langLabel'>
-                                        {language.label}
+                                {language.locale === locale ? (
+                                    <span
+                                        className='Header_lang Header_lang__active'
+                                        aria-current='page'
+                                    >
+                                        <span className='Header_langLabel'>
+                                            {language.label}
+                                        </span>
                                     </span>
-                                </Link>
+                                ) : (
+                                    <NextLink
+                                        className='Header_lang'
+                                        href={getLocaleHref(language.locale)}
+                                    >
+                                        <span className='Header_langLabel'>
+                                            {language.label}
+                                        </span>
+                                    </NextLink>
+                                )}
                                 {index < languages.length - 1 && <span className='Header_langDivider'>/</span>}
                             </Fragment>
                         ))}
@@ -125,7 +145,7 @@ const Header = () => {
                 aria-hidden={!isMenuOpen}
             >
                 <Link className='Header_drawerLogo' href='/#top' aria-label={t('homeAriaLabel')} onClick={closeMenu}>
-                    <Text h1 fs_l fw_bold>
+                    <Text fs_l fw_bold>
                         EA.
                     </Text>
                 </Link>
@@ -145,17 +165,26 @@ const Header = () => {
                     <div className='Header_langs' aria-label={t('languageSwitcher')}>
                         {languages.map((language, index) => (
                             <Fragment key={language.locale}>
-                                <Link
-                                    className={`Header_lang${language.locale === locale ? ' Header_lang__active' : ''}`}
-                                    href={pathname}
-                                    locale={language.locale}
-                                    aria-current={language.locale === locale ? 'page' : undefined}
-                                    onClick={closeMenu}
-                                >
-                                    <span className='Header_langLabel'>
-                                        {language.label}
+                                {language.locale === locale ? (
+                                    <span
+                                        className='Header_lang Header_lang__active'
+                                        aria-current='page'
+                                    >
+                                        <span className='Header_langLabel'>
+                                            {language.label}
+                                        </span>
                                     </span>
-                                </Link>
+                                ) : (
+                                    <NextLink
+                                        className='Header_lang'
+                                        href={getLocaleHref(language.locale)}
+                                        onClick={closeMenu}
+                                    >
+                                        <span className='Header_langLabel'>
+                                            {language.label}
+                                        </span>
+                                    </NextLink>
+                                )}
                                 {index < languages.length - 1 && <span className='Header_langDivider'>/</span>}
                             </Fragment>
                         ))}

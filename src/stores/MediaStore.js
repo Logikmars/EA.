@@ -43,4 +43,7 @@ class MediaStore {
 
 }
 
-export default new MediaStore();
+const mediaStore = new MediaStore();
+
+export { MediaStore, mediaStore };
+export default mediaStore;

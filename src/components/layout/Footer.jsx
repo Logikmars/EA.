@@ -1,9 +1,12 @@
 import '../../styles/Footer.scss';
 import SocialBar from '../ui/SocialBar';
-export default () => {
+
+const Footer = () => {
     return (
         <footer className='Footer'>
             <SocialBar />
         </footer>
-    )
-}
+    );
+};
+
+export default Footer;

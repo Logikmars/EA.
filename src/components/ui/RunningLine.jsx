@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import "../../styles/RunningLine.scss";
@@ -12,38 +12,45 @@ export default function RunningLine() {
     const els = [
         {
             img: "/imgs/parnters/atb.svg",
-            alt: "#"
+            alt: "ATB logo"
         },
         {
             img: "/imgs/parnters/watsons.svg",
-            alt: "#"
+            alt: "Watsons logo"
         },
         {
             img: "/imgs/parnters/carrefour.svg",
-            alt: "#"
+            alt: "Carrefour logo"
         },
         {
             img: "/imgs/parnters/silpo.svg",
-            alt: "#"
+            alt: "Silpo logo"
         },
         {
             img: "/imgs/parnters/novus.svg",
-            alt: "#"
+            alt: "Novus logo"
         }
     ];
 
     const animatedEls = [...els, ...els, ...els];
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const container = containerRef.current;
         const track = trackRef.current;
         if (!container || !track) return;
 
         const ctx = gsap.context(() => {
+            const shouldReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            const isMobileViewport = window.matchMedia("(max-width: 767px)").matches;
             let tween = null;
             let resizeTimeout = null;
             let observer = null;
             let cancelled = false;
+
+            if (shouldReduceMotion || isMobileViewport) {
+                gsap.set(track, { clearProps: "all", opacity: 1, x: 0 });
+                return;
+            }
 
             gsap.set(track, {
                 x: 0,
@@ -102,10 +109,6 @@ export default function RunningLine() {
                         img.addEventListener("error", handleDone, { once: true });
                     });
                 }));
-
-                if (document.fonts?.ready) {
-                    await document.fonts.ready;
-                }
 
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {

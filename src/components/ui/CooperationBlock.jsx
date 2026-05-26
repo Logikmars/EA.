@@ -2,7 +2,8 @@ import Image from 'next/image';
 import '../../styles/CooperationBlock.scss';
 import Text from './Text';
 import Btn from './Btn';
-export default ({
+
+const CooperationBlock = ({
     img,
     alt,
     title,
@@ -18,7 +19,8 @@ export default ({
                     alt={alt}
                     width={1200}
                     height={800}
-                    className="CooperationBlock_img_image"
+                    sizes='72px'
+                    className='CooperationBlock_img_image'
                 />
             </div>
             <div className='CooperationBlock_text'>
@@ -33,5 +35,7 @@ export default ({
                 {btnText}
             </Btn>
         </div>
-    )
-}
+    );
+};
+
+export default CooperationBlock;

@@ -25,6 +25,11 @@
         justify-content: space-between;
         align-items: center;
         gap: $gap_l;
+
+        .InfoBlock{
+            will-change: transform, opacity;
+        }
+
         @media(max-width: 1000px){
             flex-wrap: wrap;
             gap: $gap_xs;
@@ -36,6 +41,26 @@
         flex-direction: column;
         gap: $gap_xs;
         max-width: 1000px;
+
+        &_line{
+            color: transparent;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.98) 0%,
+                rgba(196, 196, 196, 0.88) 100%
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        &_char{
+            display: inline-block;
+            color: transparent;
+            background: inherit;
+            -webkit-background-clip: text;
+            background-clip: text;
+            will-change: opacity;
+        }
 
         @media(max-width: 600px){
             p{

@@ -24,10 +24,11 @@ const Btn = ({
     href,
 
     w100,
+    className = '',
 
 }) => {
 
-    const className = clsx('Btn', {
+    const composedClassName = clsx('Btn', className, {
         'Btn_color_blue': color_blue,
         'Btn_color_white': color_white,
         'Btn_color_gray': color_gray,
@@ -49,16 +50,21 @@ const Btn = ({
     return (
         href ? (
             isPlainLink ? (
-                <Link className={className} href={href} onClick={onClick}>
+                <Link
+                    className={composedClassName}
+                    href={href}
+                    onClick={onClick}
+                    {...(href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                >
                     {children}
                 </Link>
             ) : (
-                <IntlLink className={className} href={href} onClick={onClick}>
+                <IntlLink className={composedClassName} href={href} onClick={onClick}>
                     {children}
                 </IntlLink>
             )
         ) : (
-            <button className={className} onClick={onClick} type={type}>
+            <button className={composedClassName} onClick={onClick} type={type}>
                 {children}
             </button>
         )

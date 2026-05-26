@@ -1,34 +1,79 @@
+ 'use client';
+
 import '../../styles/Cooperation.scss';
+import { useLayoutEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import CooperationBlock from '../ui/CooperationBlock';
 import Text from '../ui/Text';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const Cooperation = () => {
+    const rootRef = useRef(null);
     const t = useTranslations('Cooperation');
+
+    gsap.registerPlugin(ScrollTrigger);
 
     const els = [
         {
             id: 'lecture',
             img: '/imgs/icons/mic.svg',
-            alt: '#',
-            href: '#',
+            alt: 'Lecture icon',
+            href: '/invite',
         },
         {
             id: 'speech',
             img: '/imgs/icons/users.svg',
-            alt: '#',
-            href: '#',
+            alt: 'Public speaking icon',
+            href: '/invite',
         },
         {
             id: 'consulting',
             img: '/imgs/icons/case.svg',
-            alt: '#',
-            href: '#',
+            alt: 'Consulting icon',
+            href: '/invite',
         },
     ];
 
+    useLayoutEffect(() => {
+        const root = rootRef.current;
+
+        if (!root) return;
+
+        const ctx = gsap.context(() => {
+            const blocks = gsap.utils.toArray('.Cooperation_list .CooperationBlock');
+
+            blocks.forEach((block, index) => {
+                const fromState = {
+                    opacity: 0,
+                    x: 0,
+                    y: 0,
+                };
+
+                if (index === 0) fromState.x = -120;
+                if (index === 1) fromState.y = 120;
+                if (index === 2) fromState.x = 120;
+
+                gsap.fromTo(block, fromState, {
+                    opacity: 1,
+                    x: 0,
+                    y: 0,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: root,
+                        start: 'top 78%',
+                        end: 'bottom 70%',
+                        scrub: 1,
+                    }
+                });
+            });
+        }, root);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <section className='Cooperation' id='collaboration'>
+        <section className='Cooperation' id='collaboration' ref={rootRef}>
             <div className='Cooperation_container container'>
                 <Text h2 fw_semibold fs_2xl>
                     {t('title')}

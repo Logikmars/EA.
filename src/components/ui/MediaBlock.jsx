@@ -2,16 +2,18 @@ import Link from 'next/link';
 import '../../styles/MediaBlock.scss';
 import Image from 'next/image';
 import Text from './Text';
-export default ({
+
+const MediaBlock = ({
+    id,
     type,
     img,
     alt,
     text,
-    href
+    href,
 }) => {
-    return (
-        <Link className='MediaBlock' href={href}>
-            <div className='MediaBlock_decor free_img'> 
+    const content = (
+        <>
+            <div className='MediaBlock_decor free_img'>
                 <div className='MediaBlock_decor_type'>
                     <Text fs_2xs fw_semibold>
                         {type.toUpperCase()}
@@ -24,14 +26,30 @@ export default ({
                     alt={alt}
                     width={1200}
                     height={800}
-                    className="MediaBlock_image"
-                    priority
+                    sizes='(max-width: 767px) 100vw, (max-width: 1200px) 50vw, 25vw'
+                    className='MediaBlock_image'
                 />
 
                 <Text fw_medium fs_l>
                     {text}
                 </Text>
             </div>
+        </>
+    );
+
+    if (!href || href === '#') {
+        return (
+            <article className='MediaBlock' id={id}>
+                {content}
+            </article>
+        );
+    }
+
+    return (
+        <Link className='MediaBlock' href={href} id={id}>
+            {content}
         </Link>
-    )
-}
+    );
+};
+
+export default MediaBlock;

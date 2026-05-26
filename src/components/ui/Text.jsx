@@ -1,7 +1,7 @@
 import '../../styles/Text.scss';
 import clsx from 'clsx';
 
-export default ({
+const Text = ({
     children,
 
     h1,
@@ -31,9 +31,10 @@ export default ({
     href = "#",
 
     styleClass = '',
+    className = '',
 }) => {
 
-    const className = clsx('Text', styleClass, {
+    const composedClassName = clsx('Text', styleClass, className, {
         'Text_color_lightGray': light_gray,
         'Text_color_white': white,
         'Text_color_transparentWhite': transparent_white,
@@ -68,8 +69,10 @@ export default ({
         : (children ? children : 'Text not defined...');
 
     return (
-        <Tag className={className} {...(a ? { href } : {})}>
+        <Tag className={composedClassName} {...(a ? { href } : {})}>
             {content}
         </Tag>
     );
-}
+};
+
+export default Text;

@@ -1,7 +1,10 @@
 import MediaBlock from '@/components/ui/MediaBlock';
+import AnimatedRevealList from '@/components/ui/AnimatedRevealList';
+import StructuredData from '@/components/seo/StructuredData';
 import Text from '@/components/ui/Text';
+import { getMediaItems } from '@/lib/content';
 import { buildMetadata } from '@/lib/seo';
-import MediaStore from '@/stores/MediaStore';
+import { buildBreadcrumbSchema, buildItemListSchema, buildWebPageSchema } from '@/lib/schema';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import '../../../styles/MediaPage.scss';
 
@@ -14,6 +17,10 @@ export async function generateMetadata({ params }) {
         title: t('mediaTitle'),
         description: t('mediaDescription'),
         pathname: '/media',
+        siteName: t('siteTitle'),
+        keywords: locale === 'en'
+            ? ['business interviews', 'retail podcasts', 'brand licensing articles', 'loyalty strategy media']
+            : ['бізнес інтервʼю', 'статті про ритейл', 'подкасти про лояльність', 'медіа про ліцензування'],
     });
 }
 
@@ -22,26 +29,56 @@ const MediaPage = async ({ params }) => {
 
     setRequestLocale(locale);
 
+    const seoT = await getTranslations('SEO');
     const t = await getTranslations('MediaPage');
-    const mediaT = await getTranslations('MediaItems');
+    const mediaItems = getMediaItems(locale);
+    const structuredData = [
+        buildWebPageSchema({
+            locale,
+            pathname: '/media',
+            title: seoT('mediaTitle'),
+            description: seoT('mediaDescription'),
+            pageType: 'CollectionPage',
+        }),
+        buildBreadcrumbSchema({
+            locale,
+            items: [
+                { name: seoT('homeTitle'), pathname: '' },
+                { name: seoT('mediaTitle'), pathname: '/media' },
+            ],
+        }),
+        buildItemListSchema({
+            locale,
+            pathname: '/media',
+            name: seoT('mediaTitle'),
+            items: mediaItems.map((media) => ({
+                id: media.slug,
+                name: media.title,
+                description: media.type,
+                pathname: `/media/${media.slug}`,
+            })),
+        }),
+    ];
 
     return (
         <div className='MediaPage'>
+            <StructuredData data={structuredData} />
             <Text h1 fw_bold fs_2xl>
                 {t('title')}
             </Text>
-            <div className='MediaPage_list'>
-                {MediaStore.medias.map((el) => (
+            <AnimatedRevealList className='MediaPage_list' itemSelector='.MediaBlock'>
+                {mediaItems.map((media) => (
                     <MediaBlock
-                        key={el.id}
-                        type={mediaT(`${el.id}.type`)}
-                        img={el.img}
-                        text={mediaT(`${el.id}.text`)}
-                        href={el.href}
-                        alt={mediaT(`${el.id}.alt`)}
+                        id={media.slug}
+                        key={media.slug}
+                        type={media.type}
+                        img={media.img}
+                        text={media.title}
+                        href={`/media/${media.slug}`}
+                        alt={media.title}
                     />
                 ))}
-            </div>
+            </AnimatedRevealList>
         </div>
     );
 };

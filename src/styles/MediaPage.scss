@@ -6,6 +6,9 @@
     align-items: center;
     gap: $gap_m;
     padding: $pt_m $pr_l; 
+    h1{
+        text-align: center;
+    }
     &_list{
         width: 100%;
         display: flex;
