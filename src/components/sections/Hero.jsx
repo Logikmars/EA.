@@ -1,11 +1,18 @@
 import '../../styles/Hero.scss';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { getTranslations } from 'next-intl/server';
 import Text from '../ui/Text';
 import SocialBar from '../ui/SocialBar';
 import Btn from '../ui/Btn';
-import RunningLine from '../ui/RunningLine';
-import HeroMotion from './HeroMotion';
+
+const RunningLine = dynamic(() => import('../ui/RunningLine'), {
+    loading: () => null,
+});
+
+const HeroMotion = dynamic(() => import('./HeroMotion'), {
+    loading: () => null,
+});
 
 const Hero = async () => {
     const t = await getTranslations('Hero');

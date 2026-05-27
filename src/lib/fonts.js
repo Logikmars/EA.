@@ -1,7 +1,7 @@
-import localFont from 'next/font/local';
+import { Inter } from 'next/font/google';
 
-export const inter = localFont({
-    src: '../../public/fonts/Inter.ttf',
+export const inter = Inter({
+    subsets: ['latin', 'cyrillic'],
     display: 'swap',
     variable: '--font-inter',
     preload: true,

@@ -1,6 +1,7 @@
 import { localeToLanguageTag, metadataBase } from '@/lib/seo';
 import { siteConfig } from '@/lib/site';
 import { inter } from '@/lib/fonts';
+import SmoothScroll from '@/components/layout/SmoothScroll';
 import { getLocale, getTranslations } from 'next-intl/server';
 import '../styles/null.scss';
 
@@ -47,6 +48,7 @@ export default async function RootLayout({ children }) {
     return (
         <html lang={languageTag}>
             <body className={inter.className}>
+                <SmoothScroll />
                 {children}
             </body>
         </html>
