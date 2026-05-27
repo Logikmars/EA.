@@ -1,12 +1,12 @@
 import StructuredData from '@/components/seo/StructuredData';
 import dynamic from 'next/dynamic';
 import Hero from '@/components/sections/Hero';
+import Info from '@/components/sections/Info';
 import { getMediaItems, getProjects } from '@/lib/content';
 import { buildMetadata } from '@/lib/seo';
 import { buildItemListSchema, buildWebPageSchema } from '@/lib/schema';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-const Info = dynamic(() => import('@/components/sections/Info'));
 const Projects = dynamic(() => import('@/components/sections/Projects'));
 const Cooperation = dynamic(() => import('@/components/sections/Cooperation'));
 const Media = dynamic(() => import('@/components/sections/Media'));

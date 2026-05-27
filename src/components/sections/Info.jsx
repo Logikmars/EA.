@@ -9,7 +9,7 @@ import Text from '../ui/Text';
 const Info = () => {
     const rootRef = useRef(null);
     const t = useTranslations('Info');
-    const [shouldAnimateText, setShouldAnimateText] = useState(false);
+    const [isDesktopAnimated, setIsDesktopAnimated] = useState(false);
 
     const els = [
         {
@@ -33,28 +33,26 @@ const Info = () => {
     ];
 
     useEffect(() => {
-        const mediaQuery = window.matchMedia('(max-width: 767px)');
-        const updateTextAnimationState = () => {
-            setShouldAnimateText(!mediaQuery.matches);
+        const mobileQuery = window.matchMedia('(max-width: 767px)');
+        const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const updateAnimationState = () => {
+            setIsDesktopAnimated(!mobileQuery.matches && !reducedMotionQuery.matches);
         };
 
-        updateTextAnimationState();
-        mediaQuery.addEventListener('change', updateTextAnimationState);
+        updateAnimationState();
+        mobileQuery.addEventListener('change', updateAnimationState);
+        reducedMotionQuery.addEventListener('change', updateAnimationState);
 
         return () => {
-            mediaQuery.removeEventListener('change', updateTextAnimationState);
+            mobileQuery.removeEventListener('change', updateAnimationState);
+            reducedMotionQuery.removeEventListener('change', updateAnimationState);
         };
     }, []);
 
     useLayoutEffect(() => {
         const root = rootRef.current;
 
-        if (!root) return;
-
-        const shouldReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
-
-        if (shouldReduceMotion || isMobileViewport) return;
+        if (!root || !isDesktopAnimated) return;
 
         let cleanup = () => {};
 
@@ -122,7 +120,7 @@ const Info = () => {
         init();
 
         return () => cleanup();
-    }, []);
+    }, [isDesktopAnimated]);
 
     const renderAnimatedText = (value) => (
         value.split('').map((char, index) => (
@@ -146,7 +144,7 @@ const Info = () => {
                 <div className='Info_text'>
                     {texts.map((el) => (
                         <Text fw_medium fs_xl className='Info_text_line' key={`Info_text_key_${el}`}>
-                            {shouldAnimateText ? renderAnimatedText(el) : el}
+                            {isDesktopAnimated ? renderAnimatedText(el) : el}
                         </Text>
                     ))}
                 </div>
