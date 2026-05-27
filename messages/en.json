@@ -141,7 +141,19 @@
       "link": "Telegram / LinkedIn",
       "message": "Tell me something..."
     },
-    "submit": "Send request"
+    "validation": {
+      "name": "Enter your full name",
+      "email": "Enter a valid email address",
+      "phone": "Enter a valid phone number",
+      "message": "Message should be at least 10 characters"
+    },
+    "status": {
+      "validation": "Please fix the highlighted fields.",
+      "success": "Your request has been sent. We will contact you soon.",
+      "error": "Unable to send the request right now. Please try again later."
+    },
+    "submit": "Send request",
+    "submitting": "Sending..."
   },
   "SEO": {
     "siteTitle": "Eduard Akhramovych",

@@ -46,4 +46,24 @@
             order: 1;
         }
     }
+
+    &_status{
+        width: 100%;
+        margin: 0;
+        font-size: $fs_s;
+        line-height: 1.5;
+
+        &__success{
+            color: #9ff0b0;
+        }
+
+        &__error{
+            color: #ff9d9d;
+        }
+
+        &__loading,
+        &__idle{
+            color: $c_form_text;
+        }
+    }
 }

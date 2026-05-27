@@ -142,4 +142,17 @@
             $c_primary_black
         );
     }
+
+    &:disabled,
+    &[aria-disabled='true'] {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    &:disabled::before,
+    &[aria-disabled='true']::before {
+        display: none;
+    }
 }

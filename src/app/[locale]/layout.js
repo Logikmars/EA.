@@ -1,5 +1,6 @@
 import Header from '@/components/layout/Header';
 import StructuredData from '@/components/seo/StructuredData';
+import AppToaster from '@/components/ui/AppToaster';
 import { NextIntlClientProvider } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -34,6 +35,7 @@ const LocaleLayout = async ({ children, params }) => {
     return (
         <NextIntlClientProvider>
             <StructuredData data={structuredData} />
+            <AppToaster />
             <Header />
             <main id='main-content'>
                 {children}

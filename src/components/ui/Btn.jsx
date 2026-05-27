@@ -25,6 +25,8 @@ const Btn = ({
 
     w100,
     className = '',
+    disabled,
+    ...props
 
 }) => {
 
@@ -54,17 +56,19 @@ const Btn = ({
                     className={composedClassName}
                     href={href}
                     onClick={onClick}
+                    aria-disabled={disabled}
                     {...(href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    {...props}
                 >
                     {children}
                 </Link>
             ) : (
-                <IntlLink className={composedClassName} href={href} onClick={onClick}>
+                <IntlLink className={composedClassName} href={href} onClick={onClick} {...props}>
                     {children}
                 </IntlLink>
             )
         ) : (
-            <button className={composedClassName} onClick={onClick} type={type}>
+            <button className={composedClassName} onClick={onClick} type={type} disabled={disabled} {...props}>
                 {children}
             </button>
         )

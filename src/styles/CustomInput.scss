@@ -1,5 +1,31 @@
-.CustomInput{
+.CustomInputField{
     width: calc(100% - $gap_s);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    @media(max-width: 650px){
+        width: 100%;
+    }
+
+    &_w50{
+        width: calc(50% - $gap_s);
+
+        @media(max-width: 650px){
+            width: 100%;
+        }
+    }
+
+    &_message{
+        margin: 0;
+        color: #ff8f8f;
+        font-size: $fs_xs;
+        line-height: 1.4;
+    }
+}
+
+.CustomInput{
+    width: 100%;
     background-color: $c_black_transparent;
     border: 1px solid $c_stroke_gray;
     color: $c_form_text;
@@ -14,10 +40,6 @@
         box-shadow 300ms ease,
         color 300ms ease,
         transform 180ms ease;
-
-    @media(max-width: 650px){
-        width: 100%;
-    }
 
     &::placeholder{
         color: $c_form_text;
@@ -48,11 +70,9 @@
         transform: translateY(0) scale(0.995);
     }
 
-    &_w50{
-        width: calc(50% - $gap_s);
-        @media(max-width: 650px){
-            width: 100%;
-        }
+    &_error{
+        border-color: rgba(255, 143, 143, 0.88);
+        box-shadow: 0 0 0 3px rgba(255, 143, 143, 0.12);
     }
 
     &_textarea{

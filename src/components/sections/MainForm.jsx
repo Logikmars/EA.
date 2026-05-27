@@ -3,21 +3,55 @@
 import '../../styles/MainForm.scss';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import toast from 'react-hot-toast';
 import CustomInput from '../ui/CustomInput';
 import Text from '../ui/Text';
 import Btn from '../ui/Btn';
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const phonePattern = /^[+\d\s()\-]{7,}$/;
+const initialFormData = {
+    name: '',
+    email: '',
+    phone: '',
+    link: '',
+    message: '',
+};
+
+const validateForm = (formData, t) => {
+    const errors = {};
+    const name = formData.name.trim();
+    const email = formData.email.trim();
+    const phone = formData.phone.trim();
+    const message = formData.message.trim();
+
+    if (name.length < 2) {
+        errors.name = t('validation.name');
+    }
+
+    if (!emailPattern.test(email)) {
+        errors.email = t('validation.email');
+    }
+
+    if (phone && !phonePattern.test(phone)) {
+        errors.phone = t('validation.phone');
+    }
+
+    if (message.length < 10) {
+        errors.message = t('validation.message');
+    }
+
+    return errors;
+};
 
 const MainForm = () => {
     const rootRef = useRef(null);
     const t = useTranslations('MainForm');
 
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        link: '',
-        message: '',
-    });
+    const [formData, setFormData] = useState(initialFormData);
+    const [errors, setErrors] = useState({});
+    const [submitState, setSubmitState] = useState('idle');
+    const [statusMessage, setStatusMessage] = useState('');
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -26,12 +60,69 @@ const MainForm = () => {
             ...prev,
             [name]: value,
         }));
+
+        setErrors((prev) => {
+            if (!prev[name]) return prev;
+
+            const next = { ...prev };
+
+            delete next[name];
+
+            return next;
+        });
+
+        if (submitState !== 'idle') {
+            setSubmitState('idle');
+            setStatusMessage('');
+        }
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        const nextErrors = validateForm(formData, t);
 
-        console.log(formData);
+        if (Object.keys(nextErrors).length > 0) {
+            setErrors(nextErrors);
+            setSubmitState('error');
+            setStatusMessage(t('status.validation'));
+
+            return;
+        }
+
+        setErrors({});
+        setSubmitState('loading');
+        setStatusMessage('');
+
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                if (data.fieldErrors) {
+                    setErrors(data.fieldErrors);
+                }
+
+                setSubmitState('error');
+                setStatusMessage(t('status.error'));
+
+                return;
+            }
+
+            setFormData(initialFormData);
+            setSubmitState('success');
+            setStatusMessage('');
+            toast.success(t('status.success'));
+        } catch {
+            setSubmitState('error');
+            setStatusMessage(t('status.error'));
+        }
     };
 
     const inputs = [
@@ -41,6 +132,8 @@ const MainForm = () => {
             placeholder: t('fields.name'),
             value: formData.name,
             onChange: handleChange,
+            error: errors.name,
+            autoComplete: 'name',
         },
         {
             w50: true,
@@ -49,6 +142,8 @@ const MainForm = () => {
             placeholder: t('fields.email'),
             value: formData.email,
             onChange: handleChange,
+            error: errors.email,
+            autoComplete: 'email',
         },
         {
             w50: true,
@@ -57,6 +152,8 @@ const MainForm = () => {
             placeholder: t('fields.phone'),
             value: formData.phone,
             onChange: handleChange,
+            error: errors.phone,
+            autoComplete: 'tel',
         },
         {
             w50: true,
@@ -64,6 +161,8 @@ const MainForm = () => {
             placeholder: t('fields.link'),
             value: formData.link,
             onChange: handleChange,
+            error: errors.link,
+            autoComplete: 'off',
         },
         {
             w50: false,
@@ -72,6 +171,8 @@ const MainForm = () => {
             placeholder: t('fields.message'),
             value: formData.message,
             onChange: handleChange,
+            error: errors.message,
+            rows: 6,
         },
     ];
 
@@ -162,9 +263,14 @@ const MainForm = () => {
                     {inputs.map((input) => (
                         <CustomInput key={input.name} {...input} />
                     ))}
-                    <Btn color_white text_black>
-                        {t('submit')}
+                    <Btn color_white text_black type='submit' disabled={submitState === 'loading'}>
+                        {submitState === 'loading' ? t('submitting') : t('submit')}
                     </Btn>
+                    {statusMessage ? (
+                        <p className={`MainForm_status MainForm_status__${submitState}`}>
+                            {statusMessage}
+                        </p>
+                    ) : null}
                 </form>
             </div>
         </section>

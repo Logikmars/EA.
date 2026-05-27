@@ -12,6 +12,10 @@
         @media(max-width: 900px){
             padding: $pt_l $pr_s;
             gap: $gap_xs;
+            h2{
+                font-size: $fs_xl;
+                text-align: center;
+            }
         }
     }
 
