@@ -1,8 +1,6 @@
 'use client';
 
 import { useLayoutEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const AnimatedRevealList = ({
     className,
@@ -11,36 +9,54 @@ const AnimatedRevealList = ({
 }) => {
     const rootRef = useRef(null);
 
-    gsap.registerPlugin(ScrollTrigger);
-
     useLayoutEffect(() => {
         const root = rootRef.current;
 
         if (!root) return;
 
-        const ctx = gsap.context(() => {
-            const blocks = gsap.utils.toArray(itemSelector);
+        const shouldReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
 
-            gsap.set(blocks, {
-                opacity: 0,
-                y: 96,
-            });
+        if (shouldReduceMotion || isMobileViewport) return;
 
-            gsap.to(blocks, {
-                opacity: 1,
-                y: 0,
-                ease: 'power3.out',
-                stagger: 0.14,
-                scrollTrigger: {
-                    trigger: root,
-                    start: 'top 82%',
-                    end: 'bottom 70%',
-                    scrub: 1,
-                }
-            });
-        }, root);
+        let cleanup = () => {};
 
-        return () => ctx.revert();
+        const init = async () => {
+            const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([
+                import('gsap'),
+                import('gsap/ScrollTrigger'),
+            ]);
+
+            gsap.registerPlugin(ScrollTrigger);
+
+            const ctx = gsap.context(() => {
+                const blocks = gsap.utils.toArray(itemSelector);
+
+                gsap.set(blocks, {
+                    opacity: 0,
+                    y: 96,
+                });
+
+                gsap.to(blocks, {
+                    opacity: 1,
+                    y: 0,
+                    ease: 'power3.out',
+                    stagger: 0.14,
+                    scrollTrigger: {
+                        trigger: root,
+                        start: 'top 82%',
+                        end: 'bottom 70%',
+                        scrub: 1,
+                    }
+                });
+            }, root);
+
+            cleanup = () => ctx.revert();
+        };
+
+        init();
+
+        return () => cleanup();
     }, [itemSelector]);
 
     return (

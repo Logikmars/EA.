@@ -5,14 +5,10 @@ import { useLayoutEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import CooperationBlock from '../ui/CooperationBlock';
 import Text from '../ui/Text';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const Cooperation = () => {
     const rootRef = useRef(null);
     const t = useTranslations('Cooperation');
-
-    gsap.registerPlugin(ScrollTrigger);
 
     const els = [
         {
@@ -40,36 +36,56 @@ const Cooperation = () => {
 
         if (!root) return;
 
-        const ctx = gsap.context(() => {
-            const blocks = gsap.utils.toArray('.Cooperation_list .CooperationBlock');
+        const shouldReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
 
-            blocks.forEach((block, index) => {
-                const fromState = {
-                    opacity: 0,
-                    x: 0,
-                    y: 0,
-                };
+        if (shouldReduceMotion || isMobileViewport) return;
 
-                if (index === 0) fromState.x = -120;
-                if (index === 1) fromState.y = 120;
-                if (index === 2) fromState.x = 120;
+        let cleanup = () => {};
 
-                gsap.fromTo(block, fromState, {
-                    opacity: 1,
-                    x: 0,
-                    y: 0,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: root,
-                        start: 'top 78%',
-                        end: 'bottom 70%',
-                        scrub: 1,
-                    }
+        const init = async () => {
+            const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([
+                import('gsap'),
+                import('gsap/ScrollTrigger'),
+            ]);
+
+            gsap.registerPlugin(ScrollTrigger);
+
+            const ctx = gsap.context(() => {
+                const blocks = gsap.utils.toArray('.Cooperation_list .CooperationBlock');
+
+                blocks.forEach((block, index) => {
+                    const fromState = {
+                        opacity: 0,
+                        x: 0,
+                        y: 0,
+                    };
+
+                    if (index === 0) fromState.x = -120;
+                    if (index === 1) fromState.y = 120;
+                    if (index === 2) fromState.x = 120;
+
+                    gsap.fromTo(block, fromState, {
+                        opacity: 1,
+                        x: 0,
+                        y: 0,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: root,
+                            start: 'top 78%',
+                            end: 'bottom 70%',
+                            scrub: 1,
+                        }
+                    });
                 });
-            });
-        }, root);
+            }, root);
 
-        return () => ctx.revert();
+            cleanup = () => ctx.revert();
+        };
+
+        init();
+
+        return () => cleanup();
     }, []);
 
     return (

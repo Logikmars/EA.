@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import gsap from "gsap";
 import "../../styles/RunningLine.scss";
 
 export default function RunningLine() {
@@ -39,18 +38,23 @@ export default function RunningLine() {
         const track = trackRef.current;
         if (!container || !track) return;
 
-        const ctx = gsap.context(() => {
-            const shouldReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            const isMobileViewport = window.matchMedia("(max-width: 767px)").matches;
+        const shouldReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const isMobileViewport = window.matchMedia("(max-width: 767px)").matches;
+
+        if (shouldReduceMotion || isMobileViewport) {
+            return;
+        }
+
+        let cleanup = () => {};
+
+        const init = async () => {
+            const { default: gsap } = await import("gsap");
+
+            const ctx = gsap.context(() => {
             let tween = null;
             let resizeTimeout = null;
             let observer = null;
             let cancelled = false;
-
-            if (shouldReduceMotion || isMobileViewport) {
-                gsap.set(track, { clearProps: "all", opacity: 1, x: 0 });
-                return;
-            }
 
             gsap.set(track, {
                 x: 0,
@@ -137,9 +141,14 @@ export default function RunningLine() {
                     tween.kill();
                 }
             };
-        }, container);
+            }, container);
 
-        return () => ctx.revert();
+            cleanup = () => ctx.revert();
+        };
+
+        init();
+
+        return () => cleanup();
     }, []);
 
     return (

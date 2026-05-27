@@ -3,16 +3,12 @@
 import '../../styles/Info.scss';
 import { useLayoutEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import InfoBlock from '../ui/InfoBlock';
 import Text from '../ui/Text';
 
 const Info = () => {
     const rootRef = useRef(null);
     const t = useTranslations('Info');
-
-    gsap.registerPlugin(ScrollTrigger);
 
     const els = [
         {
@@ -40,57 +36,77 @@ const Info = () => {
 
         if (!root) return;
 
-        const ctx = gsap.context(() => {
-            const blocks = gsap.utils.toArray('.Info_list .InfoBlock');
-            const chars = gsap.utils.toArray('.Info_text_char');
+        const shouldReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
 
-            gsap.set(blocks, {
-                opacity: 0.2,
-                y: 72
-            });
+        if (shouldReduceMotion || isMobileViewport) return;
 
-            gsap.set(chars, {
-                opacity: 0.16
-            });
+        let cleanup = () => {};
 
-            const blocksTimeline = gsap.timeline({
-                scrollTrigger: {
-                    trigger: root,
-                    start: 'top 82%',
-                    end: 'top 34%',
-                    scrub: 1
-                }
-            });
+        const init = async () => {
+            const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([
+                import('gsap'),
+                import('gsap/ScrollTrigger'),
+            ]);
 
-            blocksTimeline.to(blocks, {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-                ease: 'none',
-                stagger: 0.14
-            });
+            gsap.registerPlugin(ScrollTrigger);
 
-            const textTimeline = gsap.timeline({
-                scrollTrigger: {
-                    trigger: root,
-                    start: 'top 82%',
-                    end: 'bottom bottom',
-                    scrub: 1
-                }
-            });
+            const ctx = gsap.context(() => {
+                const blocks = gsap.utils.toArray('.Info_list .InfoBlock');
+                const chars = gsap.utils.toArray('.Info_text_char');
 
-            textTimeline.to(chars, {
-                opacity: 1,
-                duration: 1,
-                ease: 'none',
-                stagger: {
-                    each: 0.018,
-                    from: 'start',
-                }
-            });
-        }, root);
+                gsap.set(blocks, {
+                    opacity: 0.2,
+                    y: 72
+                });
 
-        return () => ctx.revert();
+                gsap.set(chars, {
+                    opacity: 0.16
+                });
+
+                const blocksTimeline = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: root,
+                        start: 'top 82%',
+                        end: 'top 34%',
+                        scrub: 1
+                    }
+                });
+
+                blocksTimeline.to(blocks, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: 'none',
+                    stagger: 0.14
+                });
+
+                const textTimeline = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: root,
+                        start: 'top 82%',
+                        end: 'bottom bottom',
+                        scrub: 1
+                    }
+                });
+
+                textTimeline.to(chars, {
+                    opacity: 1,
+                    duration: 1,
+                    ease: 'none',
+                    stagger: {
+                        each: 0.018,
+                        from: 'start',
+                    }
+                });
+            }, root);
+
+            cleanup = () => ctx.revert();
+        };
+
+        init();
+
+        return () => cleanup();
     }, []);
 
     const renderAnimatedText = (value) => (

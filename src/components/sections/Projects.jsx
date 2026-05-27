@@ -7,8 +7,6 @@ import { useLocale, useTranslations } from 'next-intl';
 import Btn from '../ui/Btn';
 import ProjectBlock from '../ui/ProjectBlock';
 import Text from '../ui/Text';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const Projects = () => {
     const rootRef = useRef(null);
@@ -16,36 +14,54 @@ const Projects = () => {
     const locale = useLocale();
     const projects = getProjects(locale);
 
-    gsap.registerPlugin(ScrollTrigger);
-
     useLayoutEffect(() => {
         const root = rootRef.current;
 
         if (!root) return;
 
-        const ctx = gsap.context(() => {
-            const blocks = gsap.utils.toArray('.Projects_list .ProjectBlock');
+        const shouldReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
 
-            gsap.set(blocks, {
-                opacity: 0,
-                y: 96,
-            });
+        if (shouldReduceMotion || isMobileViewport) return;
 
-            gsap.to(blocks, {
-                opacity: 1,
-                y: 0,
-                ease: 'power3.out',
-                stagger: 0.18,
-                scrollTrigger: {
-                    trigger: root,
-                    start: 'top 78%',
-                    end: 'bottom 100%',
-                    scrub: 1,
-                }
-            });
-        }, root);
+        let cleanup = () => {};
 
-        return () => ctx.revert();
+        const init = async () => {
+            const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([
+                import('gsap'),
+                import('gsap/ScrollTrigger'),
+            ]);
+
+            gsap.registerPlugin(ScrollTrigger);
+
+            const ctx = gsap.context(() => {
+                const blocks = gsap.utils.toArray('.Projects_list .ProjectBlock');
+
+                gsap.set(blocks, {
+                    opacity: 0,
+                    y: 96,
+                });
+
+                gsap.to(blocks, {
+                    opacity: 1,
+                    y: 0,
+                    ease: 'power3.out',
+                    stagger: 0.18,
+                    scrollTrigger: {
+                        trigger: root,
+                        start: 'top 78%',
+                        end: 'bottom 100%',
+                        scrub: 1,
+                    }
+                });
+            }, root);
+
+            cleanup = () => ctx.revert();
+        };
+
+        init();
+
+        return () => cleanup();
     }, []);
 
     return (

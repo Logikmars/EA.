@@ -131,7 +131,7 @@ textarea {
 
 html {
     scroll-behavior: smooth;
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 
@@ -141,13 +141,13 @@ html {
 // }
 
 body {
-    width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     font-family: inherit;
+    overflow-x: clip;
 }
 
 .page{
-    width: 100vw;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     align-content: start;
