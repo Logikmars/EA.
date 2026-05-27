@@ -1,7 +1,7 @@
- 'use client';
+'use client';
 
 import '../../styles/Info.scss';
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import InfoBlock from '../ui/InfoBlock';
 import Text from '../ui/Text';
@@ -9,6 +9,7 @@ import Text from '../ui/Text';
 const Info = () => {
     const rootRef = useRef(null);
     const t = useTranslations('Info');
+    const [shouldAnimateText, setShouldAnimateText] = useState(false);
 
     const els = [
         {
@@ -30,6 +31,20 @@ const Info = () => {
         t('paragraphs.second'),
         t('paragraphs.third'),
     ];
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(max-width: 767px)');
+        const updateTextAnimationState = () => {
+            setShouldAnimateText(!mediaQuery.matches);
+        };
+
+        updateTextAnimationState();
+        mediaQuery.addEventListener('change', updateTextAnimationState);
+
+        return () => {
+            mediaQuery.removeEventListener('change', updateTextAnimationState);
+        };
+    }, []);
 
     useLayoutEffect(() => {
         const root = rootRef.current;
@@ -131,7 +146,7 @@ const Info = () => {
                 <div className='Info_text'>
                     {texts.map((el) => (
                         <Text fw_medium fs_xl className='Info_text_line' key={`Info_text_key_${el}`}>
-                            {renderAnimatedText(el)}
+                            {shouldAnimateText ? renderAnimatedText(el) : el}
                         </Text>
                     ))}
                 </div>
