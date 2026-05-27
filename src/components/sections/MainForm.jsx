@@ -103,8 +103,8 @@ const MainForm = () => {
                     const isLastField = index === fields.length - 1;
                     const fromState = {
                         opacity: 0,
-                        x: isLastField ? 0 : index % 2 === 0 ? -120 : 120,
-                        y: isLastField ? 120 : 0,
+                        x: isLastField ? 0 : index % 2 === 0 ? -56 : 56,
+                        y: isLastField ? 56 : 0,
                     };
 
                     gsap.fromTo(field, fromState, {
@@ -114,9 +114,9 @@ const MainForm = () => {
                         ease: 'power3.out',
                         scrollTrigger: {
                             trigger: root,
-                            start: 'top 80%',
-                            end: 'bottom 70%',
-                            scrub: 1,
+                            start: 'top 86%',
+                            end: 'bottom 64%',
+                            scrub: 1.8,
                         }
                     });
                 });
@@ -124,16 +124,16 @@ const MainForm = () => {
                 if (button) {
                     gsap.fromTo(button, {
                         opacity: 0,
-                        y: 120,
+                        y: 56,
                     }, {
                         opacity: 1,
                         y: 0,
                         ease: 'power3.out',
                         scrollTrigger: {
                             trigger: root,
-                            start: 'top 80%',
-                            end: 'bottom 70%',
-                            scrub: 1,
+                            start: 'top 86%',
+                            end: 'bottom 64%',
+                            scrub: 1.8,
                         }
                     });
                 }

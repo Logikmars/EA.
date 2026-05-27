@@ -39,19 +39,19 @@ const Media = () => {
 
                 gsap.set(blocks, {
                     opacity: 0,
-                    y: 96,
+                    y: 52,
                 });
 
                 gsap.to(blocks, {
                     opacity: 1,
                     y: 0,
                     ease: 'power3.out',
-                    stagger: 0.16,
+                    stagger: 0.1,
                     scrollTrigger: {
                         trigger: root,
-                        start: 'top 78%',
-                        end: 'bottom 100%',
-                        scrub: 1,
+                        start: 'top 86%',
+                        end: 'bottom 68%',
+                        scrub: 1.6,
                     }
                 });
             }, root);

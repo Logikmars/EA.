@@ -61,9 +61,9 @@ const Cooperation = () => {
                         y: 0,
                     };
 
-                    if (index === 0) fromState.x = -120;
-                    if (index === 1) fromState.y = 120;
-                    if (index === 2) fromState.x = 120;
+                    if (index === 0) fromState.x = -64;
+                    if (index === 1) fromState.y = 64;
+                    if (index === 2) fromState.x = 64;
 
                     gsap.fromTo(block, fromState, {
                         opacity: 1,
@@ -72,9 +72,9 @@ const Cooperation = () => {
                         ease: 'power3.out',
                         scrollTrigger: {
                             trigger: root,
-                            start: 'top 78%',
-                            end: 'bottom 70%',
-                            scrub: 1,
+                            start: 'top 86%',
+                            end: 'bottom 64%',
+                            scrub: 1.6,
                         }
                     });
                 });

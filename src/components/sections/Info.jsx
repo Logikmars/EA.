@@ -70,7 +70,7 @@ const Info = () => {
 
                 gsap.set(blocks, {
                     opacity: 0.2,
-                    y: 72
+                    y: 40
                 });
 
                 gsap.set(chars, {
@@ -80,9 +80,9 @@ const Info = () => {
                 const blocksTimeline = gsap.timeline({
                     scrollTrigger: {
                         trigger: root,
-                        start: 'top 82%',
-                        end: 'top 34%',
-                        scrub: 1
+                        start: 'top 86%',
+                        end: 'top 42%',
+                        scrub: 1.8
                     }
                 });
 
@@ -90,26 +90,22 @@ const Info = () => {
                     opacity: 1,
                     y: 0,
                     duration: 1,
-                    ease: 'none',
-                    stagger: 0.14
+                    ease: 'power1.out',
+                    stagger: 0.08
                 });
 
-                const textTimeline = gsap.timeline({
+                gsap.to(chars, {
+                    opacity: 1,
+                    duration: 0.45,
+                    ease: 'power1.out',
+                    stagger: {
+                        each: 0.01,
+                        from: 'start',
+                    },
                     scrollTrigger: {
                         trigger: root,
                         start: 'top 82%',
-                        end: 'bottom bottom',
-                        scrub: 1
-                    }
-                });
-
-                textTimeline.to(chars, {
-                    opacity: 1,
-                    duration: 1,
-                    ease: 'none',
-                    stagger: {
-                        each: 0.018,
-                        from: 'start',
+                        once: true,
                     }
                 });
             }, root);

@@ -39,9 +39,8 @@ export default function RunningLine() {
         if (!container || !track) return;
 
         const shouldReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const isMobileViewport = window.matchMedia("(max-width: 767px)").matches;
 
-        if (shouldReduceMotion || isMobileViewport) {
+        if (shouldReduceMotion) {
             return;
         }
 

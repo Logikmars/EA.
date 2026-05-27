@@ -34,19 +34,19 @@ const AnimatedRevealList = ({
 
                 gsap.set(blocks, {
                     opacity: 0,
-                    y: 96,
+                    y: 52,
                 });
 
                 gsap.to(blocks, {
                     opacity: 1,
                     y: 0,
                     ease: 'power3.out',
-                    stagger: 0.14,
+                    stagger: 0.1,
                     scrollTrigger: {
                         trigger: root,
-                        start: 'top 82%',
-                        end: 'bottom 70%',
-                        scrub: 1,
+                        start: 'top 88%',
+                        end: 'bottom 62%',
+                        scrub: 1.6,
                     }
                 });
             }, root);
