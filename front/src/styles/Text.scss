@@ -1,0 +1,83 @@
+.Text{
+    font-size: $fs_m;
+    color: $c_primary_black;
+    font-weight: $fw_norm;
+    font-family: 'Inter';
+
+    &_color{
+        &_lightGray{
+            color: $c_primary_gray;
+        }
+        &_white{
+            color: $c_primary_white;
+        }
+        &_transparentWhite{
+            color: $c_form_text;
+        }
+        &_white60{
+            color: $c_light_gray;
+        }
+    }
+
+    &_tac{
+        text-align: center;
+    }
+
+    &_fs{
+        &_3xl{
+            font-size: $fs_3xl;
+        }
+        &_2xl{
+            font-size: $fs_2xl;
+        }
+        &_xl{
+            font-size: $fs_xl;
+        }
+        &_l{
+            font-size: $fs_l;
+        }
+        &_m{
+            font-size: $fs_m;
+        }
+        &_s{
+            font-size: $fs_s;
+        }
+        &_xs{
+            font-size: $fs_xs;
+        }
+        &_2xs{
+            font-size: $fs_2xs;
+        }
+    }
+
+    &_fw{
+        &_medium{
+            font-weight: $fw_medium;
+        }
+        &_semibold{
+            font-weight: $fw_semiBold;
+        }
+        &_bold{
+            font-weight: $fw_bold;
+        }
+    }
+}
+
+
+.rotate{
+    display: inline-flex;
+    gap: 0.02em;
+    perspective: 800px;
+
+    .rotate__letter {
+        display: inline-block;
+        transform-origin: center;
+        transition: transform 0.45s ease;
+        transition-delay: calc(var(--rotate-index) * 0.04s);
+        transform-style: preserve-3d;
+    }
+
+    &:hover .rotate__letter {
+        transform: rotateX(360deg);
+    }
+}
