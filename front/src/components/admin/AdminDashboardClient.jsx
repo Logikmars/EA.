@@ -38,6 +38,18 @@ const emptyMediaForm = {
     summaryEn: '',
 };
 
+function updateFormValue(setForm, field, value) {
+    setForm((currentValue) => ({
+        ...currentValue,
+        [field]: value,
+    }));
+}
+
+function clearAdminMessages() {
+    adminStore.clearError();
+    adminStore.clearSuccess();
+}
+
 const AdminDashboardClient = observer(() => {
     const router = useRouter();
     const [projectForm, setProjectForm] = useState(emptyProjectForm);
@@ -73,155 +85,158 @@ const AdminDashboardClient = observer(() => {
         };
     }, [router]);
 
-    const updateProjectField = (field) => (event) => {
-        const value = event.target.value;
-
-        setProjectForm((currentValue) => ({
-            ...currentValue,
-            [field]: value,
-        }));
+    const createFieldUpdater = (setForm) => (field) => (event) => {
+        updateFormValue(setForm, field, event.target.value);
     };
 
-    const updateMediaField = (field) => (event) => {
-        const value = event.target.value;
-
-        setMediaForm((currentValue) => ({
-            ...currentValue,
-            [field]: value,
-        }));
+    const createImageUpdater = (setForm) => (url) => {
+        updateFormValue(setForm, 'img', url);
     };
 
-    const handleProjectSubmit = async (event) => {
+    const createCancelEditHandler = (setEditingSlug, setForm, emptyForm) => () => {
+        setEditingSlug('');
+        setForm(emptyForm);
+        clearAdminMessages();
+    };
+
+    const createStartEditHandler = (setEditingSlug, setForm, mapItemToForm) => (item) => {
+        setEditingSlug(item.slug);
+        setForm(mapItemToForm(item));
+        clearAdminMessages();
+    };
+
+    const createSubmitHandler = ({
+        form,
+        editingSlug,
+        setEditingSlug,
+        setForm,
+        emptyForm,
+        createAction,
+        updateAction,
+        buildPayload,
+    }) => async (event) => {
         event.preventDefault();
 
-        const generatedSlug = normalizeSlug(projectForm.titleEn || projectForm.href);
-        const payload = {
-            slug: generatedSlug,
-            img: normalizeText(projectForm.img) || '/imgs/projects/1.png',
-            href: normalizeText(projectForm.href),
-            title: {
-                ua: normalizeText(projectForm.titleUa),
-                en: normalizeText(projectForm.titleEn),
-            },
-            summary: {
-                ua: normalizeText(projectForm.summaryUa),
-                en: normalizeText(projectForm.summaryEn),
-            },
-            tags: [],
-        };
-        const result = editingProjectSlug
-            ? await adminStore.updateProject(editingProjectSlug, payload)
-            : await adminStore.createProject(payload);
+        const payload = buildPayload(form);
+        const result = editingSlug ? await updateAction(editingSlug, payload) : await createAction(payload);
 
         if (result.ok) {
-            setProjectForm(emptyProjectForm);
-            setEditingProjectSlug('');
+            setForm(emptyForm);
+            setEditingSlug('');
         }
     };
 
-    const handleMediaSubmit = async (event) => {
-        event.preventDefault();
+    const createDeleteHandler = ({
+        confirmMessage,
+        deleteAction,
+        editingSlug,
+        cancelEdit,
+    }) => async (slug) => {
+        const isConfirmed = window.confirm(confirmMessage);
 
-        const generatedSlug = normalizeSlug(mediaForm.titleEn || mediaForm.sourceUrl);
-        const payload = {
-            slug: generatedSlug,
-            img: normalizeText(mediaForm.img) || '/imgs/projects/1.png',
-            type: {
-                ua: normalizeText(mediaForm.typeUa),
-                en: normalizeText(mediaForm.typeEn),
-            },
+        if (!isConfirmed) {
+            return;
+        }
+
+        const result = await deleteAction(slug);
+
+        if (result.ok && editingSlug === slug) {
+            cancelEdit();
+        }
+    };
+
+    const updateProjectField = createFieldUpdater(setProjectForm);
+    const updateMediaField = createFieldUpdater(setMediaForm);
+    const updateProjectImage = createImageUpdater(setProjectForm);
+    const updateMediaImage = createImageUpdater(setMediaForm);
+
+    const cancelProjectEdit = createCancelEditHandler(setEditingProjectSlug, setProjectForm, emptyProjectForm);
+    const cancelMediaEdit = createCancelEditHandler(setEditingMediaSlug, setMediaForm, emptyMediaForm);
+
+    const startProjectEdit = createStartEditHandler(setEditingProjectSlug, setProjectForm, (project) => ({
+        img: project.img || '',
+        href: project.href || '',
+        titleUa: project.title?.ua || '',
+        titleEn: project.title?.en || '',
+        summaryUa: project.summary?.ua || '',
+        summaryEn: project.summary?.en || '',
+    }));
+
+    const startMediaEdit = createStartEditHandler(setEditingMediaSlug, setMediaForm, (mediaItem) => ({
+        img: mediaItem.img || '',
+        typeUa: mediaItem.type?.ua || '',
+        typeEn: mediaItem.type?.en || '',
+        titleUa: mediaItem.title?.ua || '',
+        titleEn: mediaItem.title?.en || '',
+        sourceUrl: mediaItem.sourceUrl || '',
+        summaryUa: mediaItem.summary?.ua || '',
+        summaryEn: mediaItem.summary?.en || '',
+    }));
+
+    const handleProjectSubmit = createSubmitHandler({
+        form: projectForm,
+        editingSlug: editingProjectSlug,
+        setEditingSlug: setEditingProjectSlug,
+        setForm: setProjectForm,
+        emptyForm: emptyProjectForm,
+        createAction: (payload) => adminStore.createProject(payload),
+        updateAction: (slug, payload) => adminStore.updateProject(slug, payload),
+        buildPayload: (currentForm) => ({
+            slug: normalizeSlug(currentForm.titleEn || currentForm.href),
+            img: normalizeText(currentForm.img) || '/imgs/projects/1.png',
+            href: normalizeText(currentForm.href),
             title: {
-                ua: normalizeText(mediaForm.titleUa),
-                en: normalizeText(mediaForm.titleEn),
+                ua: normalizeText(currentForm.titleUa),
+                en: normalizeText(currentForm.titleEn),
             },
             summary: {
-                ua: normalizeText(mediaForm.summaryUa),
-                en: normalizeText(mediaForm.summaryEn),
+                ua: normalizeText(currentForm.summaryUa),
+                en: normalizeText(currentForm.summaryEn),
+            },
+        }),
+    });
+
+    const handleMediaSubmit = createSubmitHandler({
+        form: mediaForm,
+        editingSlug: editingMediaSlug,
+        setEditingSlug: setEditingMediaSlug,
+        setForm: setMediaForm,
+        emptyForm: emptyMediaForm,
+        createAction: (payload) => adminStore.createMedia(payload),
+        updateAction: (slug, payload) => adminStore.updateMedia(slug, payload),
+        buildPayload: (currentForm) => ({
+            slug: normalizeSlug(currentForm.titleEn || currentForm.sourceUrl),
+            img: normalizeText(currentForm.img) || '/imgs/projects/1.png',
+            type: {
+                ua: normalizeText(currentForm.typeUa),
+                en: normalizeText(currentForm.typeEn),
+            },
+            title: {
+                ua: normalizeText(currentForm.titleUa),
+                en: normalizeText(currentForm.titleEn),
+            },
+            summary: {
+                ua: normalizeText(currentForm.summaryUa),
+                en: normalizeText(currentForm.summaryEn),
             },
             outlet: '',
-            sourceUrl: normalizeText(mediaForm.sourceUrl),
-        };
-        const result = editingMediaSlug
-            ? await adminStore.updateMedia(editingMediaSlug, payload)
-            : await adminStore.createMedia(payload);
+            sourceUrl: normalizeText(currentForm.sourceUrl),
+        }),
+    });
 
-        if (result.ok) {
-            setMediaForm(emptyMediaForm);
-            setEditingMediaSlug('');
-        }
-    };
+    const handleProjectDelete = createDeleteHandler({
+        confirmMessage: 'Delete this project?',
+        deleteAction: (slug) => adminStore.deleteProject(slug),
+        editingSlug: editingProjectSlug,
+        cancelEdit: cancelProjectEdit,
+    });
 
-    const startProjectEdit = (project) => {
-        setEditingProjectSlug(project.slug);
-        setProjectForm({
-            img: project.img || '',
-            href: project.href || '',
-            titleUa: project.title?.ua || '',
-            titleEn: project.title?.en || '',
-            summaryUa: project.summary?.ua || '',
-            summaryEn: project.summary?.en || '',
-        });
-        adminStore.clearError();
-        adminStore.clearSuccess();
-    };
-
-    const startMediaEdit = (mediaItem) => {
-        setEditingMediaSlug(mediaItem.slug);
-        setMediaForm({
-            img: mediaItem.img || '',
-            typeUa: mediaItem.type?.ua || '',
-            typeEn: mediaItem.type?.en || '',
-            titleUa: mediaItem.title?.ua || '',
-            titleEn: mediaItem.title?.en || '',
-            sourceUrl: mediaItem.sourceUrl || '',
-            summaryUa: mediaItem.summary?.ua || '',
-            summaryEn: mediaItem.summary?.en || '',
-        });
-        adminStore.clearError();
-        adminStore.clearSuccess();
-    };
-
-    const cancelProjectEdit = () => {
-        setEditingProjectSlug('');
-        setProjectForm(emptyProjectForm);
-        adminStore.clearError();
-        adminStore.clearSuccess();
-    };
-
-    const cancelMediaEdit = () => {
-        setEditingMediaSlug('');
-        setMediaForm(emptyMediaForm);
-        adminStore.clearError();
-        adminStore.clearSuccess();
-    };
-
-    const handleProjectDelete = async (slug) => {
-        const isConfirmed = window.confirm('Delete this project?');
-
-        if (!isConfirmed) {
-            return;
-        }
-
-        const result = await adminStore.deleteProject(slug);
-
-        if (result.ok && editingProjectSlug === slug) {
-            cancelProjectEdit();
-        }
-    };
-
-    const handleMediaDelete = async (slug) => {
-        const isConfirmed = window.confirm('Delete this media item?');
-
-        if (!isConfirmed) {
-            return;
-        }
-
-        const result = await adminStore.deleteMedia(slug);
-
-        if (result.ok && editingMediaSlug === slug) {
-            cancelMediaEdit();
-        }
-    };
+    const handleMediaDelete = createDeleteHandler({
+        confirmMessage: 'Delete this media item?',
+        deleteAction: (slug) => adminStore.deleteMedia(slug),
+        editingSlug: editingMediaSlug,
+        cancelEdit: cancelMediaEdit,
+    });
 
     const handleLogout = async () => {
         await adminStore.logout();
@@ -267,7 +282,7 @@ const AdminDashboardClient = observer(() => {
                         <form className='AdminForm' onSubmit={handleProjectSubmit}>
                             <ImageDropzone
                                 label='Project image'
-                                onUploaded={(url) => setProjectForm((currentValue) => ({ ...currentValue, img: url }))}
+                                onUploaded={updateProjectImage}
                                 value={projectForm.img}
                             />
                             <label className='AdminField'>
@@ -330,7 +345,7 @@ const AdminDashboardClient = observer(() => {
                         <form className='AdminForm' onSubmit={handleMediaSubmit}>
                             <ImageDropzone
                                 label='Media image'
-                                onUploaded={(url) => setMediaForm((currentValue) => ({ ...currentValue, img: url }))}
+                                onUploaded={updateMediaImage}
                                 value={mediaForm.img}
                             />
                             <label className='AdminField'>

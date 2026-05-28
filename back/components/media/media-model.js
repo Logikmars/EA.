@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { z } from 'zod';
+import { httpUrlSchema, imageReferenceSchema } from '../../src/validation.js';
 
 const localizedTextSchema = z.object({
     ua: z.string().trim().min(1),
@@ -23,12 +24,12 @@ const localizedMongoOptionalTextSchema = new mongoose.Schema({
 
 export const mediaSchema = z.object({
     slug: z.string().trim().min(1).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-    img: z.string().trim().default('/imgs/projects/1.png'),
+    img: imageReferenceSchema.default('/imgs/projects/1.png'),
     type: localizedTextSchema,
     title: localizedTextSchema,
     summary: localizedOptionalTextSchema.default({ ua: '', en: '' }),
     outlet: z.string().trim().default(''),
-    sourceUrl: z.string().trim().url(),
+    sourceUrl: httpUrlSchema,
     sourceLabel: localizedOptionalTextSchema.default({ ua: '', en: '' }),
 });
 

@@ -6,6 +6,7 @@ import {
     requestAdminJson,
     requestAuth,
 } from '@/lib/api';
+import { normalizeAdminCallbackUrl } from '@/lib/adminNavigation';
 
 class AdminStore {
     session = null;
@@ -61,6 +62,7 @@ class AdminStore {
     async login({ email, password, callbackUrl = '/admin' }) {
         this.isSubmitting = true;
         this.clearError();
+        const safeCallbackUrl = normalizeAdminCallbackUrl(callbackUrl);
 
         try {
             const csrfToken = await getCsrfToken();
@@ -72,7 +74,7 @@ class AdminStore {
                     email,
                     password,
                     csrfToken,
-                    callbackUrl,
+                    callbackUrl: safeCallbackUrl,
                 }),
             });
             const redirectUrl = response?.url ? new URL(response.url, window.location.origin) : null;

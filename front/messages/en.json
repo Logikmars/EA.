@@ -145,6 +145,7 @@
       "name": "Enter your full name",
       "email": "Enter a valid email address",
       "phone": "Enter a valid phone number",
+      "link": "Enter a valid http or https link",
       "message": "Message should be at least 10 characters"
     },
     "status": {

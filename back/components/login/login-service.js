@@ -1,6 +1,7 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { getSession } from '@auth/express';
 import { buildAdminUser, buildSessionPayload, normalizeEmail, normalizePassword } from './login-model.js';
+import { verifyPassword } from '../../src/passwordHash.js';
 
 function hashValue(value) {
     return createHash('sha256').update(String(value)).digest();
@@ -12,16 +13,16 @@ function safeCompare(left, right) {
 
 export function authorizeAdmin(credentials) {
     const adminEmail = process.env.ADMIN_EMAIL;
-    const adminPassword = process.env.ADMIN_PASSWORD;
+    const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH;
     const email = normalizeEmail(credentials?.email);
     const password = normalizePassword(credentials?.password);
 
-    if (!adminEmail || !adminPassword || !email || !password) {
+    if (!adminEmail || !adminPasswordHash || !email || !password) {
         return null;
     }
 
     const isValidEmail = safeCompare(email, normalizeEmail(adminEmail));
-    const isValidPassword = safeCompare(password, adminPassword);
+    const isValidPassword = verifyPassword(password, adminPasswordHash);
 
     if (!isValidEmail || !isValidPassword) {
         return null;

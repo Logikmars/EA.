@@ -4,12 +4,12 @@ import '../../styles/MainForm.scss';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import toast from 'react-hot-toast';
+import { validateContactField } from '@/lib/contactFormSchema';
 import CustomInput from '../ui/CustomInput';
 import Text from '../ui/Text';
 import Btn from '../ui/Btn';
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const phonePattern = /^[+\d\s()\-]{7,}$/;
 const initialFormData = {
     name: '',
     email: '',
@@ -24,6 +24,9 @@ const validateForm = (formData, t) => {
     const email = formData.email.trim();
     const phone = formData.phone.trim();
     const message = formData.message.trim();
+    const linkErrorMessage = typeof t.has === 'function' && t.has('validation.link')
+        ? t('validation.link')
+        : 'Enter a valid http or https link';
 
     if (name.length < 2) {
         errors.name = t('validation.name');
@@ -33,8 +36,12 @@ const validateForm = (formData, t) => {
         errors.email = t('validation.email');
     }
 
-    if (phone && !phonePattern.test(phone)) {
+    if (phone && !validateContactField('phone', phone)) {
         errors.phone = t('validation.phone');
+    }
+
+    if (formData.link.trim() && !validateContactField('link', formData.link)) {
+        errors.link = linkErrorMessage;
     }
 
     if (message.length < 10) {
@@ -110,7 +117,7 @@ const MainForm = () => {
                 }
 
                 setSubmitState('error');
-                setStatusMessage(t('status.error'));
+                setStatusMessage(data?.message || t('status.error'));
 
                 return;
             }

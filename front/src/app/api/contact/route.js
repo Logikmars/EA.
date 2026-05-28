@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import { contactFormSchema, formatContactFieldErrors } from '@/lib/contactFormSchema';
+import { consumeRateLimit } from '@/lib/rateLimit';
 
 const escapeHtml = (value) =>
     value
@@ -32,6 +33,28 @@ const createTransporter = () => {
 
 export async function POST(request) {
     try {
+        const rateLimit = consumeRateLimit({
+            request,
+            limit: 5,
+            windowMs: 10 * 60 * 1000,
+            keyPrefix: 'contact-form',
+        });
+
+        if (!rateLimit.allowed) {
+            return Response.json(
+                {
+                    ok: false,
+                    message: 'Too many messages sent. Please try again later.',
+                },
+                {
+                    status: 429,
+                    headers: {
+                        'Retry-After': String(rateLimit.retryAfter),
+                    },
+                }
+            );
+        }
+
         const body = await request.json();
         const parsed = contactFormSchema.safeParse(body);
 

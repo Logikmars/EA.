@@ -4,11 +4,13 @@ import { useEffect, useState, startTransition } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useRouter } from 'next/navigation';
 import adminStore from '@/stores/AdminStore';
+import { normalizeAdminCallbackUrl } from '@/lib/adminNavigation';
 
 const AdminLoginClient = observer(({
     callbackUrl = '/admin',
 }) => {
     const router = useRouter();
+    const safeCallbackUrl = normalizeAdminCallbackUrl(callbackUrl);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -20,7 +22,7 @@ const AdminLoginClient = observer(({
 
             if (isMounted && session) {
                 startTransition(() => {
-                    router.replace('/admin');
+                    router.replace(safeCallbackUrl);
                 });
             }
         };
@@ -30,7 +32,7 @@ const AdminLoginClient = observer(({
         return () => {
             isMounted = false;
         };
-    }, [router]);
+    }, [router, safeCallbackUrl]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -38,12 +40,12 @@ const AdminLoginClient = observer(({
         const result = await adminStore.login({
             email,
             password,
-            callbackUrl,
+            callbackUrl: safeCallbackUrl,
         });
 
         if (result.ok) {
             startTransition(() => {
-                router.push('/admin');
+                router.push(safeCallbackUrl);
             });
         }
     };

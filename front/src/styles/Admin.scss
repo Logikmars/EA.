@@ -42,6 +42,12 @@
     margin-bottom: 24px;
 }
 
+.AdminTopbarActions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
 .AdminTopbar h1,
 .AdminCardHeader h2,
 .AdminLoginCard h1 {
@@ -63,6 +69,39 @@
     text-transform: uppercase;
     letter-spacing: 0.12em;
     margin-bottom: 10px;
+}
+
+.AdminNav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.AdminNavLink {
+    display: inline-flex;
+    align-items: center;
+    min-height: 42px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(11, 11, 11, 0.1);
+    background: rgba(255, 255, 255, 0.72);
+    color: $c_primary_black;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 200ms, border-color 200ms, color 200ms, transform 200ms;
+}
+
+.AdminNavLink:hover {
+    transform: translateY(-1px);
+    border-color: rgba(10, 102, 255, 0.24);
+    color: $c_primary_blue;
+}
+
+.AdminNavLink__active {
+    background: $c_primary_blue;
+    border-color: $c_primary_blue;
+    color: $c_primary_white;
 }
 
 .AdminGrid {
@@ -189,6 +228,9 @@
     min-height: 38px;
     padding: 0 14px;
     font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .AdminButton__secondary:hover {
@@ -217,6 +259,15 @@
     display: grid;
     gap: 10px;
     margin-top: 18px;
+}
+
+.AdminEmptyState {
+    margin-top: 18px;
+    padding: 18px;
+    border-radius: 14px;
+    background: rgba(248, 251, 255, 0.9);
+    border: 1px dashed rgba(11, 11, 11, 0.12);
+    color: rgba(11, 11, 11, 0.68);
 }
 
 .AdminListItem {

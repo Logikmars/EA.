@@ -6,7 +6,8 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "node src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "hash:admin-password": "node scripts/hash-admin-password.js"
   },
   "keywords": [],
   "author": "",

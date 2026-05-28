@@ -1,5 +1,6 @@
 import { MediaModel } from '../components/media/media-model.js';
 import { ProjectModel } from '../components/projects/projects-model.js';
+import { deleteManagedUploadByFilename, getManagedUploadFilename } from './upload.js';
 
 function serializeDocument(document) {
     if (!document) {
@@ -9,7 +10,7 @@ function serializeDocument(document) {
     const rawDocument = typeof document.toObject === 'function'
         ? document.toObject({ versionKey: false })
         : document;
-    const { _id, ...rest } = rawDocument;
+    const { _id, tags, ...rest } = rawDocument;
 
     return rest;
 }
@@ -36,6 +37,35 @@ async function listMedia() {
 
 function isDuplicateKeyError(error) {
     return error && typeof error === 'object' && error.code === 11000;
+}
+
+async function isImageReferencedAnywhere(img) {
+    if (!img) {
+        return false;
+    }
+
+    const [projectReferenceExists, mediaReferenceExists] = await Promise.all([
+        ProjectModel.exists({ img }),
+        MediaModel.exists({ img }),
+    ]);
+
+    return Boolean(projectReferenceExists || mediaReferenceExists);
+}
+
+async function cleanupOrphanedUpload(img) {
+    const filename = getManagedUploadFilename(img);
+
+    if (!filename) {
+        return;
+    }
+
+    const isStillReferenced = await isImageReferencedAnywhere(img);
+
+    if (isStillReferenced) {
+        return;
+    }
+
+    await deleteManagedUploadByFilename(filename);
 }
 
 export async function readAdminContent() {
@@ -82,22 +112,33 @@ export async function updateProjectBySlug(currentSlug, nextProject) {
         }
     }
 
+    const previousImage = currentProject.img;
+
     currentProject.set({
         ...nextProject,
         detailAvailable: currentProject.detailAvailable ?? false,
     });
 
     await currentProject.save();
+    if (previousImage !== currentProject.img) {
+        await cleanupOrphanedUpload(previousImage);
+    }
 
     return listProjects();
 }
 
 export async function deleteProjectBySlug(slug) {
-    const deleteResult = await ProjectModel.deleteOne({ slug }).exec();
+    const project = await ProjectModel.findOne({ slug }).exec();
 
-    if (!deleteResult.deletedCount) {
+    if (!project) {
         throw new Error('Project not found.');
     }
+
+    const imageToCleanup = project.img;
+
+    await project.deleteOne();
+
+    await cleanupOrphanedUpload(imageToCleanup);
 
     return listProjects();
 }
@@ -134,22 +175,32 @@ export async function updateMediaBySlug(currentSlug, nextMediaItem) {
         }
     }
 
+    const previousImage = currentMediaItem.img;
+
     currentMediaItem.set({
         ...nextMediaItem,
         detailAvailable: currentMediaItem.detailAvailable ?? false,
     });
 
     await currentMediaItem.save();
+    if (previousImage !== currentMediaItem.img) {
+        await cleanupOrphanedUpload(previousImage);
+    }
 
     return listMedia();
 }
 
 export async function deleteMediaBySlug(slug) {
-    const deleteResult = await MediaModel.deleteOne({ slug }).exec();
+    const mediaItem = await MediaModel.findOne({ slug }).exec();
 
-    if (!deleteResult.deletedCount) {
+    if (!mediaItem) {
         throw new Error('Media item not found.');
     }
+
+    const imageToCleanup = mediaItem.img;
+
+    await mediaItem.deleteOne();
+    await cleanupOrphanedUpload(imageToCleanup);
 
     return listMedia();
 }

@@ -8,13 +8,27 @@ import { createLoginRouter } from '../components/login/login-router.js';
 import { createProjectsRouter } from '../components/projects/projects-router.js';
 import { createMediaRouter } from '../components/media/media-router.js';
 import { connectDatabase } from './db.js';
-import path from 'node:path';
+import { createRateLimit } from './rateLimit.js';
+import { uploadsDirectoryPath } from './paths.js';
+import { resolveTrustProxySetting } from './proxyTrust.js';
 
 const port = Number(process.env.PORT || 5000);
 const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
 const app = express();
+const authRateLimit = createRateLimit({
+    limit: 10,
+    windowMs: 15 * 60 * 1000,
+    keyPrefix: 'auth',
+    message: 'Too many authentication attempts. Please try again later.',
+});
+const apiRateLimit = createRateLimit({
+    limit: 300,
+    windowMs: 15 * 60 * 1000,
+    keyPrefix: 'api',
+    message: 'Too many API requests. Please try again later.',
+});
 
-app.set('trust proxy', true);
+app.set('trust proxy', resolveTrustProxySetting());
 
 app.use(cors({
     origin: frontendUrl,
@@ -22,8 +36,10 @@ app.use(cors({
 }));
 app.use(cookieParser());
 app.use(express.json());
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+app.use('/uploads', express.static(uploadsDirectoryPath));
 
+app.use('/api', apiRateLimit);
+app.use(/^\/auth(\/.*)?$/, authRateLimit);
 app.use(/^\/auth(\/.*)?$/, ExpressAuth(authConfig));
 
 app.get('/api/health', (req, res) => {
@@ -46,6 +62,12 @@ app.use((error, req, res, next) => {
         return res.status(400).json({
             message: 'Validation failed.',
             issues: error.issues,
+        });
+    }
+
+    if (error?.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({
+            message: 'Image file must be 8 MB or smaller.',
         });
     }
 

@@ -1,7 +1,7 @@
 import { getAdminSession, mapSessionResponse } from './login-service.js';
 import projectsService from '../projects/projects-service.js';
 import mediaService from '../media/media-service.js';
-import { buildUploadedFileUrl } from '../../src/upload.js';
+import { buildUploadedFileUrl, persistUploadedImage } from '../../src/upload.js';
 
 class LoginController {
     constructor(authConfig) {
@@ -36,12 +36,10 @@ class LoginController {
 
     uploadImage = async (req, res, next) => {
         try {
-            if (!req.file?.filename) {
-                throw new Error('Image file is required.');
-            }
+            const filename = await persistUploadedImage(req.file);
 
             return res.status(201).json({
-                url: buildUploadedFileUrl(req, req.file.filename),
+                url: buildUploadedFileUrl(filename),
             });
         } catch (error) {
             return next(error);

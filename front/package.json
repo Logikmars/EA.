@@ -28,5 +28,8 @@
     "sass": "^1.99.0",
     "sass-loader": "^17.0.0",
     "typescript": "^6.0.3"
+  },
+  "overrides": {
+    "postcss": "^8.5.15"
   }
 }
