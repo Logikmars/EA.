@@ -1,5 +1,4 @@
-import ProjectBlock from '@/components/ui/ProjectBlock';
-import AnimatedRevealList from '@/components/ui/AnimatedRevealList';
+import ProjectsCatalog from '@/components/sections/ProjectsCatalog';
 import StructuredData from '@/components/seo/StructuredData';
 import Text from '@/components/ui/Text';
 import { getProjects } from '@/lib/content';
@@ -31,7 +30,7 @@ const ProjectsPage = async ({ params }) => {
 
     const seoT = await getTranslations('SEO');
     const t = await getTranslations('ProjectsPage');
-    const projectItems = getProjects(locale);
+    const projectItems = await getProjects(locale);
     const structuredData = [
         buildWebPageSchema({
             locale,
@@ -66,19 +65,7 @@ const ProjectsPage = async ({ params }) => {
             <Text h1 fw_bold fs_2xl>
                 {t('title')}
             </Text>
-            <AnimatedRevealList className='ProjectsPage_list' itemSelector='.ProjectBlock'>
-                {projectItems.map((project) => (
-                    <ProjectBlock
-                        id={project.slug}
-                        key={project.slug}
-                        img={project.img}
-                        title={project.title}
-                        description={project.summary}
-                        alt={project.title}
-                        href={`/projects/${project.slug}`}
-                    />
-                ))}
-            </AnimatedRevealList>
+            <ProjectsCatalog initialItems={projectItems} locale={locale} />
         </div>
     );
 };

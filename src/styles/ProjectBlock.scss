@@ -54,11 +54,20 @@
 
     &_image{
         width: 100%;
-        height: auto;
+        height: 100%;
         display: block;
         border-radius: 22px;
+        object-fit: cover;
         transform: scale(1);
         transition: transform 450ms ease, filter 450ms ease;
+    }
+
+    &_media{
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        overflow: hidden;
+        border-radius: 22px;
+        background: rgba(11, 11, 11, 0.04);
     }
 
     &:hover{

@@ -44,8 +44,10 @@ const HomePage = async ({ params }) => {
 
     setRequestLocale(locale);
     const seoT = await getTranslations('SEO');
-    const projects = getProjects(locale);
-    const mediaItems = getMediaItems(locale);
+    const [projects, mediaItems] = await Promise.all([
+        getProjects(locale),
+        getMediaItems(locale),
+    ]);
     const structuredData = [
         buildWebPageSchema({
             locale,
@@ -81,9 +83,9 @@ const HomePage = async ({ params }) => {
             <StructuredData data={structuredData} />
             <Hero />
             <Info />
-            <Projects />
+            <Projects locale={locale} projects={projects} />
             <Cooperation />
-            <Media />
+            <Media locale={locale} mediaItems={mediaItems} />
             <MainForm />
         </div>
     );

@@ -1,18 +1,31 @@
 'use client';
 
 import '../../styles/Projects.scss';
-import { getProjects } from '@/lib/content';
-import { useLayoutEffect, useRef } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useTranslations } from 'next-intl';
+import { observer } from 'mobx-react-lite';
+import projectsStore from '@/stores/ProjectsStore';
 import Btn from '../ui/Btn';
 import ProjectBlock from '../ui/ProjectBlock';
 import Text from '../ui/Text';
 
-const Projects = () => {
+const Projects = observer(({
+    locale,
+    projects = [],
+}) => {
     const rootRef = useRef(null);
     const t = useTranslations('Projects');
-    const locale = useLocale();
-    const projects = getProjects(locale);
+
+    useEffect(() => {
+        if (!locale) {
+            return;
+        }
+
+        projectsStore.hydrate(locale, projects);
+        projectsStore.load(locale, projects);
+    }, [locale, projects]);
+
+    const displayProjects = locale ? projectsStore.getProjects(locale) : projects;
 
     useLayoutEffect(() => {
         const root = rootRef.current;
@@ -75,9 +88,9 @@ const Projects = () => {
                 </Btn>
             </div>
             <div className='Projects_list'>
-                {projects.slice(0, 3).map((project) => (
+                {displayProjects.slice(0, 3).map((project) => (
                     <ProjectBlock
-                        href={`/projects/${project.slug}`}
+                        href={project.href || '#'}
                         img={project.img}
                         title={project.title}
                         description={project.summary}
@@ -89,6 +102,6 @@ const Projects = () => {
             </div>
         </section>
     );
-};
+});
 
 export default Projects;

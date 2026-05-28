@@ -1,18 +1,31 @@
 'use client';
 
 import '../../styles/Media.scss';
-import { getMediaItems } from '@/lib/content';
-import { useLayoutEffect, useRef } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useTranslations } from 'next-intl';
+import { observer } from 'mobx-react-lite';
+import mediaStore from '@/stores/MediaStore';
 import Btn from '../ui/Btn';
 import MediaBlock from '../ui/MediaBlock';
 import Text from '../ui/Text';
 
-const Media = () => {
+const Media = observer(({
+    locale,
+    mediaItems = [],
+}) => {
     const rootRef = useRef(null);
     const t = useTranslations('Media');
-    const locale = useLocale();
-    const mediaItems = getMediaItems(locale);
+
+    useEffect(() => {
+        if (!locale) {
+            return;
+        }
+
+        mediaStore.hydrate(locale, mediaItems);
+        mediaStore.load(locale, mediaItems);
+    }, [locale, mediaItems]);
+
+    const displayMediaItems = locale ? mediaStore.getMedia(locale) : mediaItems;
 
     useLayoutEffect(() => {
         const root = rootRef.current;
@@ -75,13 +88,14 @@ const Media = () => {
                 </Btn>
             </div>
             <div className='Media_list'>
-                {mediaItems.slice(0, 4).map((media) => (
+                {displayMediaItems.slice(0, 4).map((media) => (
                     <MediaBlock
                         id={media.slug}
                         type={media.type}
                         img={media.img}
                         text={media.title}
-                        href={`/media/${media.slug}`}
+                        description={media.summary}
+                        href={media.sourceUrl || '#'}
                         alt={media.title}
                         key={media.slug}
                     />
@@ -89,6 +103,6 @@ const Media = () => {
             </div>
         </section>
     );
-};
+});
 
 export default Media;

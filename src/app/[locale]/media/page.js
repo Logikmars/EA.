@@ -1,5 +1,4 @@
-import MediaBlock from '@/components/ui/MediaBlock';
-import AnimatedRevealList from '@/components/ui/AnimatedRevealList';
+import MediaCatalog from '@/components/sections/MediaCatalog';
 import StructuredData from '@/components/seo/StructuredData';
 import Text from '@/components/ui/Text';
 import { getMediaItems } from '@/lib/content';
@@ -31,7 +30,7 @@ const MediaPage = async ({ params }) => {
 
     const seoT = await getTranslations('SEO');
     const t = await getTranslations('MediaPage');
-    const mediaItems = getMediaItems(locale);
+    const mediaItems = await getMediaItems(locale);
     const structuredData = [
         buildWebPageSchema({
             locale,
@@ -66,19 +65,7 @@ const MediaPage = async ({ params }) => {
             <Text h1 fw_bold fs_2xl>
                 {t('title')}
             </Text>
-            <AnimatedRevealList className='MediaPage_list' itemSelector='.MediaBlock'>
-                {mediaItems.map((media) => (
-                    <MediaBlock
-                        id={media.slug}
-                        key={media.slug}
-                        type={media.type}
-                        img={media.img}
-                        text={media.title}
-                        href={`/media/${media.slug}`}
-                        alt={media.title}
-                    />
-                ))}
-            </AnimatedRevealList>
+            <MediaCatalog initialItems={mediaItems} locale={locale} />
         </div>
     );
 };

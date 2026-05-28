@@ -3,11 +3,15 @@ import { routing } from '@/i18n/routing';
 import { siteConfig } from '@/lib/site';
 
 const staticPages = ['', '/projects', '/media', '/invite'];
-const projectPages = getProjectStaticSlugs().map((slug) => `/projects/${slug}`);
-const mediaPages = getMediaStaticSlugs().map((slug) => `/media/${slug}`);
-const allPages = [...staticPages, ...projectPages, ...mediaPages];
 
-export default function sitemap() {
+export default async function sitemap() {
+    const [projectSlugs, mediaSlugs] = await Promise.all([
+        getProjectStaticSlugs(),
+        getMediaStaticSlugs(),
+    ]);
+    const projectPages = projectSlugs.map((slug) => `/projects/${slug}`);
+    const mediaPages = mediaSlugs.map((slug) => `/media/${slug}`);
+    const allPages = [...staticPages, ...projectPages, ...mediaPages];
     const now = new Date();
 
     return routing.locales.flatMap((locale) => (
