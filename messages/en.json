@@ -1,0 +1,170 @@
+{
+  "Header": {
+    "homeAriaLabel": "Go to top of homepage",
+    "links": {
+      "about": "About",
+      "projects": "Projects",
+      "collaboration": "Collaboration",
+      "media": "Media"
+    },
+    "contact": "Contact Eduard",
+    "languageSwitcher": "Language switcher",
+    "languages": {
+      "ua": "UA",
+      "en": "ENG"
+    }
+  },
+  "Hero": {
+    "name": "Eduard Akhramovych",
+    "subtitle": "Business speaker, entrepreneur, brand licensing expert and former CEO of Art Nation with 30+ years of experience in growth, retail and consumer engagement.",
+    "description": "I help brands and leadership teams build scalable products, loyalty programs and market-entry strategies. My work connects business strategy, licensing, marketing and customer experience into practical growth systems.",
+    "invite": "Invite Eduard",
+    "consultation": "Get a consultation",
+    "imageAlt": "Portrait of Eduard Akhramovych"
+  },
+  "Info": {
+    "stats": {
+      "years": {
+        "amount": "30+",
+        "description": "years in business and marketing"
+      },
+      "ventures": {
+        "amount": "10+",
+        "description": "successfully launched businesses"
+      },
+      "campaigns": {
+        "amount": "40+",
+        "description": "loyalty campaigns across 6 countries"
+      }
+    },
+    "paragraphs": {
+      "first": "For more than three decades, I have worked at the intersection of entrepreneurship, marketing, licensing and consumer products. My focus has always been the same: turn ambitious ideas into commercially disciplined businesses that people genuinely want.",
+      "second": "From building nationwide retail distribution to scaling loyalty mechanics and collectible product ecosystems, I have led projects that combine creative positioning with measurable sales performance across multiple markets.",
+      "third": "Today I work with founders, executive teams and event organizers who need strategic thinking, market insight and a speaker who can translate complex business growth topics into clear, usable frameworks."
+    }
+  },
+  "Projects": {
+    "title": "Projects",
+    "all": "All projects"
+  },
+  "ProjectsPage": {
+    "title": "All projects"
+  },
+  "ProjectItems": {
+    "national-multimedia-company": {
+      "title": "National multimedia company",
+      "description": "Built a distribution network of 4,573 retail points for licensed compact discs. By 2007, the annual turnover reached 20 million USD with a catalog of more than 30,000 products.",
+      "alt": "National multimedia company"
+    },
+    "art-nation": {
+      "title": "Art Nation",
+      "description": "Sold more than 255 million collectible products. The company works with leading retailers in Ukraine and the CIS, while clients generate more than 200 billion UAH in annual turnover.",
+      "alt": "Art Nation"
+    },
+    "book-of-records-ukraine": {
+      "title": "Book of Records of Ukraine",
+      "description": "Set a national record in children's book sales with 1,241,000 copies sold in 2018.",
+      "alt": "Book of Records of Ukraine"
+    },
+    "book-of-records-moldova": {
+      "title": "Book of Records of Moldova",
+      "description": "Expanded a proven publishing and licensing model to a neighboring market, adapting the product strategy for local demand and growth.",
+      "alt": "Book of Records of Moldova"
+    }
+  },
+  "Cooperation": {
+    "title": "Collaboration",
+    "items": {
+      "lecture": {
+        "title": "Keynote lecture",
+        "description": "A strong fit for conferences, leadership teams and private sessions that need fresh thinking on brand growth, retail strategy, licensing, loyalty programs, gamification and customer engagement.",
+        "button": "Book a lecture"
+      },
+      "speech": {
+        "title": "Business speaking",
+        "description": "For business forums, corporate events and industry panels, Eduard delivers practical talks on entrepreneurship, marketing systems, sales, licensing and scalable product thinking.",
+        "button": "Invite to speak"
+      },
+      "consulting": {
+        "title": "Strategic consulting",
+        "description": "Work directly on growth bottlenecks, monetization models, brand architecture, licensing strategy or market expansion with advice grounded in operating experience, not theory.",
+        "button": "Get a consultation"
+      }
+    }
+  },
+  "Media": {
+    "title": "Media",
+    "all": "All media"
+  },
+  "MediaPage": {
+    "title": "All media"
+  },
+  "MediaItems": {
+    "retail-future": {
+      "type": "video",
+      "text": "The future of retail and consumer loyalty",
+      "alt": "Retail future media cover"
+    },
+    "loyalty-campaigns": {
+      "type": "article",
+      "text": "Why most loyalty campaigns fail in the first year",
+      "alt": "Loyalty campaigns article cover"
+    },
+    "building-art-nation": {
+      "type": "interview",
+      "text": "Building Art Nation: from concept to empire",
+      "alt": "Art Nation interview cover"
+    },
+    "european-expansion": {
+      "type": "podcast",
+      "text": "Navigating European market expansion",
+      "alt": "European expansion podcast cover"
+    },
+    "brand-licensing": {
+      "type": "podcast",
+      "text": "How brand licensing becomes a growth engine",
+      "alt": "Brand licensing podcast cover"
+    },
+    "creative-business": {
+      "type": "podcast",
+      "text": "Creative business models that scale beyond trends",
+      "alt": "Creative business podcast cover"
+    }
+  },
+  "MainForm": {
+    "title": "Let's build something big.",
+    "description": "Whether you are hiring a keynote speaker, searching for a business consultant, planning a licensing strategy or rethinking customer loyalty, this is the place to start the conversation.",
+    "fields": {
+      "name": "Full name",
+      "email": "Email address",
+      "phone": "Phone number",
+      "link": "Telegram / LinkedIn",
+      "message": "Tell me something..."
+    },
+    "validation": {
+      "name": "Enter your full name",
+      "email": "Enter a valid email address",
+      "phone": "Enter a valid phone number",
+      "message": "Message should be at least 10 characters"
+    },
+    "status": {
+      "validation": "Please fix the highlighted fields.",
+      "success": "Your request has been sent. We will contact you soon.",
+      "error": "Unable to send the request right now. Please try again later."
+    },
+    "submit": "Send request",
+    "submitting": "Sending..."
+  },
+  "SEO": {
+    "siteTitle": "Eduard Akhramovych",
+    "siteDescription": "Business speaker, entrepreneur, consultant and founder of Art Nation.",
+    "homeTitle": "Eduard Akhramovych | Business Speaker, Entrepreneur and Art Nation Founder",
+    "homeDescription": "Eduard Akhramovych is a business speaker, entrepreneur and consultant with 30+ years of experience in retail, licensing, loyalty programs and consumer engagement.",
+    "inviteTitle": "Invite Eduard Akhramovych for Speaking or Consulting",
+    "inviteDescription": "Book Eduard Akhramovych as a keynote speaker, business consultant or strategic advisor for growth, licensing, marketing and customer loyalty.",
+    "mediaTitle": "Eduard Akhramovych Media, Interviews and Podcasts",
+    "mediaDescription": "Explore interviews, articles, videos and podcasts featuring Eduard Akhramovych on business growth, retail, licensing and loyalty strategy.",
+    "projectsTitle": "Projects and Business Case Studies by Eduard Akhramovych",
+    "projectsDescription": "Selected projects, growth stories and business milestones from Eduard Akhramovych across retail, publishing, licensing and consumer products."
+  }
+}

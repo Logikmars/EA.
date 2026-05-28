@@ -1,0 +1,27 @@
+.MediaPage{
+    width: 100%;
+    min-height: calc(100vh - 75px - 44px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $gap_m;
+    padding: $pt_m $pr_l; 
+
+    @media(max-width: 450px){
+        padding: $pt_m 20px;
+    }
+
+    h1{
+        text-align: center;
+        @media(max-width: 900px){
+            font-size: 42px;
+            text-align: center;
+        }
+    }
+    &_list{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: $gap_m;
+    }
+}

@@ -1,0 +1,99 @@
+.CaseDetail {
+    width: 100%;
+    padding: 48px $pr_l 72px;
+
+    @media (max-width: 900px) {
+        padding: 32px $pr_s 56px;
+    }
+
+    &_container {
+        display: flex;
+        flex-direction: column;
+        gap: $gap_l;
+    }
+
+    &_hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+        gap: $gap_l;
+        align-items: start;
+
+        @media (max-width: 1100px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &_content {
+        display: flex;
+        flex-direction: column;
+        gap: $gap_m;
+    }
+
+    &_eyebrow {
+        color: $c_primary_blue;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    &_title,
+    &_summary,
+    &_body p,
+    &_card,
+    &_card p,
+    &_card li {
+        color: $c_primary_black;
+    }
+
+    &_body {
+        display: flex;
+        flex-direction: column;
+        gap: $gap_s;
+    }
+
+    &_sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: $gap_s;
+    }
+
+    &_card {
+        border: 1px solid $c_trasnparent_gray;
+        border-radius: $brad_12;
+        padding: 24px;
+        background-color: $c_primary_white;
+        display: flex;
+        flex-direction: column;
+        gap: $gap_s;
+    }
+
+    &_list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-left: 18px;
+    }
+
+    &_tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    &_tag {
+        border: 1px solid $c_trasnparent_gray;
+        border-radius: 999px;
+        padding: 8px 12px;
+        color: $c_primary_black;
+        background-color: $c_black_gray;
+    }
+
+    &_actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $gap_xs;
+    }
+
+    &_backLink {
+        color: $c_primary_blue;
+    }
+}

@@ -1,0 +1,71 @@
+.Info{
+    width: 100%;
+    min-height: 100vh;
+    background-color: $c_primary_black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    &_container{
+        padding: $pt_2xl $pr_l;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: space-between;
+        gap: 40px;
+        @media(max-width: 900px){
+            padding: $pt_l $pr_s;
+        }
+    }
+
+    &_list{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: $gap_l;
+
+        .InfoBlock{
+            will-change: transform, opacity;
+        }
+
+        @media(max-width: 1000px){
+            flex-wrap: wrap;
+            gap: $gap_xs;
+        }
+    }
+
+    &_text{
+        display: flex;
+        flex-direction: column;
+        gap: $gap_xs;
+        max-width: 1000px;
+
+        &_line{
+            color: transparent;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.98) 0%,
+                rgba(196, 196, 196, 0.88) 100%
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        &_char{
+            display: inline-block;
+            color: transparent;
+            background: inherit;
+            -webkit-background-clip: text;
+            background-clip: text;
+            will-change: opacity;
+        }
+
+        @media(max-width: 600px){
+            p{
+                font-size: $fs_m;
+            }
+        }
+    }
+}

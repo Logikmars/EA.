@@ -1,0 +1,69 @@
+.MainForm{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $c_primary_black;
+    min-height: calc(100vh - 75px - 44px);
+    &_container{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        gap: $gap_s;
+        align-items: start;
+        padding: $pt_2xl $pr_xl;
+        @media(max-width: 900px){
+            padding: $pt_l $pr_s;
+            gap: $gap_xs;
+            flex-direction: column;
+        }
+    }
+
+    &_text, &_form{
+        width: calc(50% - $gap_s);
+        display: flex;
+        flex-direction: column;
+        @media(max-width: 900px){
+            width: 100%;
+            h2{
+                font-size: $fs_xl;
+            }
+        }
+    }
+
+    &_text{
+        gap: $gap_m;
+        @media(max-width: 900px){
+            order: 0;
+        }
+    }
+
+    &_form{
+        gap: $gap_s;
+        flex-direction: row;
+        flex-wrap: wrap;
+        @media(max-width: 900px){
+            order: 1;
+        }
+    }
+
+    &_status{
+        width: 100%;
+        margin: 0;
+        font-size: $fs_s;
+        line-height: 1.5;
+
+        &__success{
+            color: #9ff0b0;
+        }
+
+        &__error{
+            color: #ff9d9d;
+        }
+
+        &__loading,
+        &__idle{
+            color: $c_form_text;
+        }
+    }
+}

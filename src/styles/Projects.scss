@@ -1,0 +1,38 @@
+.Projects{
+    display: flex;
+    width: 100%;
+    padding: $pt_xl $pr_l;
+    flex-direction: column;
+    gap: $gap_xl;
+    @media(max-width: 900px){
+        padding: $pt_l $pr_s;
+        gap: $gap_xs;
+    }
+
+    &_top{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        @media(max-width: 900px){
+            h2{
+                font-size: $fs_xl;
+            }
+        }
+    }
+
+    &_list{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: $gap_l;
+        @media(max-width: 800px){
+            gap: $gap_xs;
+            flex-wrap: wrap;
+            justify-content: center;
+
+        }
+    }
+}

@@ -1,0 +1,82 @@
+.Hero{
+    min-height: calc(100vh - 80px);
+    width: 100%;
+    padding: 0 $pr_l;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+    @media(max-width: 900px){
+        padding: 0 $pr_s;
+    }
+
+    &_info{
+        padding: 40px 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        gap: $gap_xs;
+        @media(max-width: 900px){
+            flex-wrap: wrap;
+        }
+        &_text{
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: start;
+            gap: $gap_m;
+            @media(max-width: 900px){
+                width: 100%;
+                align-items: center;
+                order: 1;
+                gap: $gap_xs;
+                p{
+                    text-align: center;
+                }
+                h1{
+                    text-align: center;
+                    font-size: 42px;
+                }
+            }
+        }
+
+        &_social{
+            width: 100%;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: $gap_xs;
+            @media(max-width: 900px){
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        &_img{
+            position: relative;
+            display: flex;
+            justify-content: start;
+            width: 40%;
+            max-width: 550px;
+            aspect-ratio: 4 / 5;
+            @media(max-width: 900px){
+                width: 100%;
+                justify-content: center;
+                order: 0;
+                align-items: center;
+                max-width: 450px;
+                margin: 0 auto;
+            }
+
+            img{
+                object-fit: cover;
+                border-radius: $brad_12;
+            }
+        }
+    }
+
+    &_list{
+        width: 100%;
+        border-top: 1px solid $c_trasnparent_gray;
+    }
+}
