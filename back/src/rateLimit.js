@@ -1,12 +1,4 @@
-const buckets = new Map();
-
-function cleanupExpiredBuckets(now) {
-    for (const [key, bucket] of buckets.entries()) {
-        if (bucket.resetAt <= now) {
-            buckets.delete(key);
-        }
-    }
-}
+import { cleanupExpiredBuckets, consumeBucket } from './rateLimitStore.js';
 
 function getClientIp(req) {
     return req.ip || req.socket?.remoteAddress || 'unknown';
@@ -32,28 +24,21 @@ export function createRateLimit({
         cleanupExpiredBuckets(now);
 
         const key = `${keyPrefix}:${getClientIp(req)}`;
-        const currentBucket = buckets.get(key);
+        const result = consumeBucket({
+            key,
+            limit,
+            now,
+            windowMs,
+        });
 
-        if (!currentBucket || currentBucket.resetAt <= now) {
-            buckets.set(key, {
-                count: 1,
-                resetAt: now + windowMs,
-            });
-
-            return next();
-        }
-
-        if (currentBucket.count >= limit) {
-            const retryAfterSeconds = Math.max(1, Math.ceil((currentBucket.resetAt - now) / 1000));
-
-            res.set('Retry-After', String(retryAfterSeconds));
+        if (!result.allowed) {
+            res.set('Retry-After', String(result.retryAfter));
 
             return res.status(429).json({
                 message,
             });
         }
 
-        currentBucket.count += 1;
         return next();
     };
 }

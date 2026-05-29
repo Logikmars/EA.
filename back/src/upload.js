@@ -3,6 +3,7 @@ import path from 'node:path';
 import { promisify } from 'node:util';
 import multer from 'multer';
 import { uploadsDirectoryPath } from './paths.js';
+import { createHttpError } from './httpError.js';
 
 const writeFileAsync = promisify(writeFile);
 const unlinkAsync = promisify(unlink);
@@ -79,7 +80,7 @@ function fileFilter(req, file, callback) {
         return;
     }
 
-    callback(new Error('Only JPG, PNG, WEBP, and GIF image files are allowed.'));
+    callback(createHttpError(400, 'Only JPG, PNG, WEBP, and GIF image files are allowed.'));
 }
 
 export const uploadImageMiddleware = multer({
@@ -92,14 +93,14 @@ export const uploadImageMiddleware = multer({
 
 export async function persistUploadedImage(file) {
     if (!file?.buffer?.length) {
-        throw new Error('Image file is required.');
+        throw createHttpError(400, 'Image file is required.');
     }
 
     const detectedExtension = detectImageExtension(file.buffer);
     const expectedExtension = allowedMimeTypes.get(file.mimetype);
 
     if (!detectedExtension || detectedExtension !== expectedExtension) {
-        throw new Error('Uploaded file content does not match a supported image type.');
+        throw createHttpError(400, 'Uploaded file content does not match a supported image type.');
     }
 
     const safeBaseName = sanitizeBaseName(file.originalname);
@@ -150,7 +151,7 @@ export async function deleteManagedUploadByFilename(filename) {
     const resolvedUploadsDirectoryPath = path.resolve(uploadsDirectoryPath);
 
     if (!resolvedUploadPath.startsWith(`${resolvedUploadsDirectoryPath}${path.sep}`)) {
-        throw new Error('Refused to delete a file outside the uploads directory.');
+        throw createHttpError(400, 'Refused to delete a file outside the uploads directory.');
     }
 
     try {
@@ -164,4 +165,15 @@ export async function deleteManagedUploadByFilename(filename) {
 
 export function buildUploadedFileUrl(filename) {
     return `/uploads/${filename}`;
+}
+
+export function buildAbsoluteUploadedFileUrl(req, filename) {
+    const relativeUrl = buildUploadedFileUrl(filename);
+    const publicOrigin = process.env.BACKEND_PUBLIC_URL?.trim().replace(/\/$/, '');
+
+    if (publicOrigin) {
+        return `${publicOrigin}${relativeUrl}`;
+    }
+
+    return `${req.protocol}://${req.get('host')}${relativeUrl}`;
 }

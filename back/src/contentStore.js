@@ -1,6 +1,7 @@
 import { MediaModel } from '../components/media/media-model.js';
 import { ProjectModel } from '../components/projects/projects-model.js';
 import { deleteManagedUploadByFilename, getManagedUploadFilename } from './upload.js';
+import { createHttpError } from './httpError.js';
 
 function serializeDocument(document) {
     if (!document) {
@@ -88,7 +89,7 @@ export async function appendProject(project) {
         });
     } catch (error) {
         if (isDuplicateKeyError(error)) {
-            throw new Error('A project with this slug already exists.');
+            throw createHttpError(409, 'A project with this slug already exists.');
         }
 
         throw error;
@@ -101,14 +102,14 @@ export async function updateProjectBySlug(currentSlug, nextProject) {
     const currentProject = await ProjectModel.findOne({ slug: currentSlug }).exec();
 
     if (!currentProject) {
-        throw new Error('Project not found.');
+        throw createHttpError(404, 'Project not found.');
     }
 
     if (nextProject.slug !== currentSlug) {
         const existingProject = await ProjectModel.exists({ slug: nextProject.slug });
 
         if (existingProject) {
-            throw new Error('A project with this slug already exists.');
+            throw createHttpError(409, 'A project with this slug already exists.');
         }
     }
 
@@ -131,7 +132,7 @@ export async function deleteProjectBySlug(slug) {
     const project = await ProjectModel.findOne({ slug }).exec();
 
     if (!project) {
-        throw new Error('Project not found.');
+        throw createHttpError(404, 'Project not found.');
     }
 
     const imageToCleanup = project.img;
@@ -151,7 +152,7 @@ export async function appendMediaItem(mediaItem) {
         });
     } catch (error) {
         if (isDuplicateKeyError(error)) {
-            throw new Error('A media item with this slug already exists.');
+            throw createHttpError(409, 'A media item with this slug already exists.');
         }
 
         throw error;
@@ -164,14 +165,14 @@ export async function updateMediaBySlug(currentSlug, nextMediaItem) {
     const currentMediaItem = await MediaModel.findOne({ slug: currentSlug }).exec();
 
     if (!currentMediaItem) {
-        throw new Error('Media item not found.');
+        throw createHttpError(404, 'Media item not found.');
     }
 
     if (nextMediaItem.slug !== currentSlug) {
         const existingMediaItem = await MediaModel.exists({ slug: nextMediaItem.slug });
 
         if (existingMediaItem) {
-            throw new Error('A media item with this slug already exists.');
+            throw createHttpError(409, 'A media item with this slug already exists.');
         }
     }
 
@@ -194,7 +195,7 @@ export async function deleteMediaBySlug(slug) {
     const mediaItem = await MediaModel.findOne({ slug }).exec();
 
     if (!mediaItem) {
-        throw new Error('Media item not found.');
+        throw createHttpError(404, 'Media item not found.');
     }
 
     const imageToCleanup = mediaItem.img;

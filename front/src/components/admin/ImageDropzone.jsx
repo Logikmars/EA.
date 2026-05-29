@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import Image from 'next/image';
 import adminStore from '@/stores/AdminStore';
+import { resolveImageUrl } from '@/lib/media';
 
 const ImageDropzone = ({
     label = 'Image',
@@ -11,6 +12,7 @@ const ImageDropzone = ({
 }) => {
     const inputRef = useRef(null);
     const [isDragging, setIsDragging] = useState(false);
+    const previewUrl = resolveImageUrl(value);
 
     const handleFiles = async (fileList) => {
         const file = fileList?.[0];
@@ -81,7 +83,7 @@ const ImageDropzone = ({
                         alt='Uploaded preview'
                         height={220}
                         sizes='(max-width: 768px) 100vw, 520px'
-                        src={value}
+                        src={previewUrl}
                         unoptimized
                         width={520}
                     />

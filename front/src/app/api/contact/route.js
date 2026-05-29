@@ -1,6 +1,9 @@
+import { randomUUID } from 'node:crypto';
 import nodemailer from 'nodemailer';
 import { contactFormSchema, formatContactFieldErrors } from '@/lib/contactFormSchema';
-import { consumeRateLimit } from '@/lib/rateLimit';
+import { consumeRateLimit, getRateLimitClientKey } from '@/lib/rateLimit';
+
+const contactRateLimitCookieName = 'contact_rl_id';
 
 const escapeHtml = (value) =>
     value
@@ -33,15 +36,20 @@ const createTransporter = () => {
 
 export async function POST(request) {
     try {
+        const existingCookieKey = request.cookies.get(contactRateLimitCookieName)?.value?.trim();
+        const contactRateLimitCookieValue = existingCookieKey || randomUUID();
+        const fallbackKey = `cookie:${contactRateLimitCookieValue}`;
         const rateLimit = consumeRateLimit({
             request,
             limit: 5,
             windowMs: 10 * 60 * 1000,
             keyPrefix: 'contact-form',
+            fallbackKey,
         });
+        const resolvedClientKey = getRateLimitClientKey(request, fallbackKey);
 
         if (!rateLimit.allowed) {
-            return Response.json(
+            const response = Response.json(
                 {
                     ok: false,
                     message: 'Too many messages sent. Please try again later.',
@@ -53,6 +61,18 @@ export async function POST(request) {
                     },
                 }
             );
+
+            if (resolvedClientKey === fallbackKey) {
+                response.cookies.set(contactRateLimitCookieName, contactRateLimitCookieValue, {
+                    httpOnly: true,
+                    sameSite: 'lax',
+                    secure: process.env.NODE_ENV === 'production',
+                    maxAge: 60 * 60 * 24 * 30,
+                    path: '/',
+                });
+            }
+
+            return response;
         }
 
         const body = await request.json();
@@ -108,7 +128,19 @@ export async function POST(request) {
             `,
         });
 
-        return Response.json({ ok: true });
+        const response = Response.json({ ok: true });
+
+        if (resolvedClientKey === fallbackKey) {
+            response.cookies.set(contactRateLimitCookieName, contactRateLimitCookieValue, {
+                httpOnly: true,
+                sameSite: 'lax',
+                secure: process.env.NODE_ENV === 'production',
+                maxAge: 60 * 60 * 24 * 30,
+                path: '/',
+            });
+        }
+
+        return response;
     } catch (error) {
         console.error('Contact form submission failed', error);
 

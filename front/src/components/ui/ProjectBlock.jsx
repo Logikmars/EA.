@@ -2,16 +2,14 @@ import '../../styles/ProjectBlock.scss';
 import Image from 'next/image';
 import Text from './Text';
 import Link from 'next/link';
+import { isManagedUploadUrl, resolveImageUrl } from '@/lib/media';
 
 function isExternalLink(href) {
     return href.startsWith('http://') || href.startsWith('https://');
 }
 
 function shouldUseUnoptimizedImage(src) {
-    return typeof src === 'string' && (
-        src.startsWith('http://localhost:5000/uploads/')
-        || src.startsWith('http://127.0.0.1:5000/uploads/')
-    );
+    return isManagedUploadUrl(src);
 }
 
 function renderProjectImage(src, alt) {
@@ -41,6 +39,7 @@ const ProjectBlock = ({
     href = ''
 }) => {
     const normalizedImage = img || '/imgs/projects/1.png';
+    const resolvedImage = resolveImageUrl(normalizedImage);
     const normalizedAlt = alt || title || 'Project image';
     const normalizedDescription = typeof description === 'string' ? description.trim() : '';
     const shortDescription = normalizedDescription.length > 100
@@ -49,7 +48,7 @@ const ProjectBlock = ({
     const content = (
         <>
             <div className='ProjectBlock_media'>
-                {renderProjectImage(normalizedImage, normalizedAlt)}
+                {renderProjectImage(resolvedImage, normalizedAlt)}
             </div>
             <Text fw_semibold fs_xl tac>
                 {title}

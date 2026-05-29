@@ -2,16 +2,14 @@ import Link from 'next/link';
 import '../../styles/MediaBlock.scss';
 import Image from 'next/image';
 import Text from './Text';
+import { isManagedUploadUrl, resolveImageUrl } from '@/lib/media';
 
 function isExternalLink(href) {
     return href.startsWith('http://') || href.startsWith('https://');
 }
 
 function shouldUseUnoptimizedImage(src) {
-    return typeof src === 'string' && (
-        src.startsWith('http://localhost:5000/uploads/')
-        || src.startsWith('http://127.0.0.1:5000/uploads/')
-    );
+    return isManagedUploadUrl(src);
 }
 
 function renderMediaImage(src, alt) {
@@ -42,6 +40,7 @@ const MediaBlock = ({
     href,
 }) => {
     const normalizedImage = img || '/imgs/projects/1.png';
+    const resolvedImage = resolveImageUrl(normalizedImage);
     const normalizedAlt = alt || text || 'Media image';
     const normalizedType = typeof type === 'string' ? type.trim() : '';
     const normalizedDescription = typeof description === 'string' ? description.trim() : '';
@@ -61,7 +60,7 @@ const MediaBlock = ({
             </div>
             <div className='MediaBlock_content'>
                 <div className='MediaBlock_media'>
-                    {renderMediaImage(normalizedImage, normalizedAlt)}
+                    {renderMediaImage(resolvedImage, normalizedAlt)}
                 </div>
 
                 <Text fw_medium fs_l>

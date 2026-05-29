@@ -1,19 +1,11 @@
-const buckets = new Map();
+import { cleanupExpiredBuckets, consumeBucket } from './serverRateLimitStore.js';
+
 const trustedProxyIpHeaderNames = (process.env.TRUSTED_PROXY_IP_HEADERS || '')
     .split(',')
     .map((value) => value.trim().toLowerCase())
     .filter(Boolean);
-const fallbackClientKeyHeaderNames = ['x-forwarded-host', 'host'];
 
-function cleanupExpiredBuckets(now) {
-    for (const [key, bucket] of buckets.entries()) {
-        if (bucket.resetAt <= now) {
-            buckets.delete(key);
-        }
-    }
-}
-
-function getClientIp(request) {
+export function getRateLimitClientKey(request, fallbackKey = 'anonymous:unknown') {
     for (const headerName of trustedProxyIpHeaderNames) {
         const headerValue = request.headers.get(headerName);
 
@@ -24,23 +16,19 @@ function getClientIp(request) {
         return headerValue.split(',')[0].trim();
     }
 
-    for (const headerName of fallbackClientKeyHeaderNames) {
-        const headerValue = request.headers.get(headerName);
+    const forwardedFor = request.headers.get('x-forwarded-for');
 
-        if (!headerValue) {
-            continue;
-        }
-
-        return `origin:${headerValue.trim().toLowerCase()}`;
+    if (forwardedFor) {
+        return forwardedFor.split(',')[0].trim();
     }
 
-    const origin = request.headers.get('origin');
+    const realIp = request.headers.get('x-real-ip');
 
-    if (origin) {
-        return `origin:${origin.trim().toLowerCase()}`;
+    if (realIp) {
+        return realIp.trim();
     }
 
-    return 'anonymous';
+    return fallbackKey;
 }
 
 export function consumeRateLimit({
@@ -48,37 +36,17 @@ export function consumeRateLimit({
     limit,
     windowMs,
     keyPrefix,
+    fallbackKey,
 }) {
     const now = Date.now();
 
     cleanupExpiredBuckets(now);
 
-    const key = `${keyPrefix}:${getClientIp(request)}`;
-    const bucket = buckets.get(key);
-
-    if (!bucket || bucket.resetAt <= now) {
-        buckets.set(key, {
-            count: 1,
-            resetAt: now + windowMs,
-        });
-
-        return {
-            allowed: true,
-            retryAfter: 0,
-        };
-    }
-
-    if (bucket.count >= limit) {
-        return {
-            allowed: false,
-            retryAfter: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000)),
-        };
-    }
-
-    bucket.count += 1;
-
-    return {
-        allowed: true,
-        retryAfter: 0,
-    };
+    const key = `${keyPrefix}:${getRateLimitClientKey(request, fallbackKey)}`;
+    return consumeBucket({
+        key,
+        limit,
+        now,
+        windowMs,
+    });
 }

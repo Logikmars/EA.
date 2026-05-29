@@ -1,5 +1,7 @@
 import { getApiBaseUrl } from './api.js';
 
+const contentRevalidateSeconds = Number(process.env.NEXT_PUBLIC_CONTENT_REVALIDATE_SECONDS || 300);
+
 async function fetchContentCollection(pathname, locale) {
     const url = new URL(pathname, getApiBaseUrl());
 
@@ -8,7 +10,7 @@ async function fetchContentCollection(pathname, locale) {
     }
 
     const response = await fetch(url.toString(), {
-        next: { revalidate: 0 },
+        next: { revalidate: Number.isFinite(contentRevalidateSeconds) && contentRevalidateSeconds >= 0 ? contentRevalidateSeconds : 300 },
     });
 
     const rawText = await response.text();

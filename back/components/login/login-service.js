@@ -2,6 +2,7 @@ import { createHash, timingSafeEqual } from 'node:crypto';
 import { getSession } from '@auth/express';
 import { buildAdminUser, buildSessionPayload, normalizeEmail, normalizePassword } from './login-model.js';
 import { verifyPassword } from '../../src/passwordHash.js';
+import { createHttpError } from '../../src/httpError.js';
 
 function hashValue(value) {
     return createHash('sha256').update(String(value)).digest();
@@ -39,9 +40,7 @@ export async function ensureAdminSession(req, authConfig) {
     const session = await getAdminSession(req, authConfig);
 
     if (!session?.user) {
-        const error = new Error('Unauthorized');
-        error.statusCode = 401;
-        throw error;
+        throw createHttpError(401, 'Unauthorized');
     }
 
     return session;
