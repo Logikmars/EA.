@@ -11,6 +11,11 @@ export async function generateMetadata() {
         metadataBase,
         title: t('siteTitle'),
         description: t('siteDescription'),
+        icons: {
+            icon: '/imgs/favicon.svg',
+            shortcut: '/imgs/favicon.svg',
+            apple: '/imgs/favicon.svg',
+        },
         manifest: '/manifest.webmanifest',
         verification: {
             google: process.env.GOOGLE_SITE_VERIFICATION,
