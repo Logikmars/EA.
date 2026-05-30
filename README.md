@@ -1,4 +1,4 @@
-## Art Nation
+## EA
 
 This repository contains:
 
@@ -43,7 +43,23 @@ Frontend:
 
 - `NEXT_PUBLIC_API_URL` must point to the Express backend origin.
 - `NEXT_PUBLIC_SITE_URL` should match the public site URL in production.
+- `SMTP_*` and `CONTACT_FORM_*` control contact-form delivery from `front/src/app/api/contact/route.js`.
+- `CONTACT_FORM_TO` is the destination mailbox for form submissions. You can provide multiple recipients separated by commas.
+- `CONTACT_FORM_FROM` should usually match the authenticated SMTP mailbox, and `CONTACT_FORM_FROM_NAME` sets the sender name shown in the email.
 - `TRUSTED_PROXY_IP_HEADERS` should be empty by default. Set it only if your platform provides a trusted client-IP header for the contact form route.
+
+Example frontend mail config for a real mailbox:
+
+```bash
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=your-mailbox@gmail.com
+SMTP_PASS=your-app-password
+CONTACT_FORM_FROM=your-mailbox@gmail.com
+CONTACT_FORM_FROM_NAME=EA Website
+CONTACT_FORM_TO=owner@example.com
+```
 
 ## Proxy And Rate Limit Safety
 

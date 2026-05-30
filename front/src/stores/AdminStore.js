@@ -14,6 +14,7 @@ class AdminStore {
         projects: [],
         media: [],
     };
+    pendingTwoFactor = null;
     isCheckingSession = false;
     isLoadingContent = false;
     isSubmitting = false;
@@ -42,12 +43,14 @@ class AdminStore {
 
             runInAction(() => {
                 this.session = data.user;
+                this.pendingTwoFactor = null;
             });
 
             return data.user;
         } catch (error) {
             runInAction(() => {
                 this.session = null;
+                this.pendingTwoFactor = null;
                 this.error = error instanceof Error ? error.message : 'Unable to get session.';
             });
 
@@ -65,6 +68,28 @@ class AdminStore {
         const safeCallbackUrl = normalizeAdminCallbackUrl(callbackUrl);
 
         try {
+            const initResponse = await requestAdminJson('/login/init', {
+                method: 'POST',
+                body: {
+                    email,
+                    password,
+                },
+            });
+
+            if (initResponse?.requiresTwoFactor) {
+                runInAction(() => {
+                    this.pendingTwoFactor = {
+                        callbackUrl: safeCallbackUrl,
+                        challengeToken: initResponse.challengeToken || '',
+                    };
+                });
+
+                return {
+                    ok: true,
+                    requiresTwoFactor: true,
+                };
+            }
+
             const csrfToken = await getCsrfToken();
             const response = await requestAuth('/callback/credentials', {
                 method: 'POST',
@@ -73,6 +98,8 @@ class AdminStore {
                 body: new URLSearchParams({
                     email,
                     password,
+                    otp: '',
+                    challengeToken: '',
                     csrfToken,
                     callbackUrl: safeCallbackUrl,
                 }),
@@ -88,9 +115,11 @@ class AdminStore {
 
             return {
                 ok: true,
+                requiresTwoFactor: false,
             };
         } catch (error) {
             runInAction(() => {
+                this.pendingTwoFactor = null;
                 this.error = error instanceof Error ? error.message : 'Sign in failed.';
             });
 
@@ -103,6 +132,62 @@ class AdminStore {
                 this.isSubmitting = false;
             });
         }
+    }
+
+    async verifyTwoFactor(otp) {
+        this.isSubmitting = true;
+        this.clearError();
+
+        try {
+            if (!this.pendingTwoFactor?.challengeToken) {
+                throw new Error('Two-factor session expired. Please sign in again.');
+            }
+
+            const csrfToken = await getCsrfToken();
+            const response = await requestAuth('/callback/credentials', {
+                method: 'POST',
+                credentials: 'include',
+                headers: authFormHeaders,
+                body: new URLSearchParams({
+                    email: '',
+                    password: '',
+                    otp,
+                    challengeToken: this.pendingTwoFactor.challengeToken,
+                    csrfToken,
+                    callbackUrl: this.pendingTwoFactor.callbackUrl,
+                }),
+            });
+            const redirectUrl = response?.url ? new URL(response.url, window.location.origin) : null;
+            const authError = redirectUrl?.searchParams.get('error');
+
+            if (authError) {
+                throw new Error('Wrong verification code.');
+            }
+
+            await this.fetchSession();
+
+            return {
+                ok: true,
+            };
+        } catch (error) {
+            runInAction(() => {
+                this.error = error instanceof Error ? error.message : 'Two-factor verification failed.';
+            });
+
+            return {
+                ok: false,
+                error: this.error,
+            };
+        } finally {
+            runInAction(() => {
+                this.isSubmitting = false;
+            });
+        }
+    }
+
+    resetTwoFactor() {
+        this.pendingTwoFactor = null;
+        this.clearError();
     }
 
     async logout() {
@@ -124,6 +209,7 @@ class AdminStore {
 
             runInAction(() => {
                 this.session = null;
+                this.pendingTwoFactor = null;
                 this.content = {
                     projects: [],
                     media: [],

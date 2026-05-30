@@ -97,7 +97,9 @@
     "all": "All media"
   },
   "MediaPage": {
-    "title": "All media"
+    "title": "All media",
+    "clearFilters": "Clear",
+    "empty": "No media items match the selected tags."
   },
   "MediaItems": {
     "retail-future": {
@@ -167,5 +169,11 @@
     "mediaDescription": "Explore interviews, articles, videos and podcasts featuring Eduard Akhramovych on business growth, retail, licensing and loyalty strategy.",
     "projectsTitle": "Projects and Business Case Studies by Eduard Akhramovych",
     "projectsDescription": "Selected projects, growth stories and business milestones from Eduard Akhramovych across retail, publishing, licensing and consumer products."
+  },
+  "Footer": {
+    "privacyPolicy": "Privacy policy",
+    "termsOfUse": "Terms of use",
+    "cookiePolicy": "Cookie policy",
+    "cookieSettings": "Cookie settings"
   }
 }

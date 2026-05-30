@@ -13,6 +13,8 @@ export const authConfig = {
             credentials: {
                 email: { label: 'Email', type: 'email' },
                 password: { label: 'Password', type: 'password' },
+                otp: { label: 'One-time code', type: 'text' },
+                challengeToken: { label: 'Challenge token', type: 'text' },
             },
             authorize(credentials) {
                 return authorizeAdmin(credentials);

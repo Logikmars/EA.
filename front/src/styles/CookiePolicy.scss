@@ -1,0 +1,140 @@
+.CookiePolicy {
+    width: 100%;
+    padding: 152px 20px 120px;
+}
+
+.CookiePolicy_container {
+    max-width: 920px;
+}
+
+.CookiePolicy_title,
+.CookiePolicy_intro,
+.CookiePolicy_updated,
+.CookiePolicy_heading,
+.CookiePolicy_groupTitle,
+.CookiePolicy_text,
+.CookiePolicy_tableCell,
+.CookiePolicy_listItem {
+    color: #0b0b0b;
+}
+
+.CookiePolicy_title {
+    font-size: clamp(36px, 5.5vw, 58px);
+    line-height: 1.02;
+    font-weight: 700;
+}
+
+.CookiePolicy_intro,
+.CookiePolicy_text,
+.CookiePolicy_listItem {
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.CookiePolicy_intro {
+    margin-top: 20px;
+}
+
+.CookiePolicy_updated {
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(11, 11, 11, 0.62);
+}
+
+.CookiePolicy_section {
+    margin-top: 36px;
+}
+
+.CookiePolicy_heading {
+    margin-bottom: 14px;
+    font-size: 26px;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+.CookiePolicy_text + .CookiePolicy_text {
+    margin-top: 10px;
+}
+
+.CookiePolicy_group + .CookiePolicy_group {
+    margin-top: 16px;
+}
+
+.CookiePolicy_groupTitle {
+    margin-bottom: 6px;
+    font-size: 18px;
+    line-height: 1.4;
+    font-weight: 700;
+}
+
+.CookiePolicy_tableWrap {
+    overflow-x: auto;
+}
+
+.CookiePolicy_table {
+    min-width: 760px;
+    margin-top: 10px;
+    border: 1px solid rgba(11, 11, 11, 0.12);
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.CookiePolicy_tableRow {
+    display: grid;
+    grid-template-columns: 1.1fr 1.2fr 2.3fr 1.2fr 1fr;
+}
+
+.CookiePolicy_tableRow + .CookiePolicy_tableRow {
+    border-top: 1px solid rgba(11, 11, 11, 0.1);
+}
+
+.CookiePolicy_tableRow__head {
+    background: #f2f4f8;
+}
+
+.CookiePolicy_tableRow__head .CookiePolicy_tableCell {
+    font-weight: 700;
+}
+
+.CookiePolicy_tableCell {
+    padding: 14px 16px;
+    font-size: 14px;
+    line-height: 1.6;
+    background: #fff;
+}
+
+.CookiePolicy_list {
+    margin-top: 8px;
+    padding-left: 22px;
+}
+
+.CookiePolicy_listItem + .CookiePolicy_listItem {
+    margin-top: 8px;
+}
+
+.CookiePolicy_contact {
+    margin-top: 6px;
+}
+
+@media (max-width: 767px) {
+    .CookiePolicy {
+        padding: 128px 16px 88px;
+    }
+
+    .CookiePolicy_heading {
+        font-size: 22px;
+    }
+
+    .CookiePolicy_intro,
+    .CookiePolicy_text,
+    .CookiePolicy_listItem {
+        font-size: 15px;
+        line-height: 1.72;
+    }
+
+    .CookiePolicy_table {
+        min-width: 680px;
+    }
+}

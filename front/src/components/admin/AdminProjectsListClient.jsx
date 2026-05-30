@@ -17,11 +17,11 @@ const AdminProjectsListClient = observer(() => {
     };
 
     return (
-        <AdminPageShell description='Review and manage all stored project entries.' loadContent title='Projects list'>
+        <AdminPageShell loadContent title='Projects'>
             <section className='AdminCard'>
                 <div className='AdminCardHeader'>
                     <h2>Projects</h2>
-                    <span>{adminStore.content.projects.length} custom items</span>
+                    <span>{adminStore.content.projects.length} items</span>
                 </div>
 
                 {adminStore.content.projects.length ? (
@@ -48,7 +48,7 @@ const AdminProjectsListClient = observer(() => {
                         ))}
                     </div>
                 ) : (
-                    <div className='AdminEmptyState'>No projects yet.</div>
+                    <div className='AdminEmptyState'>No projects</div>
                 )}
             </section>
         </AdminPageShell>

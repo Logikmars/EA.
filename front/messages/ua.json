@@ -97,7 +97,9 @@
     "all": "Усі медіа"
   },
   "MediaPage": {
-    "title": "Усі медіа"
+    "title": "Усі медіа",
+    "clearFilters": "Скинути",
+    "empty": "За обраними тегами медіа не знайдено."
   },
   "MediaItems": {
     "retail-future": {
@@ -166,5 +168,11 @@
     "mediaDescription": "Інтерв'ю, статті, відео та подкасти за участю Едуарда Ахрамовича.",
     "projectsTitle": "Проєкти",
     "projectsDescription": "Вибрані проєкти та бізнес-досягнення Едуарда Ахрамовича."
+  },
+  "Footer": {
+    "privacyPolicy": "Політика конфіденційності",
+    "termsOfUse": "Умови використання",
+    "cookiePolicy": "Політика cookies",
+    "cookieSettings": "Налаштування cookies"
   }
 }

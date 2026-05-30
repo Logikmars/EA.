@@ -249,8 +249,8 @@ const AdminDashboardClient = observer(() => {
         return (
             <main className='AdminShell'>
                 <section className='AdminLoginCard'>
-                    <div className='AdminEyebrow'>Admin Access</div>
-                    <h1>Checking session...</h1>
+                    <div className='AdminEyebrow'>Admin</div>
+                    <h1>Please wait...</h1>
                 </section>
             </main>
         );
@@ -261,9 +261,8 @@ const AdminDashboardClient = observer(() => {
             <section className='AdminPanel'>
                 <div className='AdminTopbar'>
                     <div>
-                        <div className='AdminEyebrow'>Art Nation Admin</div>
-                        <h1>Content dashboard</h1>
-                        <p>All admin data and auth logic now live in the `back` Express service.</p>
+                        <div className='AdminEyebrow'>EA Admin</div>
+                        <h1>Dashboard</h1>
                     </div>
                     <button className='AdminButton AdminButton__secondary' onClick={handleLogout} type='button'>
                         Sign out
@@ -277,7 +276,7 @@ const AdminDashboardClient = observer(() => {
                     <section className='AdminCard' id='projects'>
                         <div className='AdminCardHeader'>
                             <h2>{editingProjectSlug ? 'Edit project' : 'New project'}</h2>
-                            <span>{adminStore.content.projects.length} custom items</span>
+                            <span>{adminStore.content.projects.length} items</span>
                         </div>
                         <form className='AdminForm' onSubmit={handleProjectSubmit}>
                             <ImageDropzone
@@ -339,8 +338,8 @@ const AdminDashboardClient = observer(() => {
 
                     <section className='AdminCard' id='media'>
                         <div className='AdminCardHeader'>
-                            <h2>{editingMediaSlug ? 'Edit media item' : 'New media item'}</h2>
-                            <span>{adminStore.content.media.length} custom items</span>
+                            <h2>{editingMediaSlug ? 'Edit media' : 'New media'}</h2>
+                            <span>{adminStore.content.media.length} items</span>
                         </div>
                         <form className='AdminForm' onSubmit={handleMediaSubmit}>
                             <ImageDropzone
@@ -378,7 +377,7 @@ const AdminDashboardClient = observer(() => {
                             </label>
                             <div className='AdminActionsRow'>
                                 <button className='AdminButton' disabled={adminStore.isSubmitting} type='submit'>
-                                    {adminStore.isSubmitting ? 'Saving...' : editingMediaSlug ? 'Update media item' : 'Add media item'}
+                                    {adminStore.isSubmitting ? 'Saving...' : editingMediaSlug ? 'Update media' : 'Add media'}
                                 </button>
                                 {editingMediaSlug ? (
                                     <button className='AdminButton AdminButton__secondary' onClick={cancelMediaEdit} type='button'>

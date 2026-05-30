@@ -24,7 +24,7 @@ const AdminProjectCreateClient = observer(() => {
     };
 
     return (
-        <AdminPageShell description='Create a new project entry from a dedicated admin page.' title='Add project'>
+        <AdminPageShell title='Add project'>
             <section className='AdminCard'>
                 <form className='AdminForm' onSubmit={handleSubmit}>
                     <ImageDropzone

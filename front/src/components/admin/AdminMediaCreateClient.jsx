@@ -24,7 +24,7 @@ const AdminMediaCreateClient = observer(() => {
     };
 
     return (
-        <AdminPageShell description='Create a new media mention from a dedicated admin page.' title='Add media item'>
+        <AdminPageShell title='Add media'>
             <section className='AdminCard'>
                 <form className='AdminForm' onSubmit={handleSubmit}>
                     <ImageDropzone
@@ -62,7 +62,7 @@ const AdminMediaCreateClient = observer(() => {
                     </label>
                     <div className='AdminActionsRow'>
                         <button className='AdminButton' disabled={adminStore.isSubmitting} type='submit'>
-                            {adminStore.isSubmitting ? 'Saving...' : 'Add media item'}
+                            {adminStore.isSubmitting ? 'Saving...' : 'Add media'}
                         </button>
                     </div>
                 </form>

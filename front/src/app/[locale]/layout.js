@@ -1,5 +1,6 @@
 import Header from '@/components/layout/Header';
 import StructuredData from '@/components/seo/StructuredData';
+import CookieConsentManager from '@/components/cookies/CookieConsentManager';
 import AppToaster from '@/components/ui/AppToaster';
 import { NextIntlClientProvider } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -36,6 +37,7 @@ const LocaleLayout = async ({ children, params }) => {
         <NextIntlClientProvider>
             <StructuredData data={structuredData} />
             <AppToaster />
+            <CookieConsentManager />
             <Header />
             <main id='main-content'>
                 {children}

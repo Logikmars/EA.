@@ -52,10 +52,10 @@ const AdminProjectEditClient = observer(({ slug }) => {
     };
 
     return (
-        <AdminPageShell description='Update an existing project from the admin area.' loadContent title='Edit project'>
+        <AdminPageShell loadContent title='Edit project'>
             <section className='AdminCard'>
                 {!isLoaded || adminStore.isLoadingContent ? (
-                    <div className='AdminEmptyState'>Loading project...</div>
+                    <div className='AdminEmptyState'>Loading...</div>
                 ) : project ? (
                     <form className='AdminForm' onSubmit={handleSubmit}>
                         <ImageDropzone
@@ -88,13 +88,13 @@ const AdminProjectEditClient = observer(({ slug }) => {
                                 {adminStore.isSubmitting ? 'Saving...' : 'Update project'}
                             </button>
                             <Link className='AdminButton AdminButton__secondary' href='/admin/projects'>
-                                Back to list
+                                Back
                             </Link>
                         </div>
                     </form>
                 ) : (
                     <div className='AdminEmptyState'>
-                        Project not found. <Link href='/admin/projects'>Back to projects list</Link>
+                        Project not found. <Link href='/admin/projects'>Back</Link>
                     </div>
                 )}
             </section>

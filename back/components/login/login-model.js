@@ -6,6 +6,10 @@ export function normalizePassword(value) {
     return String(value ?? '');
 }
 
+export function normalizeOtp(value) {
+    return String(value ?? '').replace(/\s+/g, '').trim();
+}
+
 export function buildAdminUser(email) {
     return {
         id: 'admin',

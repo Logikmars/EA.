@@ -62,10 +62,16 @@ const MediaPage = async ({ params }) => {
     return (
         <div className='MediaPage'>
             <StructuredData data={structuredData} />
+            
             <Text h1 fw_bold fs_2xl>
                 {t('title')}
             </Text>
-            <MediaCatalog initialItems={mediaItems} locale={locale} />
+            <MediaCatalog
+                initialItems={mediaItems}
+                locale={locale}
+                clearLabel={t('clearFilters')}
+                emptyLabel={t('empty')}
+            />
         </div>
     );
 };

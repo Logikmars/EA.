@@ -7,9 +7,9 @@ import { usePathname, useRouter } from 'next/navigation';
 import adminStore from '@/stores/AdminStore';
 
 const navigationItems = [
-    { href: '/admin/projects', label: 'Projects list' },
+    { href: '/admin/projects', label: 'Projects' },
     { href: '/admin/projects/new', label: 'Add project' },
-    { href: '/admin/media', label: 'Media list' },
+    { href: '/admin/media', label: 'Media' },
     { href: '/admin/media/new', label: 'Add media' },
 ];
 
@@ -72,8 +72,8 @@ const AdminPageShell = observer(({
         return (
             <main className='AdminShell'>
                 <section className='AdminLoginCard'>
-                    <div className='AdminEyebrow'>Admin Access</div>
-                    <h1>{loadContent ? 'Loading content...' : 'Checking session...'}</h1>
+                    <div className='AdminEyebrow'>Admin</div>
+                    <h1>{loadContent ? 'Loading...' : 'Please wait...'}</h1>
                 </section>
             </main>
         );
@@ -84,9 +84,9 @@ const AdminPageShell = observer(({
             <section className='AdminPanel'>
                 <div className='AdminTopbar'>
                     <div>
-                        <div className='AdminEyebrow'>Art Nation Admin</div>
+                        <div className='AdminEyebrow'>EA Admin</div>
                         <h1>{title}</h1>
-                        <p>{description}</p>
+                        {description ? <p>{description}</p> : null}
                     </div>
                     <div className='AdminTopbarActions'>
                         <button className='AdminButton AdminButton__secondary' onClick={handleLogout} type='button'>

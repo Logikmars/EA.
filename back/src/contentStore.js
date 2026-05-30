@@ -40,6 +40,18 @@ function isDuplicateKeyError(error) {
     return error && typeof error === 'object' && error.code === 11000;
 }
 
+async function findAvailableMediaSlug(baseSlug) {
+    let candidateSlug = baseSlug;
+    let suffix = 2;
+
+    while (await MediaModel.exists({ slug: candidateSlug })) {
+        candidateSlug = `${baseSlug}-${suffix}`;
+        suffix += 1;
+    }
+
+    return candidateSlug;
+}
+
 async function isImageReferencedAnywhere(img) {
     if (!img) {
         return false;
@@ -145,9 +157,12 @@ export async function deleteProjectBySlug(slug) {
 }
 
 export async function appendMediaItem(mediaItem) {
+    const nextSlug = await findAvailableMediaSlug(mediaItem.slug);
+
     try {
         await MediaModel.create({
             ...mediaItem,
+            slug: nextSlug,
             detailAvailable: false,
         });
     } catch (error) {

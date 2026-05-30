@@ -17,11 +17,11 @@ const AdminMediaListClient = observer(() => {
     };
 
     return (
-        <AdminPageShell description='Review and manage all stored media entries.' loadContent title='Media list'>
+        <AdminPageShell loadContent title='Media'>
             <section className='AdminCard'>
                 <div className='AdminCardHeader'>
                     <h2>Media</h2>
-                    <span>{adminStore.content.media.length} custom items</span>
+                    <span>{adminStore.content.media.length} items</span>
                 </div>
 
                 {adminStore.content.media.length ? (
@@ -48,7 +48,7 @@ const AdminMediaListClient = observer(() => {
                         ))}
                     </div>
                 ) : (
-                    <div className='AdminEmptyState'>No media items yet.</div>
+                    <div className='AdminEmptyState'>No media</div>
                 )}
             </section>
         </AdminPageShell>

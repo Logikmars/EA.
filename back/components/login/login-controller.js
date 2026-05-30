@@ -1,7 +1,8 @@
-import { getAdminSession, mapSessionResponse } from './login-service.js';
+import { getAdminSession, initiateAdminLogin, mapSessionResponse } from './login-service.js';
 import projectsService from '../projects/projects-service.js';
 import mediaService from '../media/media-service.js';
 import { buildAbsoluteUploadedFileUrl, persistUploadedImage } from '../../src/upload.js';
+import { createHttpError } from '../../src/httpError.js';
 
 class LoginController {
     constructor(authConfig) {
@@ -13,6 +14,20 @@ class LoginController {
             const session = await getAdminSession(req, this.authConfig);
 
             return res.json(mapSessionResponse(session));
+        } catch (error) {
+            return next(error);
+        }
+    };
+
+    initiateLogin = async (req, res, next) => {
+        try {
+            const result = await initiateAdminLogin(req.body);
+
+            if (!result) {
+                throw createHttpError(401, 'Wrong email or password.');
+            }
+
+            return res.json(result);
         } catch (error) {
             return next(error);
         }

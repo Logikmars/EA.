@@ -1,6 +1,40 @@
-.Footer{
+.Footer {
     width: 100%;
     display: flex;
     justify-content: center;
+    padding: 28px 20px 42px;
+}
+
+.Footer_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    gap: 18px;
+}
+
+.Footer_meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+}
+
+.Footer_link {
+    color: #0b0b0b;
+    font-size: 13px;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.72;
+    transition: opacity 0.2s ease;
+}
+
+.Footer_link:hover {
+    opacity: 1;
+}
+
+.Footer_button {
+    background: transparent;
+    cursor: pointer;
 }

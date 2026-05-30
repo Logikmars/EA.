@@ -52,10 +52,10 @@ const AdminMediaEditClient = observer(({ slug }) => {
     };
 
     return (
-        <AdminPageShell description='Update an existing media item from the admin area.' loadContent title='Edit media item'>
+        <AdminPageShell loadContent title='Edit media'>
             <section className='AdminCard'>
                 {!isLoaded || adminStore.isLoadingContent ? (
-                    <div className='AdminEmptyState'>Loading media item...</div>
+                    <div className='AdminEmptyState'>Loading...</div>
                 ) : mediaItem ? (
                     <form className='AdminForm' onSubmit={handleSubmit}>
                         <ImageDropzone
@@ -93,16 +93,16 @@ const AdminMediaEditClient = observer(({ slug }) => {
                         </label>
                         <div className='AdminActionsRow'>
                             <button className='AdminButton' disabled={adminStore.isSubmitting} type='submit'>
-                                {adminStore.isSubmitting ? 'Saving...' : 'Update media item'}
+                                {adminStore.isSubmitting ? 'Saving...' : 'Update media'}
                             </button>
                             <Link className='AdminButton AdminButton__secondary' href='/admin/media'>
-                                Back to list
+                                Back
                             </Link>
                         </div>
                     </form>
                 ) : (
                     <div className='AdminEmptyState'>
-                        Media item not found. <Link href='/admin/media'>Back to media list</Link>
+                        Media item not found. <Link href='/admin/media'>Back</Link>
                     </div>
                 )}
             </section>
