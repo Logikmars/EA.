@@ -119,12 +119,20 @@ const Info = () => {
     }, [isDesktopAnimated]);
 
     const renderAnimatedText = (value) => (
-        value.split('').map((char, index) => (
+        value.split(' ').map((word, wordIndex, words) => (
             <span
-                className='Info_text_char'
-                key={`Info_text_char_${index}_${char}`}
+                className='Info_text_word'
+                key={`Info_text_word_${wordIndex}_${word}`}
             >
-                {char === ' ' ? '\u00A0' : char}
+                {word.split('').map((char, charIndex) => (
+                    <span
+                        className='Info_text_char'
+                        key={`Info_text_char_${wordIndex}_${charIndex}_${char}`}
+                    >
+                        {char}
+                    </span>
+                ))}
+                {wordIndex < words.length - 1 ? '\u00A0' : null}
             </span>
         ))
     );

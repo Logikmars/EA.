@@ -42,6 +42,7 @@
         gap: $gap_xs;
         max-width: 1000px;
 
+
         &_line{
             color: transparent;
             background: linear-gradient(
@@ -60,6 +61,11 @@
             -webkit-background-clip: text;
             background-clip: text;
             will-change: opacity;
+        }
+
+        &_word{
+            display: inline-block;
+            white-space: nowrap;
         }
 
         @media(max-width: 600px){
