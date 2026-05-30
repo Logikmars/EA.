@@ -8,6 +8,7 @@ import { AdminLoginChallengeModel } from './login-challenge-model.js';
 
 const challengeTtlMs = 5 * 60 * 1000;
 const maxChallengeAttempts = 5;
+const defaultTotpToleranceSeconds = 30;
 
 function hashValue(value) {
     return createHash('sha256').update(String(value)).digest();
@@ -50,6 +51,22 @@ function isTwoFactorEnabled() {
     return Boolean(process.env.ADMIN_2FA_SECRET);
 }
 
+function resolveTotpToleranceSeconds() {
+    const rawValue = String(process.env.ADMIN_2FA_EPOCH_TOLERANCE_SECONDS ?? '').trim();
+
+    if (!rawValue) {
+        return defaultTotpToleranceSeconds;
+    }
+
+    const parsedValue = Number(rawValue);
+
+    if (!Number.isFinite(parsedValue) || parsedValue < 0) {
+        return defaultTotpToleranceSeconds;
+    }
+
+    return Math.floor(parsedValue);
+}
+
 function verifyTotpCode(otp) {
     const secret = process.env.ADMIN_2FA_SECRET;
 
@@ -63,7 +80,11 @@ function verifyTotpCode(otp) {
         return false;
     }
 
-    return Boolean(verifySync({ token: normalizedOtp, secret })?.valid);
+    return Boolean(verifySync({
+        token: normalizedOtp,
+        secret,
+        epochTolerance: resolveTotpToleranceSeconds(),
+    })?.valid);
 }
 
 async function createAdminLoginChallenge(email) {
