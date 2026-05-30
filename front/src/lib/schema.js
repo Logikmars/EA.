@@ -91,3 +91,24 @@ export function buildItemListSchema({ locale, pathname, name, items }) {
         })),
     };
 }
+
+export function buildFAQPageSchema({ locale, questions, pathname = '' }) {
+    const normalizedPath = pathname ? (pathname.startsWith('/') ? pathname : `/${pathname}`) : '';
+    const url = toAbsoluteUrl(`/${locale}${normalizedPath}`);
+
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        '@id': `${url}#faq`,
+        url,
+        inLanguage: localeToLanguageTag[locale] ?? locale,
+        mainEntity: questions.map((item) => ({
+            '@type': 'Question',
+            name: item.question,
+            acceptedAnswer: {
+                '@type': 'Answer',
+                text: item.answer,
+            },
+        })),
+    };
+}

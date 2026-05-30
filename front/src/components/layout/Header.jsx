@@ -9,6 +9,8 @@ import { Fragment, useEffect, useState } from 'react';
 import Btn from '../ui/Btn';
 import Text from '../ui/Text';
 
+const SCROLL_TOGGLE_EVENT = 'smooth-scroll:toggle';
+
 const Header = () => {
     const t = useTranslations('Header');
     const locale = useLocale();
@@ -33,6 +35,10 @@ const Header = () => {
             key: 'media',
             href: '/#media',
         },
+        {
+            key: 'faq',
+            href: '/#faq',
+        },
     ];
 
     const languages = [
@@ -48,6 +54,11 @@ const Header = () => {
 
     useEffect(() => {
         document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+        window.dispatchEvent(new CustomEvent(SCROLL_TOGGLE_EVENT, {
+            detail: {
+                locked: isMenuOpen,
+            },
+        }));
 
         const handleEscape = (event) => {
             if (event.key === 'Escape') {
@@ -62,6 +73,14 @@ const Header = () => {
             window.removeEventListener('keydown', handleEscape);
         };
     }, [isMenuOpen]);
+
+    useEffect(() => () => {
+        window.dispatchEvent(new CustomEvent(SCROLL_TOGGLE_EVENT, {
+            detail: {
+                locked: false,
+            },
+        }));
+    }, []);
 
     const localeSwitcherPath = knownPaths.some((path) => pathname === path || pathname.startsWith(`${path}/`))
         ? pathname

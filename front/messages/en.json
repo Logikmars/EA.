@@ -5,7 +5,8 @@
       "about": "About",
       "projects": "Projects",
       "collaboration": "Collaboration",
-      "media": "Media"
+      "media": "Media",
+      "faq": "Faq"
     },
     "contact": "Contact Eduard",
     "languageSwitcher": "Language switcher",
@@ -41,6 +42,24 @@
       "first": "For more than three decades, I have worked at the intersection of entrepreneurship, marketing, licensing and consumer products. My focus has always been the same: turn ambitious ideas into commercially disciplined businesses that people genuinely want.",
       "second": "From building nationwide retail distribution to scaling loyalty mechanics and collectible product ecosystems, I have led projects that combine creative positioning with measurable sales performance across multiple markets.",
       "third": "Today I work with founders, executive teams and event organizers who need strategic thinking, market insight and a speaker who can translate complex business growth topics into clear, usable frameworks."
+    }
+  },
+  "Achivment": {
+    "title": "Selected achievements",
+    "description": "A few milestones that reflect commercial scale, product resonance and public recognition across Eduard Akhramovych's business projects.",
+    "items": {
+      "0": {
+        "source": "Book of Records of Ukraine",
+        "title": "National record in children's book sales",
+        "description": "Record holder in Ukraine for children's book sales with 1,241,000 copies sold in 2018.",
+        "imageLabel": "Image placeholder"
+      },
+      "1": {
+        "source": "Forbes",
+        "title": "Forbes Ukraine recognition in 2023",
+        "description": "Art Nation Loyalty was included in Forbes Ukraine's list of 250 promising small and medium-sized Ukrainian companies in 2023.",
+        "imageLabel": "Image placeholder"
+      }
     }
   },
   "Projects": {
@@ -100,6 +119,36 @@
     "title": "All media",
     "clearFilters": "Clear",
     "empty": "No media items match the selected tags."
+  },
+  "Faq": {
+    "title": "Frequently asked questions",
+    "description": "Answers focused on Eduard Akhramovych's experience, expertise and collaboration formats for business growth, retail strategy and brand development.",
+    "items": {
+      "0": {
+        "question": "Who is Eduard Akhramovych?",
+        "answer": "Eduard Akhramovych is an entrepreneur, speaker and founder of Art Nation with more than 30 years of business experience. He has launched 10+ businesses and works at the intersection of retail, licensing, loyalty programs, gamification and consumer products."
+      },
+      "1": {
+        "question": "What does Eduard Akhramovych specialize in?",
+        "answer": "He specializes in loyalty campaign strategy for retail, brand licensing, sales gamification, product development, growth consulting and customer engagement systems. His work is focused on turning creative ideas into scalable business results."
+      },
+      "2": {
+        "question": "What kind of business experience does Eduard have?",
+        "answer": "Eduard has built and scaled businesses across entrepreneurship, media, publishing, animation, mobile applications and marketing services. Together with his team, he has delivered more than 40 loyalty campaigns in 6 countries and worked with major retail and FMCG brands."
+      },
+      "3": {
+        "question": "Which companies and brands has Eduard Akhramovych worked with?",
+        "answer": "His client portfolio includes retailers and well-known brands such as ATB, Aurora, Watsons, Varus, MHP, Fora, Carrefour, SPAR, Morshynska and Danone. He also supports creative founders and public figures in building sustainable, profitable businesses."
+      },
+      "4": {
+        "question": "Can Eduard Akhramovych help with growth, licensing or loyalty strategy?",
+        "answer": "Yes. Eduard works with founders, executives and teams that need practical guidance on business growth, monetization, brand licensing, retail partnerships, customer loyalty programs and market expansion. His consulting is based on operating experience and real commercial cases."
+      },
+      "5": {
+        "question": "How can I work with Eduard Akhramovych?",
+        "answer": "You can invite Eduard as a keynote speaker, book a business lecture, request strategic consulting or discuss an individual mentorship format. The collaboration is tailored to the goals of your company, event or growth stage."
+      }
+    }
   },
   "MediaItems": {
     "retail-future": {

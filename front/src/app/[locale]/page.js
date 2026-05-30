@@ -2,10 +2,12 @@ import StructuredData from '@/components/seo/StructuredData';
 import dynamic from 'next/dynamic';
 import Hero from '@/components/sections/Hero';
 import Info from '@/components/sections/Info';
+import Achivment from '@/components/sections/Achivment';
 import { getMediaItems, getProjects } from '@/lib/content';
 import { buildMetadata } from '@/lib/seo';
-import { buildItemListSchema, buildWebPageSchema } from '@/lib/schema';
+import { buildFAQPageSchema, buildItemListSchema, buildWebPageSchema } from '@/lib/schema';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import Faq from '@/components/sections/Faq';
 
 const Projects = dynamic(() => import('@/components/sections/Projects'));
 const Cooperation = dynamic(() => import('@/components/sections/Cooperation'));
@@ -44,10 +46,15 @@ const HomePage = async ({ params }) => {
 
     setRequestLocale(locale);
     const seoT = await getTranslations('SEO');
+    const faqT = await getTranslations('Faq');
     const [projects, mediaItems] = await Promise.all([
         getProjects(locale),
         getMediaItems(locale),
     ]);
+    const faqItems = Array.from({ length: 6 }, (_, index) => ({
+        question: faqT(`items.${index}.question`),
+        answer: faqT(`items.${index}.answer`),
+    }));
     const structuredData = [
         buildWebPageSchema({
             locale,
@@ -76,6 +83,10 @@ const HomePage = async ({ params }) => {
                 pathname: `/media/${media.slug}`,
             })),
         }),
+        buildFAQPageSchema({
+            locale,
+            questions: faqItems,
+        }),
     ];
 
     return (
@@ -85,7 +96,9 @@ const HomePage = async ({ params }) => {
             <Info />
             <Projects locale={locale} projects={projects} />
             <Cooperation />
+            <Achivment />
             <Media locale={locale} mediaItems={mediaItems} />
+            <Faq />
             <MainForm />
         </div>
     );

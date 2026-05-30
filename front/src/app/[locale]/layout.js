@@ -8,6 +8,7 @@ import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import Footer from '@/components/layout/Footer';
 import { buildPersonSchema, buildWebsiteSchema } from '@/lib/schema';
+import SmoothScroll from '@/components/ui/SmoothScroll';
 
 export function generateStaticParams() {
     return routing.locales.map((locale) => ({ locale }));
@@ -36,6 +37,7 @@ const LocaleLayout = async ({ children, params }) => {
     return (
         <NextIntlClientProvider>
             <StructuredData data={structuredData} />
+            <SmoothScroll />
             <AppToaster />
             <CookieConsentManager />
             <Header />
