@@ -2,6 +2,22 @@ import { getApiBaseUrl } from './api.js';
 
 const contentRevalidateSeconds = Number(process.env.NEXT_PUBLIC_CONTENT_REVALIDATE_SECONDS || 300);
 
+function getContentFetchOptions() {
+    const normalizedRevalidateSeconds = Number.isFinite(contentRevalidateSeconds) && contentRevalidateSeconds >= 0
+        ? contentRevalidateSeconds
+        : 300;
+
+    if (normalizedRevalidateSeconds === 0) {
+        return {
+            cache: 'no-store',
+        };
+    }
+
+    return {
+        next: { revalidate: normalizedRevalidateSeconds },
+    };
+}
+
 async function fetchContentCollection(pathname, locale) {
     const url = new URL(pathname, getApiBaseUrl());
 
@@ -9,9 +25,7 @@ async function fetchContentCollection(pathname, locale) {
         url.searchParams.set('locale', locale);
     }
 
-    const response = await fetch(url.toString(), {
-        next: { revalidate: Number.isFinite(contentRevalidateSeconds) && contentRevalidateSeconds >= 0 ? contentRevalidateSeconds : 300 },
-    });
+    const response = await fetch(url.toString(), getContentFetchOptions());
 
     const rawText = await response.text();
     let data = null;

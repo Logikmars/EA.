@@ -22,8 +22,7 @@ function renderMediaImage(src, alt) {
         <Image
             src={src}
             alt={alt}
-            width={1200}
-            height={800}
+            fill
             sizes='(max-width: 767px) 100vw, (max-width: 1200px) 50vw, 25vw'
             className='MediaBlock_image'
         />

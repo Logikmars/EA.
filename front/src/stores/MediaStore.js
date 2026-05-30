@@ -26,20 +26,6 @@ class MediaStore {
         return Boolean(this.loadingByLocale[locale]);
     }
 
-    mergeItems(locale, initialItems, backendItems) {
-        const seen = new Set();
-        const mergedItems = [...backendItems, ...initialItems].filter((item) => {
-            if (!item?.slug || seen.has(item.slug)) {
-                return false;
-            }
-
-            seen.add(item.slug);
-            return true;
-        });
-
-        this.itemsByLocale[locale] = mergedItems;
-    }
-
     async load(locale, initialItems = []) {
         this.hydrate(locale, initialItems);
         this.loadingByLocale[locale] = true;
@@ -52,7 +38,7 @@ class MediaStore {
             const data = await requestJson(url.toString());
 
             runInAction(() => {
-                this.mergeItems(locale, initialItems, Array.isArray(data?.items) ? data.items : []);
+                this.itemsByLocale[locale] = Array.isArray(data?.items) ? data.items : [];
             });
         } catch (error) {
             runInAction(() => {
