@@ -2,13 +2,16 @@
     position: fixed;
     inset: auto 20px 20px auto;
     z-index: 1000;
+    width: min(460px, calc(100vw - 32px));
     max-width: min(460px, calc(100vw - 32px));
+    max-height: calc(100dvh - 32px);
+    overflow-x: clip;
 }
 
 .CookieConsent_panel {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 0;
     padding: 22px;
     border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 24px;
@@ -16,6 +19,27 @@
         radial-gradient(circle at top right, rgba(28, 92, 255, 0.28), transparent 32%),
         linear-gradient(180deg, rgba(11, 11, 11, 0.96) 0%, rgba(18, 18, 18, 0.98) 100%);
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+    max-height: inherit;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.CookieConsent_scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    padding-right: 2px;
+}
+
+.CookieConsent_footer {
+    padding-top: 16px;
+    margin-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(180deg, rgba(11, 11, 11, 0) 0%, rgba(11, 11, 11, 0.94) 26%);
 }
 
 .CookieConsent_badge,
@@ -56,6 +80,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    min-width: 0;
 }
 
 .CookieConsent_category {
@@ -66,12 +91,18 @@
     padding: 14px 16px;
     border-radius: 18px;
     background: rgba(255, 255, 255, 0.05);
+    min-width: 0;
+}
+
+.CookieConsent_category > div {
+    min-width: 0;
 }
 
 .CookieConsent_categoryTitle {
     font-size: 15px;
     line-height: 1.2;
     font-weight: 600;
+    overflow-wrap: anywhere;
 }
 
 .CookieConsent_categoryDescription {
@@ -79,6 +110,7 @@
     font-size: 13px;
     line-height: 1.5;
     color: rgba(255, 255, 255, 0.68);
+    overflow-wrap: anywhere;
 }
 
 .CookieConsent_category input {
@@ -104,6 +136,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    min-width: 0;
 }
 
 .CookieConsent_btn {
@@ -131,30 +164,119 @@
 
 @media (max-width: 767px) {
     .CookieConsent {
+        inset: auto 12px 12px 12px;
         left: 12px;
         right: 12px;
         bottom: 12px;
+        width: calc(100vw - 24px);
         max-width: none;
+        max-height: calc(100dvh - 24px);
     }
 
     .CookieConsent_panel {
-        padding: 18px;
-        border-radius: 20px;
+        padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px));
+        border-radius: 22px;
+        max-height: calc(100dvh - 24px);
+    }
+
+    .CookieConsent_scroll {
+        gap: 14px;
     }
 
     .CookieConsent_title {
-        font-size: 21px;
+        font-size: 19px;
+        line-height: 1.18;
+    }
+
+    .CookieConsent_description {
+        font-size: 13px;
+        line-height: 1.55;
+    }
+
+    .CookieConsent_categories {
+        gap: 10px;
     }
 
     .CookieConsent_category {
         align-items: flex-start;
+        gap: 12px;
+        padding: 12px 13px;
+        border-radius: 16px;
+    }
+
+    .CookieConsent_category > div {
+        flex: 1 1 auto;
+    }
+
+    .CookieConsent_categoryTitle {
+        font-size: 14px;
+    }
+
+    .CookieConsent_categoryDescription {
+        margin-top: 4px;
+        font-size: 12px;
+        line-height: 1.45;
+    }
+
+    .CookieConsent_status {
+        font-size: 11px;
+        padding-top: 2px;
     }
 
     .CookieConsent_actions {
         flex-direction: column;
+        gap: 8px;
+    }
+
+    .CookieConsent_footer {
+        position: sticky;
+        bottom: calc(env(safe-area-inset-bottom, 0px) * -1);
+        margin-top: 14px;
+        padding-top: 14px;
     }
 
     .CookieConsent_btn {
         width: 100%;
+        min-height: 44px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 420px) {
+    .CookieConsent {
+        inset: auto 8px 8px 8px;
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        width: calc(100vw - 16px);
+        max-height: calc(100dvh - 16px);
+    }
+
+    .CookieConsent_panel {
+        padding: 14px 14px calc(14px + env(safe-area-inset-bottom, 0px));
+        border-radius: 18px;
+        max-height: calc(100dvh - 16px);
+    }
+
+    .CookieConsent_scroll {
+        gap: 12px;
+    }
+
+    .CookieConsent_badge {
+        padding: 6px 9px;
+        font-size: 11px;
+    }
+
+    .CookieConsent_title {
+        font-size: 18px;
+    }
+
+    .CookieConsent_category {
+        padding: 11px 12px;
+    }
+
+    .CookieConsent_footer {
+        margin-top: 12px;
+        padding-top: 12px;
     }
 }

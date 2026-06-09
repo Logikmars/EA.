@@ -199,66 +199,70 @@ export default function CookieConsentManager() {
             {shouldShowPanel ? (
                 <div className='CookieConsent' role='dialog' aria-live='polite' aria-label={content.badge}>
                     <div className='CookieConsent_panel'>
-                        <span className='CookieConsent_badge'>
-                            {content.badge}
-                        </span>
-                        <h2 className='CookieConsent_title'>
-                            {content.title}
-                        </h2>
-                        <p className='CookieConsent_description'>
-                            {content.description}
-                        </p>
-                        <div className='CookieConsent_categories'>
-                            <div className='CookieConsent_category'>
-                                <div>
-                                    <div className='CookieConsent_categoryTitle'>{content.necessary}</div>
-                                    <div className='CookieConsent_categoryDescription'>{content.necessaryDescription}</div>
+                        <div className='CookieConsent_scroll'>
+                            <span className='CookieConsent_badge'>
+                                {content.badge}
+                            </span>
+                            <h2 className='CookieConsent_title'>
+                                {content.title}
+                            </h2>
+                            <p className='CookieConsent_description'>
+                                {content.description}
+                            </p>
+                            <div className='CookieConsent_categories'>
+                                <div className='CookieConsent_category'>
+                                    <div>
+                                        <div className='CookieConsent_categoryTitle'>{content.necessary}</div>
+                                        <div className='CookieConsent_categoryDescription'>{content.necessaryDescription}</div>
+                                    </div>
+                                    <span className='CookieConsent_status CookieConsent_status__locked'>{content.alwaysOn}</span>
                                 </div>
-                                <span className='CookieConsent_status CookieConsent_status__locked'>{content.alwaysOn}</span>
+                                <label className='CookieConsent_category'>
+                                    <div>
+                                        <div className='CookieConsent_categoryTitle'>{content.analytics}</div>
+                                        <div className='CookieConsent_categoryDescription'>{content.analyticsDescription}</div>
+                                    </div>
+                                    <input
+                                        type='checkbox'
+                                        checked={draftConsent.analytics}
+                                        onChange={(event) => {
+                                            setDraftConsent((currentValue) => ({
+                                                ...currentValue,
+                                                analytics: event.target.checked,
+                                            }));
+                                        }}
+                                    />
+                                </label>
+                                <label className='CookieConsent_category'>
+                                    <div>
+                                        <div className='CookieConsent_categoryTitle'>{content.marketing}</div>
+                                        <div className='CookieConsent_categoryDescription'>{content.marketingDescription}</div>
+                                    </div>
+                                    <input
+                                        type='checkbox'
+                                        checked={draftConsent.marketing}
+                                        onChange={(event) => {
+                                            setDraftConsent((currentValue) => ({
+                                                ...currentValue,
+                                                marketing: event.target.checked,
+                                            }));
+                                        }}
+                                    />
+                                </label>
                             </div>
-                            <label className='CookieConsent_category'>
-                                <div>
-                                    <div className='CookieConsent_categoryTitle'>{content.analytics}</div>
-                                    <div className='CookieConsent_categoryDescription'>{content.analyticsDescription}</div>
-                                </div>
-                                <input
-                                    type='checkbox'
-                                    checked={draftConsent.analytics}
-                                    onChange={(event) => {
-                                        setDraftConsent((currentValue) => ({
-                                            ...currentValue,
-                                            analytics: event.target.checked,
-                                        }));
-                                    }}
-                                />
-                            </label>
-                            <label className='CookieConsent_category'>
-                                <div>
-                                    <div className='CookieConsent_categoryTitle'>{content.marketing}</div>
-                                    <div className='CookieConsent_categoryDescription'>{content.marketingDescription}</div>
-                                </div>
-                                <input
-                                    type='checkbox'
-                                    checked={draftConsent.marketing}
-                                    onChange={(event) => {
-                                        setDraftConsent((currentValue) => ({
-                                            ...currentValue,
-                                            marketing: event.target.checked,
-                                        }));
-                                    }}
-                                />
-                            </label>
                         </div>
-                        <div className='CookieConsent_actions'>
-                            <button className='CookieConsent_btn CookieConsent_btn__ghost' type='button' onClick={handleRejectOptional}>
-                                {content.rejectOptional}
-                            </button>
-                            <button className='CookieConsent_btn CookieConsent_btn__ghost' type='button' onClick={handleSaveSettings}>
-                                {content.save}
-                            </button>
-                            <button className='CookieConsent_btn CookieConsent_btn__primary' type='button' onClick={handleAcceptAll}>
-                                {content.acceptAll}
-                            </button>
+                        <div className='CookieConsent_footer'>
+                            <div className='CookieConsent_actions'>
+                                <button className='CookieConsent_btn CookieConsent_btn__ghost' type='button' onClick={handleRejectOptional}>
+                                    {content.rejectOptional}
+                                </button>
+                                <button className='CookieConsent_btn CookieConsent_btn__ghost' type='button' onClick={handleSaveSettings}>
+                                    {content.save}
+                                </button>
+                                <button className='CookieConsent_btn CookieConsent_btn__primary' type='button' onClick={handleAcceptAll}>
+                                    {content.acceptAll}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
