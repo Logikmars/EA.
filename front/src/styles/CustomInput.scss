@@ -1,4 +1,5 @@
 .CustomInputField{
+    position: relative;
     width: calc(100% - $gap_s);
     display: flex;
     flex-direction: column;
@@ -22,6 +23,10 @@
         font-size: $fs_xs;
         line-height: 1.4;
     }
+
+    &__open{
+        z-index: 8;
+    }
 }
 
 .CustomInput{
@@ -44,11 +49,6 @@
     &::placeholder{
         color: $c_form_text;
         transition: color 300ms ease, transform 300ms ease;
-    }
-
-    option{
-        color: $c_primary_white;
-        background-color: $c_primary_black;
     }
 
     &:hover{
@@ -83,5 +83,126 @@
     &_textarea{
         min-height: 150px;
         font-family: "Inter";
+    }
+
+    &_selectTrigger{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+        cursor: pointer;
+        position: relative;
+    }
+
+    &_selectTrigger__open{
+        border-color: $c_primary_blue;
+        background-color: rgba(255, 255, 255, 0.085);
+        box-shadow:
+            0 0 0 4px rgba(10, 102, 255, 0.16),
+            0 14px 34px rgba(10, 102, 255, 0.12);
+        color: $c_primary_white;
+        transform: translateY(-2px);
+    }
+
+    &_selectLabel{
+        color: $c_form_text;
+        transition: color 220ms ease;
+    }
+
+    &_selectLabel__selected{
+        color: $c_primary_white;
+    }
+
+    &_selectIcon{
+        width: 16px;
+        height: 16px;
+        position: relative;
+        flex: 0 0 16px;
+
+        span{
+            position: absolute;
+            top: 7px;
+            width: 9px;
+            height: 2px;
+            background-color: currentColor;
+            border-radius: 999px;
+            transition: transform 220ms ease;
+
+            &:first-child{
+                left: 0;
+                transform: rotate(45deg);
+            }
+
+            &:last-child{
+                right: 0;
+                transform: rotate(-45deg);
+            }
+        }
+    }
+
+    &_selectTrigger__open &_selectIcon{
+        span{
+            &:first-child{
+                transform: rotate(-45deg);
+            }
+
+            &:last-child{
+                transform: rotate(45deg);
+            }
+        }
+    }
+
+    &_selectMenu{
+        position: absolute;
+        top: calc(100% - 12px);
+        left: 0;
+        right: 0;
+        display: grid;
+        gap: 8px;
+        padding: 14px;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: linear-gradient(180deg, rgba(18, 20, 28, 0.98) 0%, rgba(10, 10, 14, 0.98) 100%);
+        box-shadow:
+            0 24px 44px rgba(0, 0, 0, 0.28),
+            0 8px 18px rgba(10, 102, 255, 0.12);
+        opacity: 0;
+        transform: translateY(-10px) scale(0.98);
+        transform-origin: top center;
+        pointer-events: none;
+        transition: opacity 220ms ease, transform 260ms ease;
+    }
+
+    &_selectMenu__open{
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+    }
+
+    &_selectOption{
+        min-height: 48px;
+        border: 1px solid transparent;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.02);
+        color: rgba(255, 255, 255, 0.74);
+        font-size: $fs_s;
+        font-weight: $fw_medium;
+        text-align: left;
+        padding: 0 16px;
+        cursor: pointer;
+        transition: background-color 220ms ease, border-color 220ms ease, color 220ms ease, transform 220ms ease;
+
+        &:hover{
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.08);
+            color: $c_primary_white;
+            transform: translateX(3px);
+        }
+
+        &__active{
+            background: rgba(10, 102, 255, 0.16);
+            border-color: rgba(10, 102, 255, 0.24);
+            color: $c_primary_white;
+        }
     }
 }

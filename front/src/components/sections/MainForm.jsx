@@ -17,7 +17,6 @@ const initialFormData = {
     link: '',
     company: '',
     inquiryType: 'speaking',
-    budget: 'undisclosed',
     message: '',
     website: '',
 };
@@ -26,7 +25,6 @@ const formContentByLocale = {
     en: {
         company: 'Company / brand',
         inquiryType: 'What do you need?',
-        budget: 'Budget range',
         message: 'Tell me about your goal, audience or business task...',
         note: 'Share a bit of context and I can reply with a more relevant format and next step.',
         inquiryOptions: [
@@ -35,23 +33,15 @@ const formContentByLocale = {
             { value: 'partnership', label: 'Partnership' },
             { value: 'other', label: 'Other' },
         ],
-        budgetOptions: [
-            { value: 'undisclosed', label: 'Budget not set yet' },
-            { value: 'under-5k', label: 'Under 5k USD' },
-            { value: '5k-15k', label: '5k - 15k USD' },
-            { value: '15k-plus', label: '15k+ USD' },
-        ],
         validation: {
             company: 'Company name is too long',
             inquiryType: 'Choose the request type',
-            budget: 'Choose a budget range',
             website: 'Spam detected',
         },
     },
     ua: {
         company: 'Компанія / бренд',
         inquiryType: 'Що вам потрібно?',
-        budget: 'Діапазон бюджету',
         message: 'Опишіть вашу ціль, аудиторію або бізнес-запит...',
         note: 'Що більше контексту ви дасте, то точніше я зможу запропонувати формат співпраці та наступний крок.',
         inquiryOptions: [
@@ -60,16 +50,9 @@ const formContentByLocale = {
             { value: 'partnership', label: 'Партнерство' },
             { value: 'other', label: 'Інше' },
         ],
-        budgetOptions: [
-            { value: 'undisclosed', label: 'Бюджет ще не визначено' },
-            { value: 'under-5k', label: 'До 5k USD' },
-            { value: '5k-15k', label: '5k - 15k USD' },
-            { value: '15k-plus', label: '15k+ USD' },
-        ],
         validation: {
             company: 'Назва компанії занадто довга',
             inquiryType: 'Оберіть тип запиту',
-            budget: 'Оберіть діапазон бюджету',
             website: 'Виявлено спам',
         },
     },
@@ -108,10 +91,6 @@ const validateForm = (formData, t, content) => {
 
     if (!validateContactField('inquiryType', formData.inquiryType)) {
         errors.inquiryType = content.validation.inquiryType;
-    }
-
-    if (!validateContactField('budget', formData.budget)) {
-        errors.budget = content.validation.budget;
     }
 
     if (message.length < 10) {
@@ -241,6 +220,7 @@ const MainForm = () => {
             w50: true,
             select: true,
             name: 'inquiryType',
+            placeholder: content.inquiryType,
             value: formData.inquiryType,
             onChange: handleChange,
             error: errors.inquiryType,
@@ -255,15 +235,6 @@ const MainForm = () => {
             onChange: handleChange,
             error: errors.phone,
             autoComplete: 'tel',
-        },
-        {
-            w50: true,
-            select: true,
-            name: 'budget',
-            value: formData.budget,
-            onChange: handleChange,
-            error: errors.budget,
-            options: content.budgetOptions,
         },
         {
             w50: true,

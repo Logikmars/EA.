@@ -20,7 +20,6 @@ const optionalSocialLinkSchema = z
     .or(z.literal(''));
 
 const inquiryTypes = ['speaking', 'consulting', 'partnership', 'other'];
-const budgetRanges = ['undisclosed', 'under-5k', '5k-15k', '15k-plus'];
 
 export const contactFormSchema = z.object({
     name: z
@@ -42,7 +41,6 @@ export const contactFormSchema = z.object({
         .optional()
         .or(z.literal('')),
     inquiryType: z.enum(inquiryTypes, 'Choose a valid inquiry type'),
-    budget: z.enum(budgetRanges, 'Choose a valid budget range'),
     message: z
         .string()
         .trim()

@@ -48,14 +48,13 @@ const createInfoRow = (label, value, href = '') => `
     </tr>
 `;
 
-const createContactEmailHtml = ({ name, email, phone, link, company, inquiryType, budget, message }) => {
+const createContactEmailHtml = ({ name, email, phone, link, company, inquiryType, message }) => {
     const safeName = escapeHtml(name);
     const safeEmail = escapeHtml(email);
     const safePhone = escapeHtml(phone || '-');
     const safeLink = escapeHtml(link || '-');
     const safeCompany = escapeHtml(company || '-');
     const safeInquiryType = escapeHtml(inquiryType || '-');
-    const safeBudget = escapeHtml(budget || '-');
     const safeMessage = escapeHtml(message).replace(/\n/g, '<br />');
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || '';
     const safeSiteUrl = siteUrl ? escapeHtml(siteUrl) : '';
@@ -140,9 +139,6 @@ const createContactEmailHtml = ({ name, email, phone, link, company, inquiryType
                                                         <tr>
                                                             <td style="width: 50%; padding-right: 12px;">
                                                                 ${createInfoRow('Inquiry Type', safeInquiryType)}
-                                                            </td>
-                                                            <td style="width: 50%; padding-left: 12px;">
-                                                                ${createInfoRow('Budget', safeBudget)}
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -303,7 +299,7 @@ export async function POST(request) {
             );
         }
 
-        const { name, email, phone, link, company, inquiryType, budget, message, website } = parsed.data;
+        const { name, email, phone, link, company, inquiryType, message, website } = parsed.data;
 
         if (website) {
             return Response.json({ ok: true });
@@ -332,12 +328,11 @@ export async function POST(request) {
                 `Link: ${link || '-'}`,
                 `Company: ${company || '-'}`,
                 `Inquiry Type: ${inquiryType}`,
-                `Budget: ${budget}`,
                 '',
                 'Message:',
                 message,
             ].join('\n'),
-            html: createContactEmailHtml({ name, email, phone, link, company, inquiryType, budget, message }),
+            html: createContactEmailHtml({ name, email, phone, link, company, inquiryType, message }),
         });
 
         const response = Response.json({ ok: true });
