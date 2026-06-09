@@ -10,17 +10,11 @@ function normalizeText(value) {
     return String(value ?? '').trim();
 }
 
-function normalizeSlug(value) {
-    return normalizeText(value)
-        .toLowerCase()
-        .replace(/[^a-z0-9-]+/g, '-')
-        .replace(/-{2,}/g, '-')
-        .replace(/^-|-$/g, '');
-}
-
 const emptyProjectForm = {
     img: '',
     href: '',
+    categoryUa: '',
+    categoryEn: '',
     titleUa: '',
     titleEn: '',
     summaryUa: '',
@@ -54,8 +48,8 @@ const AdminDashboardClient = observer(() => {
     const router = useRouter();
     const [projectForm, setProjectForm] = useState(emptyProjectForm);
     const [mediaForm, setMediaForm] = useState(emptyMediaForm);
-    const [editingProjectSlug, setEditingProjectSlug] = useState('');
-    const [editingMediaSlug, setEditingMediaSlug] = useState('');
+    const [editingProjectHref, setEditingProjectHref] = useState('');
+    const [editingMediaSourceUrl, setEditingMediaSourceUrl] = useState('');
 
     useEffect(() => {
         let isMounted = true;
@@ -100,14 +94,14 @@ const AdminDashboardClient = observer(() => {
     };
 
     const createStartEditHandler = (setEditingSlug, setForm, mapItemToForm) => (item) => {
-        setEditingSlug(item.slug);
+        setEditingSlug(item.href || item.sourceUrl || '');
         setForm(mapItemToForm(item));
         clearAdminMessages();
     };
 
     const createSubmitHandler = ({
         form,
-        editingSlug,
+        editingKey,
         setEditingSlug,
         setForm,
         emptyForm,
@@ -118,7 +112,7 @@ const AdminDashboardClient = observer(() => {
         event.preventDefault();
 
         const payload = buildPayload(form);
-        const result = editingSlug ? await updateAction(editingSlug, payload) : await createAction(payload);
+        const result = editingKey ? await updateAction(editingKey, payload) : await createAction(payload);
 
         if (result.ok) {
             setForm(emptyForm);
@@ -129,18 +123,18 @@ const AdminDashboardClient = observer(() => {
     const createDeleteHandler = ({
         confirmMessage,
         deleteAction,
-        editingSlug,
+        editingKey,
         cancelEdit,
-    }) => async (slug) => {
+    }) => async (key) => {
         const isConfirmed = window.confirm(confirmMessage);
 
         if (!isConfirmed) {
             return;
         }
 
-        const result = await deleteAction(slug);
+        const result = await deleteAction(key);
 
-        if (result.ok && editingSlug === slug) {
+        if (result.ok && editingKey === key) {
             cancelEdit();
         }
     };
@@ -150,19 +144,21 @@ const AdminDashboardClient = observer(() => {
     const updateProjectImage = createImageUpdater(setProjectForm);
     const updateMediaImage = createImageUpdater(setMediaForm);
 
-    const cancelProjectEdit = createCancelEditHandler(setEditingProjectSlug, setProjectForm, emptyProjectForm);
-    const cancelMediaEdit = createCancelEditHandler(setEditingMediaSlug, setMediaForm, emptyMediaForm);
+    const cancelProjectEdit = createCancelEditHandler(setEditingProjectHref, setProjectForm, emptyProjectForm);
+    const cancelMediaEdit = createCancelEditHandler(setEditingMediaSourceUrl, setMediaForm, emptyMediaForm);
 
-    const startProjectEdit = createStartEditHandler(setEditingProjectSlug, setProjectForm, (project) => ({
+    const startProjectEdit = createStartEditHandler(setEditingProjectHref, setProjectForm, (project) => ({
         img: project.img || '',
         href: project.href || '',
+        categoryUa: project.category?.ua || '',
+        categoryEn: project.category?.en || '',
         titleUa: project.title?.ua || '',
         titleEn: project.title?.en || '',
         summaryUa: project.summary?.ua || '',
         summaryEn: project.summary?.en || '',
     }));
 
-    const startMediaEdit = createStartEditHandler(setEditingMediaSlug, setMediaForm, (mediaItem) => ({
+    const startMediaEdit = createStartEditHandler(setEditingMediaSourceUrl, setMediaForm, (mediaItem) => ({
         img: mediaItem.img || '',
         typeUa: mediaItem.type?.ua || '',
         typeEn: mediaItem.type?.en || '',
@@ -175,16 +171,19 @@ const AdminDashboardClient = observer(() => {
 
     const handleProjectSubmit = createSubmitHandler({
         form: projectForm,
-        editingSlug: editingProjectSlug,
-        setEditingSlug: setEditingProjectSlug,
+        editingKey: editingProjectHref,
+        setEditingSlug: setEditingProjectHref,
         setForm: setProjectForm,
         emptyForm: emptyProjectForm,
         createAction: (payload) => adminStore.createProject(payload),
-        updateAction: (slug, payload) => adminStore.updateProject(slug, payload),
+        updateAction: (href, payload) => adminStore.updateProject(href, payload),
         buildPayload: (currentForm) => ({
-            slug: normalizeSlug(currentForm.titleEn || currentForm.href),
             img: normalizeText(currentForm.img) || '/imgs/projects/1.png',
             href: normalizeText(currentForm.href),
+            category: {
+                ua: normalizeText(currentForm.categoryUa),
+                en: normalizeText(currentForm.categoryEn),
+            },
             title: {
                 ua: normalizeText(currentForm.titleUa),
                 en: normalizeText(currentForm.titleEn),
@@ -198,14 +197,13 @@ const AdminDashboardClient = observer(() => {
 
     const handleMediaSubmit = createSubmitHandler({
         form: mediaForm,
-        editingSlug: editingMediaSlug,
-        setEditingSlug: setEditingMediaSlug,
+        editingKey: editingMediaSourceUrl,
+        setEditingSlug: setEditingMediaSourceUrl,
         setForm: setMediaForm,
         emptyForm: emptyMediaForm,
         createAction: (payload) => adminStore.createMedia(payload),
-        updateAction: (slug, payload) => adminStore.updateMedia(slug, payload),
+        updateAction: (sourceUrl, payload) => adminStore.updateMedia(sourceUrl, payload),
         buildPayload: (currentForm) => ({
-            slug: normalizeSlug(currentForm.titleEn || currentForm.sourceUrl),
             img: normalizeText(currentForm.img) || '/imgs/projects/1.png',
             type: {
                 ua: normalizeText(currentForm.typeUa),
@@ -226,15 +224,15 @@ const AdminDashboardClient = observer(() => {
 
     const handleProjectDelete = createDeleteHandler({
         confirmMessage: 'Delete this project?',
-        deleteAction: (slug) => adminStore.deleteProject(slug),
-        editingSlug: editingProjectSlug,
+        deleteAction: (href) => adminStore.deleteProject(href),
+        editingKey: editingProjectHref,
         cancelEdit: cancelProjectEdit,
     });
 
     const handleMediaDelete = createDeleteHandler({
         confirmMessage: 'Delete this media item?',
-        deleteAction: (slug) => adminStore.deleteMedia(slug),
-        editingSlug: editingMediaSlug,
+        deleteAction: (sourceUrl) => adminStore.deleteMedia(sourceUrl),
+        editingKey: editingMediaSourceUrl,
         cancelEdit: cancelMediaEdit,
     });
 
@@ -275,7 +273,7 @@ const AdminDashboardClient = observer(() => {
                 <div className='AdminGrid'>
                     <section className='AdminCard' id='projects'>
                         <div className='AdminCardHeader'>
-                            <h2>{editingProjectSlug ? 'Edit project' : 'New project'}</h2>
+                            <h2>{editingProjectHref ? 'Edit project' : 'New project'}</h2>
                             <span>{adminStore.content.projects.length} items</span>
                         </div>
                         <form className='AdminForm' onSubmit={handleProjectSubmit}>
@@ -287,6 +285,14 @@ const AdminDashboardClient = observer(() => {
                             <label className='AdminField'>
                                 <span>Link</span>
                                 <input name='href' onChange={updateProjectField('href')} required type='url' value={projectForm.href} />
+                            </label>
+                            <label className='AdminField'>
+                                <span>Category UA</span>
+                                <input name='categoryUa' onChange={updateProjectField('categoryUa')} required type='text' value={projectForm.categoryUa} />
+                            </label>
+                            <label className='AdminField'>
+                                <span>Category EN</span>
+                                <input name='categoryEn' onChange={updateProjectField('categoryEn')} required type='text' value={projectForm.categoryEn} />
                             </label>
                             <label className='AdminField'>
                                 <span>Title UA</span>
@@ -306,9 +312,9 @@ const AdminDashboardClient = observer(() => {
                             </label>
                             <div className='AdminActionsRow'>
                                 <button className='AdminButton' disabled={adminStore.isSubmitting} type='submit'>
-                                    {adminStore.isSubmitting ? 'Saving...' : editingProjectSlug ? 'Update project' : 'Add project'}
+                                    {adminStore.isSubmitting ? 'Saving...' : editingProjectHref ? 'Update project' : 'Add project'}
                                 </button>
-                                {editingProjectSlug ? (
+                                {editingProjectHref ? (
                                     <button className='AdminButton AdminButton__secondary' onClick={cancelProjectEdit} type='button'>
                                         Cancel
                                     </button>
@@ -318,7 +324,7 @@ const AdminDashboardClient = observer(() => {
 
                         <div className='AdminList'>
                             {adminStore.content.projects.map((project) => (
-                                <article className='AdminListItem' key={project.slug}>
+                                <article className='AdminListItem' key={project.href}>
                                     <div className='AdminListItemMain'>
                                         <strong>{project.title?.en || project.title?.ua || 'Untitled project'}</strong>
                                         <span>{project.href}</span>
@@ -327,7 +333,7 @@ const AdminDashboardClient = observer(() => {
                                         <button className='AdminButton AdminButton__secondary AdminButton__small' onClick={() => startProjectEdit(project)} type='button'>
                                             Edit
                                         </button>
-                                        <button className='AdminButton AdminButton__danger AdminButton__small' onClick={() => handleProjectDelete(project.slug)} type='button'>
+                                        <button className='AdminButton AdminButton__danger AdminButton__small' onClick={() => handleProjectDelete(project.href)} type='button'>
                                             Delete
                                         </button>
                                     </div>
@@ -338,7 +344,7 @@ const AdminDashboardClient = observer(() => {
 
                     <section className='AdminCard' id='media'>
                         <div className='AdminCardHeader'>
-                            <h2>{editingMediaSlug ? 'Edit media' : 'New media'}</h2>
+                            <h2>{editingMediaSourceUrl ? 'Edit media' : 'New media'}</h2>
                             <span>{adminStore.content.media.length} items</span>
                         </div>
                         <form className='AdminForm' onSubmit={handleMediaSubmit}>
@@ -377,9 +383,9 @@ const AdminDashboardClient = observer(() => {
                             </label>
                             <div className='AdminActionsRow'>
                                 <button className='AdminButton' disabled={adminStore.isSubmitting} type='submit'>
-                                    {adminStore.isSubmitting ? 'Saving...' : editingMediaSlug ? 'Update media' : 'Add media'}
+                                    {adminStore.isSubmitting ? 'Saving...' : editingMediaSourceUrl ? 'Update media' : 'Add media'}
                                 </button>
-                                {editingMediaSlug ? (
+                                {editingMediaSourceUrl ? (
                                     <button className='AdminButton AdminButton__secondary' onClick={cancelMediaEdit} type='button'>
                                         Cancel
                                     </button>
@@ -389,7 +395,7 @@ const AdminDashboardClient = observer(() => {
 
                         <div className='AdminList'>
                             {adminStore.content.media.map((mediaItem) => (
-                                <article className='AdminListItem' key={mediaItem.slug}>
+                                <article className='AdminListItem' key={mediaItem.sourceUrl}>
                                     <div className='AdminListItemMain'>
                                         <strong>{mediaItem.title?.en || mediaItem.title?.ua || 'Untitled media item'}</strong>
                                         <span>{mediaItem.sourceUrl}</span>
@@ -398,7 +404,7 @@ const AdminDashboardClient = observer(() => {
                                         <button className='AdminButton AdminButton__secondary AdminButton__small' onClick={() => startMediaEdit(mediaItem)} type='button'>
                                             Edit
                                         </button>
-                                        <button className='AdminButton AdminButton__danger AdminButton__small' onClick={() => handleMediaDelete(mediaItem.slug)} type='button'>
+                                        <button className='AdminButton AdminButton__danger AdminButton__small' onClick={() => handleMediaDelete(mediaItem.sourceUrl)} type='button'>
                                             Delete
                                         </button>
                                     </div>

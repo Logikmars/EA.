@@ -6,14 +6,14 @@ import AdminPageShell from './AdminPageShell';
 import adminStore from '@/stores/AdminStore';
 
 const AdminMediaListClient = observer(() => {
-    const handleDelete = async (slug) => {
+    const handleDelete = async (sourceUrl) => {
         const isConfirmed = window.confirm('Delete this media item?');
 
         if (!isConfirmed) {
             return;
         }
 
-        await adminStore.deleteMedia(slug);
+        await adminStore.deleteMedia(sourceUrl);
     };
 
     return (
@@ -27,18 +27,18 @@ const AdminMediaListClient = observer(() => {
                 {adminStore.content.media.length ? (
                     <div className='AdminList'>
                         {adminStore.content.media.map((mediaItem) => (
-                            <article className='AdminListItem' key={mediaItem.slug}>
+                            <article className='AdminListItem' key={mediaItem.sourceUrl}>
                                 <div className='AdminListItemMain'>
                                     <strong>{mediaItem.title?.en || mediaItem.title?.ua || 'Untitled media item'}</strong>
                                     <span>{mediaItem.sourceUrl}</span>
                                 </div>
                                 <div className='AdminListItemActions'>
-                                    <Link className='AdminButton AdminButton__secondary AdminButton__small' href={`/admin/media/${mediaItem.slug}`}>
+                                    <Link className='AdminButton AdminButton__secondary AdminButton__small' href={`/admin/media/edit?sourceUrl=${encodeURIComponent(mediaItem.sourceUrl)}`}>
                                         Edit
                                     </Link>
                                     <button
                                         className='AdminButton AdminButton__danger AdminButton__small'
-                                        onClick={() => handleDelete(mediaItem.slug)}
+                                        onClick={() => handleDelete(mediaItem.sourceUrl)}
                                         type='button'
                                     >
                                         Delete

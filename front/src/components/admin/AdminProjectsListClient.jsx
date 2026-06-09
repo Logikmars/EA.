@@ -6,14 +6,14 @@ import AdminPageShell from './AdminPageShell';
 import adminStore from '@/stores/AdminStore';
 
 const AdminProjectsListClient = observer(() => {
-    const handleDelete = async (slug) => {
+    const handleDelete = async (href) => {
         const isConfirmed = window.confirm('Delete this project?');
 
         if (!isConfirmed) {
             return;
         }
 
-        await adminStore.deleteProject(slug);
+        await adminStore.deleteProject(href);
     };
 
     return (
@@ -27,18 +27,18 @@ const AdminProjectsListClient = observer(() => {
                 {adminStore.content.projects.length ? (
                     <div className='AdminList'>
                         {adminStore.content.projects.map((project) => (
-                            <article className='AdminListItem' key={project.slug}>
+                            <article className='AdminListItem' key={project.href}>
                                 <div className='AdminListItemMain'>
                                     <strong>{project.title?.en || project.title?.ua || 'Untitled project'}</strong>
                                     <span>{project.href}</span>
                                 </div>
                                 <div className='AdminListItemActions'>
-                                    <Link className='AdminButton AdminButton__secondary AdminButton__small' href={`/admin/projects/${project.slug}`}>
+                                    <Link className='AdminButton AdminButton__secondary AdminButton__small' href={`/admin/projects/edit?href=${encodeURIComponent(project.href)}`}>
                                         Edit
                                     </Link>
                                     <button
                                         className='AdminButton AdminButton__danger AdminButton__small'
-                                        onClick={() => handleDelete(project.slug)}
+                                        onClick={() => handleDelete(project.href)}
                                         type='button'
                                     >
                                         Delete

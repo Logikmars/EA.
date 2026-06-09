@@ -47,6 +47,22 @@
         }
     }
 
+    &_honeypot{
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    &_note{
+        width: 100%;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.62);
+        font-size: $fs_s;
+        line-height: 1.6;
+    }
+
     &_status{
         width: 100%;
         margin: 0;

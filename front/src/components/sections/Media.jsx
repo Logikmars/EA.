@@ -90,14 +90,13 @@ const Media = observer(({
             <div className='Media_list'>
                 {displayMediaItems.slice(0, 4).map((media) => (
                     <MediaBlock
-                        id={media.slug}
                         type={media.type}
                         img={media.img}
                         text={media.title}
                         description={media.summary}
                         href={media.sourceUrl || '#'}
                         alt={media.title}
-                        key={media.slug}
+                        key={media.sourceUrl || media.title}
                     />
                 ))}
             </div>

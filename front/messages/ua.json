@@ -67,7 +67,11 @@
     "all": "Усі проєкти"
   },
   "ProjectsPage": {
-    "title": "Усі проєкти"
+    "title": "Усі проєкти",
+    "filters": "Фільтри",
+    "search": "Пошук за назвою або описом",
+    "clearFilters": "Скинути",
+    "empty": "За обраними фільтрами проєктів не знайдено."
   },
   "ProjectItems": {
     "national-multimedia-company": {

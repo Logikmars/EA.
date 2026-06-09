@@ -51,10 +51,9 @@ const MediaPage = async ({ params }) => {
             pathname: '/media',
             name: seoT('mediaTitle'),
             items: mediaItems.map((media) => ({
-                id: media.slug,
                 name: media.title,
                 description: media.type,
-                pathname: `/media/${media.slug}`,
+                url: media.sourceUrl,
             })),
         }),
     ];

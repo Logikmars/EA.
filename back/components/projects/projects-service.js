@@ -1,4 +1,4 @@
-import { appendProject, deleteProjectBySlug, readAdminContent, updateProjectBySlug } from '../../src/contentStore.js';
+import { appendProject, deleteProjectByHref, readAdminContent, updateProjectByHref } from '../../src/contentStore.js';
 import { mapProjectListItem, projectSchema } from './projects-model.js';
 
 class ProjectsService {
@@ -25,14 +25,14 @@ class ProjectsService {
         return appendProject(parsedPayload);
     }
 
-    async updateProject(slug, payload) {
+    async updateProject(href, payload) {
         const parsedPayload = projectSchema.parse(payload);
 
-        return updateProjectBySlug(slug, parsedPayload);
+        return updateProjectByHref(href, parsedPayload);
     }
 
-    async deleteProject(slug) {
-        return deleteProjectBySlug(slug);
+    async deleteProject(href) {
+        return deleteProjectByHref(href);
     }
 }
 

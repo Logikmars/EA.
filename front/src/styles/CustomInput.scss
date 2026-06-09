@@ -46,6 +46,11 @@
         transition: color 300ms ease, transform 300ms ease;
     }
 
+    option{
+        color: $c_primary_white;
+        background-color: $c_primary_black;
+    }
+
     &:hover{
         border-color: rgba(255, 255, 255, 0.28);
         background-color: rgba(255, 255, 255, 0.07);

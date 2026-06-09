@@ -66,10 +66,9 @@ const HomePage = async ({ params }) => {
             pathname: '/projects',
             name: 'Projects',
             items: projects.map((project) => ({
-                id: project.slug,
                 name: project.title,
                 description: project.summary,
-                pathname: `/projects/${project.slug}`,
+                url: project.href,
             })),
         }),
         buildItemListSchema({
@@ -77,10 +76,9 @@ const HomePage = async ({ params }) => {
             pathname: '/media',
             name: 'Media',
             items: mediaItems.map((media) => ({
-                id: media.slug,
                 name: media.title,
                 description: media.type,
-                pathname: `/media/${media.slug}`,
+                url: media.sourceUrl,
             })),
         }),
         buildFAQPageSchema({

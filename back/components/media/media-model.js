@@ -23,7 +23,6 @@ const localizedMongoOptionalTextSchema = new mongoose.Schema({
 }, { _id: false });
 
 export const mediaSchema = z.object({
-    slug: z.string().trim().min(1).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
     img: imageReferenceSchema.default('/imgs/projects/1.png'),
     type: localizedTextSchema,
     title: localizedTextSchema,
@@ -34,15 +33,13 @@ export const mediaSchema = z.object({
 });
 
 const mediaMongoSchema = new mongoose.Schema({
-    slug: { type: String, required: true, unique: true, trim: true },
     img: { type: String, default: '/imgs/projects/1.png', trim: true },
     type: { type: localizedMongoTextSchema, required: true },
     title: { type: localizedMongoTextSchema, required: true },
     summary: { type: localizedMongoOptionalTextSchema, default: () => ({ ua: '', en: '' }) },
     outlet: { type: String, default: '', trim: true },
-    sourceUrl: { type: String, required: true, trim: true },
+    sourceUrl: { type: String, required: true, unique: true, trim: true },
     sourceLabel: { type: localizedMongoOptionalTextSchema, default: () => ({ ua: '', en: '' }) },
-    detailAvailable: { type: Boolean, default: false },
 }, {
     timestamps: true,
     versionKey: false,
@@ -52,14 +49,12 @@ export const MediaModel = mongoose.models.Media || mongoose.model('Media', media
 
 export function mapMediaListItem(mediaItem, locale) {
     return {
-        slug: mediaItem.slug,
         img: mediaItem.img,
         type: mediaItem.type[locale],
         title: mediaItem.title[locale],
         summary: mediaItem.summary[locale],
         outlet: mediaItem.outlet,
         sourceUrl: mediaItem.sourceUrl,
-        detailAvailable: Boolean(mediaItem.detailAvailable),
         createdAt: mediaItem.createdAt,
     };
 }

@@ -2,7 +2,7 @@
 
 import '../../styles/MainForm.scss';
 import { useLayoutEffect, useRef, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import toast from 'react-hot-toast';
 import { validateContactField } from '@/lib/contactFormSchema';
 import CustomInput from '../ui/CustomInput';
@@ -15,14 +15,72 @@ const initialFormData = {
     email: '',
     phone: '',
     link: '',
+    company: '',
+    inquiryType: 'speaking',
+    budget: 'undisclosed',
     message: '',
+    website: '',
 };
 
-const validateForm = (formData, t) => {
+const formContentByLocale = {
+    en: {
+        company: 'Company / brand',
+        inquiryType: 'What do you need?',
+        budget: 'Budget range',
+        message: 'Tell me about your goal, audience or business task...',
+        note: 'Share a bit of context and I can reply with a more relevant format and next step.',
+        inquiryOptions: [
+            { value: 'speaking', label: 'Speaking' },
+            { value: 'consulting', label: 'Consulting' },
+            { value: 'partnership', label: 'Partnership' },
+            { value: 'other', label: 'Other' },
+        ],
+        budgetOptions: [
+            { value: 'undisclosed', label: 'Budget not set yet' },
+            { value: 'under-5k', label: 'Under 5k USD' },
+            { value: '5k-15k', label: '5k - 15k USD' },
+            { value: '15k-plus', label: '15k+ USD' },
+        ],
+        validation: {
+            company: 'Company name is too long',
+            inquiryType: 'Choose the request type',
+            budget: 'Choose a budget range',
+            website: 'Spam detected',
+        },
+    },
+    ua: {
+        company: 'Компанія / бренд',
+        inquiryType: 'Що вам потрібно?',
+        budget: 'Діапазон бюджету',
+        message: 'Опишіть вашу ціль, аудиторію або бізнес-запит...',
+        note: 'Що більше контексту ви дасте, то точніше я зможу запропонувати формат співпраці та наступний крок.',
+        inquiryOptions: [
+            { value: 'speaking', label: 'Виступ' },
+            { value: 'consulting', label: 'Консультація' },
+            { value: 'partnership', label: 'Партнерство' },
+            { value: 'other', label: 'Інше' },
+        ],
+        budgetOptions: [
+            { value: 'undisclosed', label: 'Бюджет ще не визначено' },
+            { value: 'under-5k', label: 'До 5k USD' },
+            { value: '5k-15k', label: '5k - 15k USD' },
+            { value: '15k-plus', label: '15k+ USD' },
+        ],
+        validation: {
+            company: 'Назва компанії занадто довга',
+            inquiryType: 'Оберіть тип запиту',
+            budget: 'Оберіть діапазон бюджету',
+            website: 'Виявлено спам',
+        },
+    },
+};
+
+const validateForm = (formData, t, content) => {
     const errors = {};
     const name = formData.name.trim();
     const email = formData.email.trim();
     const phone = formData.phone.trim();
+    const company = formData.company.trim();
     const message = formData.message.trim();
     const linkErrorMessage = typeof t.has === 'function' && t.has('validation.link')
         ? t('validation.link')
@@ -44,8 +102,24 @@ const validateForm = (formData, t) => {
         errors.link = linkErrorMessage;
     }
 
+    if (company && !validateContactField('company', company)) {
+        errors.company = content.validation.company;
+    }
+
+    if (!validateContactField('inquiryType', formData.inquiryType)) {
+        errors.inquiryType = content.validation.inquiryType;
+    }
+
+    if (!validateContactField('budget', formData.budget)) {
+        errors.budget = content.validation.budget;
+    }
+
     if (message.length < 10) {
         errors.message = t('validation.message');
+    }
+
+    if (formData.website) {
+        errors.website = content.validation.website;
     }
 
     return errors;
@@ -53,7 +127,9 @@ const validateForm = (formData, t) => {
 
 const MainForm = () => {
     const rootRef = useRef(null);
+    const locale = useLocale();
     const t = useTranslations('MainForm');
+    const content = formContentByLocale[locale] ?? formContentByLocale.en;
 
     const [formData, setFormData] = useState(initialFormData);
     const [errors, setErrors] = useState({});
@@ -86,7 +162,7 @@ const MainForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const nextErrors = validateForm(formData, t);
+        const nextErrors = validateForm(formData, t, content);
 
         if (Object.keys(nextErrors).length > 0) {
             setErrors(nextErrors);
@@ -154,6 +230,24 @@ const MainForm = () => {
         },
         {
             w50: true,
+            name: 'company',
+            placeholder: content.company,
+            value: formData.company,
+            onChange: handleChange,
+            error: errors.company,
+            autoComplete: 'organization',
+        },
+        {
+            w50: true,
+            select: true,
+            name: 'inquiryType',
+            value: formData.inquiryType,
+            onChange: handleChange,
+            error: errors.inquiryType,
+            options: content.inquiryOptions,
+        },
+        {
+            w50: true,
             type: 'tel',
             name: 'phone',
             placeholder: t('fields.phone'),
@@ -161,6 +255,15 @@ const MainForm = () => {
             onChange: handleChange,
             error: errors.phone,
             autoComplete: 'tel',
+        },
+        {
+            w50: true,
+            select: true,
+            name: 'budget',
+            value: formData.budget,
+            onChange: handleChange,
+            error: errors.budget,
+            options: content.budgetOptions,
         },
         {
             w50: true,
@@ -175,7 +278,7 @@ const MainForm = () => {
             w50: false,
             textarea: true,
             name: 'message',
-            placeholder: t('fields.message'),
+            placeholder: content.message,
             value: formData.message,
             onChange: handleChange,
             error: errors.message,
@@ -204,7 +307,8 @@ const MainForm = () => {
             gsap.registerPlugin(ScrollTrigger);
 
             const ctx = gsap.context(() => {
-                const fields = gsap.utils.toArray('.MainForm_form .CustomInput');
+                const fields = gsap.utils.toArray('.MainForm_form .CustomInputField');
+                const note = root.querySelector('.MainForm_note');
                 const button = root.querySelector('.MainForm_form .Btn');
 
                 fields.forEach((field, index) => {
@@ -228,6 +332,23 @@ const MainForm = () => {
                         }
                     });
                 });
+
+                if (note) {
+                    gsap.fromTo(note, {
+                        opacity: 0,
+                        y: 32,
+                    }, {
+                        opacity: 1,
+                        y: 0,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: root,
+                            start: 'top 86%',
+                            end: 'bottom 64%',
+                            scrub: 1.8,
+                        }
+                    });
+                }
 
                 if (button) {
                     gsap.fromTo(button, {
@@ -270,6 +391,17 @@ const MainForm = () => {
                     {inputs.map((input) => (
                         <CustomInput key={input.name} {...input} />
                     ))}
+                    <input
+                        className='MainForm_honeypot'
+                        name='website'
+                        onChange={handleChange}
+                        tabIndex={-1}
+                        type='text'
+                        value={formData.website}
+                    />
+                    <p className='MainForm_note'>
+                        {content.note}
+                    </p>
                     <Btn color_white text_black type='submit' disabled={submitState === 'loading'}>
                         {submitState === 'loading' ? t('submitting') : t('submit')}
                     </Btn>

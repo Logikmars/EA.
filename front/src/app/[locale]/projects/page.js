@@ -51,10 +51,9 @@ const ProjectsPage = async ({ params }) => {
             pathname: '/projects',
             name: seoT('projectsTitle'),
             items: projectItems.map((project) => ({
-                id: project.slug,
                 name: project.title,
                 description: project.summary,
-                pathname: `/projects/${project.slug}`,
+                url: project.href,
             })),
         }),
     ];
@@ -65,7 +64,14 @@ const ProjectsPage = async ({ params }) => {
             <Text h1 fw_bold fs_2xl>
                 {t('title')}
             </Text>
-            <ProjectsCatalog initialItems={projectItems} locale={locale} />
+            <ProjectsCatalog
+                initialItems={projectItems}
+                locale={locale}
+                filtersLabel={t('filters')}
+                searchPlaceholder={t('search')}
+                clearLabel={t('clearFilters')}
+                emptyLabel={t('empty')}
+            />
         </div>
     );
 };

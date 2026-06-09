@@ -75,8 +75,7 @@ const MediaCatalog = observer(({
                 <AnimatedRevealList className='MediaPage_list' itemSelector='.MediaBlock'>
                     {visibleItems.map((mediaItem) => (
                         <MediaBlock
-                            id={mediaItem.slug}
-                            key={mediaItem.slug}
+                            key={mediaItem.sourceUrl || mediaItem.title}
                             type={mediaItem.type}
                             img={mediaItem.img}
                             text={mediaItem.title}

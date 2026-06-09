@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import AdminPageShell from './AdminPageShell';
 import ImageDropzone from './ImageDropzone';
 import adminStore from '@/stores/AdminStore';
@@ -14,11 +14,13 @@ import {
     updateFormValue,
 } from './adminFormUtils';
 
-const AdminMediaEditClient = observer(({ slug }) => {
+const AdminMediaEditClient = observer(() => {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const currentSourceUrl = searchParams.get('sourceUrl') || '';
     const [form, setForm] = useState(emptyMediaForm);
     const [isLoaded, setIsLoaded] = useState(false);
-    const mediaItem = adminStore.content.media.find((item) => item.slug === slug);
+    const mediaItem = adminStore.content.media.find((item) => item.sourceUrl === currentSourceUrl);
 
     useEffect(() => {
         if (mediaItem) {
@@ -26,7 +28,7 @@ const AdminMediaEditClient = observer(({ slug }) => {
         }
 
         setIsLoaded(true);
-    }, [mediaItem, slug]);
+    }, [currentSourceUrl, mediaItem]);
 
     const updateField = (field) => (event) => {
         updateFormValue(setForm, field, event.target.value);
@@ -36,17 +38,17 @@ const AdminMediaEditClient = observer(({ slug }) => {
         event.preventDefault();
 
         const payload = buildMediaPayload(form);
-        const result = await adminStore.updateMedia(slug, payload);
+        const result = await adminStore.updateMedia(currentSourceUrl, payload);
 
         if (result.ok) {
-            const updatedMedia = adminStore.content.media.find((item) => item.slug === payload.slug);
+            const updatedMedia = adminStore.content.media.find((item) => item.sourceUrl === payload.sourceUrl);
 
             if (updatedMedia) {
                 setForm(mapMediaToForm(updatedMedia));
             }
 
-            if (payload.slug !== slug) {
-                router.replace(`/admin/media/${payload.slug}`);
+            if (payload.sourceUrl !== currentSourceUrl) {
+                router.replace(`/admin/media/edit?sourceUrl=${encodeURIComponent(payload.sourceUrl)}`);
             }
         }
     };
@@ -56,7 +58,7 @@ const AdminMediaEditClient = observer(({ slug }) => {
             <section className='AdminCard'>
                 {!isLoaded || adminStore.isLoadingContent ? (
                     <div className='AdminEmptyState'>Loading...</div>
-                ) : mediaItem ? (
+                ) : currentSourceUrl && mediaItem ? (
                     <form className='AdminForm' onSubmit={handleSubmit}>
                         <ImageDropzone
                             label='Media image'

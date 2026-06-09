@@ -50,19 +50,3 @@ export async function getProjects(locale) {
 export async function getMediaItems(locale) {
     return fetchContentCollection('/api/content/media', locale);
 }
-
-export async function getProjectStaticSlugs() {
-    const items = await getProjects('en');
-
-    return items
-        .map((item) => item?.slug)
-        .filter(Boolean);
-}
-
-export async function getMediaStaticSlugs() {
-    const items = await getMediaItems('en');
-
-    return items
-        .map((item) => item?.slug)
-        .filter(Boolean);
-}

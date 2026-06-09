@@ -2,17 +2,11 @@ export function normalizeText(value) {
     return String(value ?? '').trim();
 }
 
-export function normalizeSlug(value) {
-    return normalizeText(value)
-        .toLowerCase()
-        .replace(/[^a-z0-9-]+/g, '-')
-        .replace(/-{2,}/g, '-')
-        .replace(/^-|-$/g, '');
-}
-
 export const emptyProjectForm = {
     img: '',
     href: '',
+    categoryUa: '',
+    categoryEn: '',
     titleUa: '',
     titleEn: '',
     summaryUa: '',
@@ -41,6 +35,8 @@ export function mapProjectToForm(project) {
     return {
         img: project?.img || '',
         href: project?.href || '',
+        categoryUa: project?.category?.ua || '',
+        categoryEn: project?.category?.en || '',
         titleUa: project?.title?.ua || '',
         titleEn: project?.title?.en || '',
         summaryUa: project?.summary?.ua || '',
@@ -63,9 +59,12 @@ export function mapMediaToForm(mediaItem) {
 
 export function buildProjectPayload(form) {
     return {
-        slug: normalizeSlug(form.titleEn || form.href),
         img: normalizeText(form.img) || '/imgs/projects/1.png',
         href: normalizeText(form.href),
+        category: {
+            ua: normalizeText(form.categoryUa),
+            en: normalizeText(form.categoryEn),
+        },
         title: {
             ua: normalizeText(form.titleUa),
             en: normalizeText(form.titleEn),
@@ -79,7 +78,6 @@ export function buildProjectPayload(form) {
 
 export function buildMediaPayload(form) {
     return {
-        slug: normalizeSlug(form.titleEn || form.sourceUrl),
         img: normalizeText(form.img) || '/imgs/projects/1.png',
         type: {
             ua: normalizeText(form.typeUa),

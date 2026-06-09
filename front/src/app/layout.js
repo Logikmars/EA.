@@ -3,6 +3,7 @@ import { siteConfig } from '@/lib/site';
 import { inter } from '@/lib/fonts';
 import { getLocale, getTranslations } from 'next-intl/server';
 import '../styles/null.scss';
+import '../styles/PageTransition.scss';
 
 export async function generateMetadata() {
     const t = await getTranslations('SEO');

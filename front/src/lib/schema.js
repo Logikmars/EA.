@@ -85,7 +85,9 @@ export function buildItemListSchema({ locale, pathname, name, items }) {
         itemListElement: items.map((item, index) => ({
             '@type': 'ListItem',
             position: index + 1,
-            url: item.pathname ? toAbsoluteUrl(`/${locale}${item.pathname}`) : toAbsoluteUrl(`${basePath}#${item.id}`),
+            url: item.url || (item.pathname
+                ? toAbsoluteUrl(`/${locale}${item.pathname}`)
+                : toAbsoluteUrl(`${basePath}${item.anchor ? `#${item.anchor}` : ''}`)),
             name: item.name,
             description: item.description,
         })),

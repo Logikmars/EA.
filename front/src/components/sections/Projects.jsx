@@ -95,8 +95,7 @@ const Projects = observer(({
                         title={project.title}
                         description={project.summary}
                         alt={project.title}
-                        id={project.slug}
-                        key={project.slug}
+                        key={project.href || project.title}
                     />
                 ))}
             </div>

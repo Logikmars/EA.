@@ -13,8 +13,8 @@ export function createMediaRouter(requireAdmin) {
 
     router.get('/content/media', mediaController.getPublicMedia);
     router.post('/admin/media', requireAdmin, adminWriteRateLimit, mediaController.createMedia);
-    router.put('/admin/media/:slug', requireAdmin, adminWriteRateLimit, mediaController.updateMedia);
-    router.delete('/admin/media/:slug', requireAdmin, adminWriteRateLimit, mediaController.deleteMedia);
+    router.put('/admin/media/by-source/:sourceUrl', requireAdmin, adminWriteRateLimit, mediaController.updateMedia);
+    router.delete('/admin/media/by-source/:sourceUrl', requireAdmin, adminWriteRateLimit, mediaController.deleteMedia);
 
     return router;
 }

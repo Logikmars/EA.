@@ -8,9 +8,11 @@ const CustomInput = ({
     onChange,
     error,
     className,
+    options,
 
     w50,
 
+    select,
     textarea,
     ...props
 }) => {
@@ -23,7 +25,7 @@ const CustomInput = ({
         CustomInput_textarea: textarea,
         CustomInput_error: Boolean(error),
     });
-    const Tag = textarea ? 'textarea' : 'input';
+    const Tag = textarea ? 'textarea' : select ? 'select' : 'input';
 
     return (
         <div className={fieldClassName}>
@@ -37,7 +39,13 @@ const CustomInput = ({
                 aria-invalid={Boolean(error)}
                 aria-describedby={errorId}
                 {...props}
-            />
+            >
+                {select ? options?.map((option) => (
+                    <option key={option.value} value={option.value}>
+                        {option.label}
+                    </option>
+                )) : null}
+            </Tag>
             {error ? (
                 <p className='CustomInputField_message' id={errorId}>
                     {error}

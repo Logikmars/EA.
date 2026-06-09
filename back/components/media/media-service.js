@@ -1,4 +1,4 @@
-import { appendMediaItem, deleteMediaBySlug, readAdminContent, updateMediaBySlug } from '../../src/contentStore.js';
+import { appendMediaItem, deleteMediaBySourceUrl, readAdminContent, updateMediaBySourceUrl } from '../../src/contentStore.js';
 import { mapMediaListItem, mediaSchema } from './media-model.js';
 
 class MediaService {
@@ -25,14 +25,14 @@ class MediaService {
         return appendMediaItem(parsedPayload);
     }
 
-    async updateMedia(slug, payload) {
+    async updateMedia(sourceUrl, payload) {
         const parsedPayload = mediaSchema.parse(payload);
 
-        return updateMediaBySlug(slug, parsedPayload);
+        return updateMediaBySourceUrl(sourceUrl, parsedPayload);
     }
 
-    async deleteMedia(slug) {
-        return deleteMediaBySlug(slug);
+    async deleteMedia(sourceUrl) {
+        return deleteMediaBySourceUrl(sourceUrl);
     }
 }
 

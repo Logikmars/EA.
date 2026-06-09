@@ -19,6 +19,9 @@ const optionalSocialLinkSchema = z
     .optional()
     .or(z.literal(''));
 
+const inquiryTypes = ['speaking', 'consulting', 'partnership', 'other'];
+const budgetRanges = ['undisclosed', 'under-5k', '5k-15k', '15k-plus'];
+
 export const contactFormSchema = z.object({
     name: z
         .string()
@@ -32,11 +35,25 @@ export const contactFormSchema = z.object({
         .max(255, 'Email must be 255 characters or fewer'),
     phone: optionalPhoneSchema,
     link: optionalSocialLinkSchema,
+    company: z
+        .string()
+        .trim()
+        .max(120, 'Company name must be 120 characters or fewer')
+        .optional()
+        .or(z.literal('')),
+    inquiryType: z.enum(inquiryTypes, 'Choose a valid inquiry type'),
+    budget: z.enum(budgetRanges, 'Choose a valid budget range'),
     message: z
         .string()
         .trim()
         .min(10, 'Message must be at least 10 characters')
         .max(2000, 'Message must be 2000 characters or fewer'),
+    website: z
+        .string()
+        .trim()
+        .max(0, 'Spam detected')
+        .optional()
+        .or(z.literal('')),
 });
 
 export function validateContactField(field, value) {

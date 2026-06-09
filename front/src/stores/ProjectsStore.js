@@ -29,11 +29,11 @@ class ProjectsStore {
     mergeItems(locale, initialItems, backendItems) {
         const seen = new Set();
         const mergedItems = [...backendItems, ...initialItems].filter((item) => {
-            if (!item?.slug || seen.has(item.slug)) {
+            if (!item?.href || seen.has(item.href)) {
                 return false;
             }
 
-            seen.add(item.slug);
+            seen.add(item.href);
             return true;
         });
 

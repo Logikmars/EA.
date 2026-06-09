@@ -40,18 +40,6 @@ function isDuplicateKeyError(error) {
     return error && typeof error === 'object' && error.code === 11000;
 }
 
-async function findAvailableMediaSlug(baseSlug) {
-    let candidateSlug = baseSlug;
-    let suffix = 2;
-
-    while (await MediaModel.exists({ slug: candidateSlug })) {
-        candidateSlug = `${baseSlug}-${suffix}`;
-        suffix += 1;
-    }
-
-    return candidateSlug;
-}
-
 async function isImageReferencedAnywhere(img) {
     if (!img) {
         return false;
@@ -95,13 +83,10 @@ export async function readAdminContent() {
 
 export async function appendProject(project) {
     try {
-        await ProjectModel.create({
-            ...project,
-            detailAvailable: false,
-        });
+        await ProjectModel.create(project);
     } catch (error) {
         if (isDuplicateKeyError(error)) {
-            throw createHttpError(409, 'A project with this slug already exists.');
+            throw createHttpError(409, 'A project with this link already exists.');
         }
 
         throw error;
@@ -110,27 +95,24 @@ export async function appendProject(project) {
     return listProjects();
 }
 
-export async function updateProjectBySlug(currentSlug, nextProject) {
-    const currentProject = await ProjectModel.findOne({ slug: currentSlug }).exec();
+export async function updateProjectByHref(currentHref, nextProject) {
+    const currentProject = await ProjectModel.findOne({ href: currentHref }).exec();
 
     if (!currentProject) {
         throw createHttpError(404, 'Project not found.');
     }
 
-    if (nextProject.slug !== currentSlug) {
-        const existingProject = await ProjectModel.exists({ slug: nextProject.slug });
+    if (nextProject.href !== currentHref) {
+        const existingProject = await ProjectModel.exists({ href: nextProject.href });
 
         if (existingProject) {
-            throw createHttpError(409, 'A project with this slug already exists.');
+            throw createHttpError(409, 'A project with this link already exists.');
         }
     }
 
     const previousImage = currentProject.img;
 
-    currentProject.set({
-        ...nextProject,
-        detailAvailable: currentProject.detailAvailable ?? false,
-    });
+    currentProject.set(nextProject);
 
     await currentProject.save();
     if (previousImage !== currentProject.img) {
@@ -140,8 +122,8 @@ export async function updateProjectBySlug(currentSlug, nextProject) {
     return listProjects();
 }
 
-export async function deleteProjectBySlug(slug) {
-    const project = await ProjectModel.findOne({ slug }).exec();
+export async function deleteProjectByHref(href) {
+    const project = await ProjectModel.findOne({ href }).exec();
 
     if (!project) {
         throw createHttpError(404, 'Project not found.');
@@ -157,17 +139,11 @@ export async function deleteProjectBySlug(slug) {
 }
 
 export async function appendMediaItem(mediaItem) {
-    const nextSlug = await findAvailableMediaSlug(mediaItem.slug);
-
     try {
-        await MediaModel.create({
-            ...mediaItem,
-            slug: nextSlug,
-            detailAvailable: false,
-        });
+        await MediaModel.create(mediaItem);
     } catch (error) {
         if (isDuplicateKeyError(error)) {
-            throw createHttpError(409, 'A media item with this slug already exists.');
+            throw createHttpError(409, 'A media item with this source URL already exists.');
         }
 
         throw error;
@@ -176,27 +152,24 @@ export async function appendMediaItem(mediaItem) {
     return listMedia();
 }
 
-export async function updateMediaBySlug(currentSlug, nextMediaItem) {
-    const currentMediaItem = await MediaModel.findOne({ slug: currentSlug }).exec();
+export async function updateMediaBySourceUrl(currentSourceUrl, nextMediaItem) {
+    const currentMediaItem = await MediaModel.findOne({ sourceUrl: currentSourceUrl }).exec();
 
     if (!currentMediaItem) {
         throw createHttpError(404, 'Media item not found.');
     }
 
-    if (nextMediaItem.slug !== currentSlug) {
-        const existingMediaItem = await MediaModel.exists({ slug: nextMediaItem.slug });
+    if (nextMediaItem.sourceUrl !== currentSourceUrl) {
+        const existingMediaItem = await MediaModel.exists({ sourceUrl: nextMediaItem.sourceUrl });
 
         if (existingMediaItem) {
-            throw createHttpError(409, 'A media item with this slug already exists.');
+            throw createHttpError(409, 'A media item with this source URL already exists.');
         }
     }
 
     const previousImage = currentMediaItem.img;
 
-    currentMediaItem.set({
-        ...nextMediaItem,
-        detailAvailable: currentMediaItem.detailAvailable ?? false,
-    });
+    currentMediaItem.set(nextMediaItem);
 
     await currentMediaItem.save();
     if (previousImage !== currentMediaItem.img) {
@@ -206,8 +179,8 @@ export async function updateMediaBySlug(currentSlug, nextMediaItem) {
     return listMedia();
 }
 
-export async function deleteMediaBySlug(slug) {
-    const mediaItem = await MediaModel.findOne({ slug }).exec();
+export async function deleteMediaBySourceUrl(sourceUrl) {
+    const mediaItem = await MediaModel.findOne({ sourceUrl }).exec();
 
     if (!mediaItem) {
         throw createHttpError(404, 'Media item not found.');

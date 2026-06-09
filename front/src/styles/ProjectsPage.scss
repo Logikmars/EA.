@@ -18,12 +18,99 @@
             text-align: center;
         }
     }
+
+    &_controls{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    &_search{
+        width: 100%;
+    }
+
+    &_searchInput{
+        width: 100%;
+        min-height: 58px;
+        border: 1px solid rgba(11, 11, 11, 0.12);
+        border-radius: 18px;
+        padding: 0 22px;
+        font-size: 16px;
+        color: #0b0b0b;
+        background: rgba(255, 255, 255, 0.88);
+        outline: none;
+        transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+
+        &::placeholder{
+            color: rgba(11, 11, 11, 0.45);
+        }
+
+        &:focus{
+            border-color: #1c5cff;
+            box-shadow: 0 0 0 4px rgba(28, 92, 255, 0.14);
+            transform: translateY(-1px);
+        }
+    }
+
+    &_filters{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+    }
+
+    &_filtersLabel{
+        font-size: 14px;
+        font-weight: 600;
+        color: rgba(11, 11, 11, 0.58);
+    }
+
+    &_filter{
+        min-height: 42px;
+        border-radius: 999px;
+        border: 1px solid rgba(11, 11, 11, 0.12);
+        padding: 0 18px;
+        background: transparent;
+        color: #0b0b0b;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease, transform 220ms ease;
+
+        &:hover{
+            transform: translateY(-1px);
+            border-color: rgba(28, 92, 255, 0.26);
+        }
+
+        &__active{
+            background-color: #1c5cff;
+            border-color: #1c5cff;
+            color: white;
+        }
+
+        &__clear{
+            border-style: dashed;
+        }
+    }
+
     &_list{
         width: 100%;
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         justify-items: center;
         gap: $gap_m;
+    }
+
+    &_empty{
+        width: 100%;
+        text-align: center;
+        font-size: 16px;
+        color: rgba(11, 11, 11, 0.6);
+        padding: 28px 16px;
+        border: 1px dashed rgba(11, 11, 11, 0.14);
+        border-radius: 20px;
     }
 }
 

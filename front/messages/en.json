@@ -67,7 +67,11 @@
     "all": "All projects"
   },
   "ProjectsPage": {
-    "title": "All projects"
+    "title": "All projects",
+    "filters": "Filters",
+    "search": "Search by title or description",
+    "clearFilters": "Clear",
+    "empty": "No projects match the selected filters."
   },
   "ProjectItems": {
     "national-multimedia-company": {

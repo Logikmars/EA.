@@ -23,7 +23,7 @@ class ProjectsController {
 
     updateProject = async (req, res, next) => {
         try {
-            const items = await projectsService.updateProject(req.params.slug, req.body);
+            const items = await projectsService.updateProject(req.params.href, req.body);
 
             return res.json({ items });
         } catch (error) {
@@ -33,7 +33,7 @@ class ProjectsController {
 
     deleteProject = async (req, res, next) => {
         try {
-            const items = await projectsService.deleteProject(req.params.slug);
+            const items = await projectsService.deleteProject(req.params.href);
 
             return res.json({ items });
         } catch (error) {

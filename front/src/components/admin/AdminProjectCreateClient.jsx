@@ -37,6 +37,14 @@ const AdminProjectCreateClient = observer(() => {
                         <input name='href' onChange={updateField('href')} required type='url' value={form.href} />
                     </label>
                     <label className='AdminField'>
+                        <span>Category UA</span>
+                        <input name='categoryUa' onChange={updateField('categoryUa')} required type='text' value={form.categoryUa} />
+                    </label>
+                    <label className='AdminField'>
+                        <span>Category EN</span>
+                        <input name='categoryEn' onChange={updateField('categoryEn')} required type='text' value={form.categoryEn} />
+                    </label>
+                    <label className='AdminField'>
                         <span>Title UA</span>
                         <input name='titleUa' onChange={updateField('titleUa')} required type='text' value={form.titleUa} />
                     </label>

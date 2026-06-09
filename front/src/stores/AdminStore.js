@@ -321,13 +321,13 @@ class AdminStore {
         }
     }
 
-    async updateProject(currentSlug, payload) {
+    async updateProject(currentHref, payload) {
         this.isSubmitting = true;
         this.clearError();
         this.clearSuccess();
 
         try {
-            const data = await requestAdminJson(`/projects/${encodeURIComponent(currentSlug)}`, {
+            const data = await requestAdminJson(`/projects/by-link/${encodeURIComponent(currentHref)}`, {
                 method: 'PUT',
                 body: payload,
             });
@@ -351,13 +351,13 @@ class AdminStore {
         }
     }
 
-    async deleteProject(slug) {
+    async deleteProject(href) {
         this.isSubmitting = true;
         this.clearError();
         this.clearSuccess();
 
         try {
-            const data = await requestAdmin(`/projects/${encodeURIComponent(slug)}`, {
+            const data = await requestAdmin(`/projects/by-link/${encodeURIComponent(href)}`, {
                 method: 'DELETE',
             });
 
@@ -380,13 +380,13 @@ class AdminStore {
         }
     }
 
-    async updateMedia(currentSlug, payload) {
+    async updateMedia(currentSourceUrl, payload) {
         this.isSubmitting = true;
         this.clearError();
         this.clearSuccess();
 
         try {
-            const data = await requestAdminJson(`/media/${encodeURIComponent(currentSlug)}`, {
+            const data = await requestAdminJson(`/media/by-source/${encodeURIComponent(currentSourceUrl)}`, {
                 method: 'PUT',
                 body: payload,
             });
@@ -410,13 +410,13 @@ class AdminStore {
         }
     }
 
-    async deleteMedia(slug) {
+    async deleteMedia(sourceUrl) {
         this.isSubmitting = true;
         this.clearError();
         this.clearSuccess();
 
         try {
-            const data = await requestAdmin(`/media/${encodeURIComponent(slug)}`, {
+            const data = await requestAdmin(`/media/by-source/${encodeURIComponent(sourceUrl)}`, {
                 method: 'DELETE',
             });
 

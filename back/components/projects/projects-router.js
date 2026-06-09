@@ -13,8 +13,8 @@ export function createProjectsRouter(requireAdmin) {
 
     router.get('/content/projects', projectsController.getPublicProjects);
     router.post('/admin/projects', requireAdmin, adminWriteRateLimit, projectsController.createProject);
-    router.put('/admin/projects/:slug', requireAdmin, adminWriteRateLimit, projectsController.updateProject);
-    router.delete('/admin/projects/:slug', requireAdmin, adminWriteRateLimit, projectsController.deleteProject);
+    router.put('/admin/projects/by-link/:href', requireAdmin, adminWriteRateLimit, projectsController.updateProject);
+    router.delete('/admin/projects/by-link/:href', requireAdmin, adminWriteRateLimit, projectsController.deleteProject);
 
     return router;
 }

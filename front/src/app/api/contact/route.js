@@ -48,11 +48,14 @@ const createInfoRow = (label, value, href = '') => `
     </tr>
 `;
 
-const createContactEmailHtml = ({ name, email, phone, link, message }) => {
+const createContactEmailHtml = ({ name, email, phone, link, company, inquiryType, budget, message }) => {
     const safeName = escapeHtml(name);
     const safeEmail = escapeHtml(email);
     const safePhone = escapeHtml(phone || '-');
     const safeLink = escapeHtml(link || '-');
+    const safeCompany = escapeHtml(company || '-');
+    const safeInquiryType = escapeHtml(inquiryType || '-');
+    const safeBudget = escapeHtml(budget || '-');
     const safeMessage = escapeHtml(message).replace(/\n/g, '<br />');
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || '';
     const safeSiteUrl = siteUrl ? escapeHtml(siteUrl) : '';
@@ -129,6 +132,17 @@ const createContactEmailHtml = ({ name, email, phone, link, message }) => {
                                                         <tr>
                                                             <td style="width: 50%; padding-right: 12px;">
                                                                 ${createInfoRow('Contact Link', safeLink, linkHref)}
+                                                            </td>
+                                                            <td style="width: 50%; padding-left: 12px;">
+                                                                ${createInfoRow('Company', safeCompany)}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="width: 50%; padding-right: 12px;">
+                                                                ${createInfoRow('Inquiry Type', safeInquiryType)}
+                                                            </td>
+                                                            <td style="width: 50%; padding-left: 12px;">
+                                                                ${createInfoRow('Budget', safeBudget)}
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -289,7 +303,12 @@ export async function POST(request) {
             );
         }
 
-        const { name, email, phone, link, message } = parsed.data;
+        const { name, email, phone, link, company, inquiryType, budget, message, website } = parsed.data;
+
+        if (website) {
+            return Response.json({ ok: true });
+        }
+
         const transporter = createTransporter();
         const to = parseEmailList(process.env.CONTACT_FORM_TO);
         const from = formatFromAddress(
@@ -311,11 +330,14 @@ export async function POST(request) {
                 `Email: ${email}`,
                 `Phone: ${phone || '-'}`,
                 `Link: ${link || '-'}`,
+                `Company: ${company || '-'}`,
+                `Inquiry Type: ${inquiryType}`,
+                `Budget: ${budget}`,
                 '',
                 'Message:',
                 message,
             ].join('\n'),
-            html: createContactEmailHtml({ name, email, phone, link, message }),
+            html: createContactEmailHtml({ name, email, phone, link, company, inquiryType, budget, message }),
         });
 
         const response = Response.json({ ok: true });

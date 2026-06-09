@@ -23,20 +23,19 @@ const localizedMongoOptionalTextSchema = new mongoose.Schema({
 }, { _id: false });
 
 export const projectSchema = z.object({
-    slug: z.string().trim().min(1).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
     img: imageReferenceSchema.default('/imgs/projects/1.png'),
     href: httpUrlSchema,
+    category: localizedTextSchema.default({ ua: 'Загальне', en: 'General' }),
     title: localizedTextSchema,
     summary: localizedOptionalTextSchema.default({ ua: '', en: '' }),
 });
 
 const projectMongoSchema = new mongoose.Schema({
-    slug: { type: String, required: true, unique: true, trim: true },
     img: { type: String, default: '/imgs/projects/1.png', trim: true },
-    href: { type: String, required: true, trim: true },
+    href: { type: String, required: true, unique: true, trim: true },
+    category: { type: localizedMongoTextSchema, default: () => ({ ua: 'Загальне', en: 'General' }) },
     title: { type: localizedMongoTextSchema, required: true },
     summary: { type: localizedMongoOptionalTextSchema, default: () => ({ ua: '', en: '' }) },
-    detailAvailable: { type: Boolean, default: false },
 }, {
     timestamps: true,
     versionKey: false,
@@ -45,13 +44,17 @@ const projectMongoSchema = new mongoose.Schema({
 export const ProjectModel = mongoose.models.Project || mongoose.model('Project', projectMongoSchema);
 
 export function mapProjectListItem(project, locale) {
+    const fallbackCategory = {
+        ua: 'Загальне',
+        en: 'General',
+    };
+
     return {
-        slug: project.slug,
         img: project.img,
         href: project.href,
+        category: (project.category || fallbackCategory)[locale],
         title: project.title[locale],
         summary: project.summary[locale],
-        detailAvailable: Boolean(project.detailAvailable),
         createdAt: project.createdAt,
     };
 }
