@@ -1,6 +1,6 @@
 import { MediaModel } from '../components/media/media-model.js';
 import { ProjectModel } from '../components/projects/projects-model.js';
-import { deleteManagedUploadByFilename, getManagedUploadFilename } from './upload.js';
+import { deleteFileFromR2, getR2ObjectKeyFromUrl } from './r2.js';
 import { createHttpError } from './httpError.js';
 
 function serializeDocument(document) {
@@ -40,33 +40,54 @@ function isDuplicateKeyError(error) {
     return error && typeof error === 'object' && error.code === 11000;
 }
 
-async function isImageReferencedAnywhere(img) {
-    if (!img) {
+function isDuplicateFieldError(error, field) {
+    return isDuplicateKeyError(error)
+        && (
+            error.keyPattern?.[field] === 1
+            || Object.prototype.hasOwnProperty.call(error.keyValue || {}, field)
+        );
+}
+
+async function isImageReferencedAnywhere(imgKey) {
+    if (!imgKey) {
         return false;
     }
 
     const [projectReferenceExists, mediaReferenceExists] = await Promise.all([
-        ProjectModel.exists({ img }),
-        MediaModel.exists({ img }),
+        ProjectModel.exists({ imgKey }),
+        MediaModel.exists({ imgKey }),
     ]);
 
     return Boolean(projectReferenceExists || mediaReferenceExists);
 }
 
-async function cleanupOrphanedUpload(img) {
-    const filename = getManagedUploadFilename(img);
-
-    if (!filename) {
+async function cleanupOrphanedR2Object(imgKey, route) {
+    if (!imgKey) {
         return;
     }
 
-    const isStillReferenced = await isImageReferencedAnywhere(img);
+    const isStillReferenced = await isImageReferencedAnywhere(imgKey);
 
     if (isStillReferenced) {
         return;
     }
 
-    await deleteManagedUploadByFilename(filename);
+    await deleteFileFromR2(imgKey, route);
+}
+
+function withManagedImageKey(item) {
+    return {
+        ...item,
+        imgKey: getR2ObjectKeyFromUrl(item.img),
+    };
+}
+
+async function safelyCleanupOrphanedR2Object(imgKey, route) {
+    try {
+        await cleanupOrphanedR2Object(imgKey, route);
+    } catch {
+        // The primary MongoDB mutation already succeeded. The R2 service logged safe context.
+    }
 }
 
 export async function readAdminContent() {
@@ -82,11 +103,19 @@ export async function readAdminContent() {
 }
 
 export async function appendProject(project) {
+    const nextProject = withManagedImageKey(project);
+
     try {
-        await ProjectModel.create(project);
+        await ProjectModel.create(nextProject);
     } catch (error) {
-        if (isDuplicateKeyError(error)) {
+        await safelyCleanupOrphanedR2Object(nextProject.imgKey, 'POST /api/admin/projects rollback');
+
+        if (isDuplicateFieldError(error, 'href')) {
             throw createHttpError(409, 'A project with this link already exists.');
+        }
+
+        if (isDuplicateKeyError(error)) {
+            throw createHttpError(409, 'A project conflicts with an existing record.');
         }
 
         throw error;
@@ -110,13 +139,25 @@ export async function updateProjectByHref(currentHref, nextProject) {
         }
     }
 
-    const previousImage = currentProject.img;
+    const previousImageKey = currentProject.imgKey;
+    const projectWithImageKey = withManagedImageKey(nextProject);
 
-    currentProject.set(nextProject);
+    currentProject.set(projectWithImageKey);
 
-    await currentProject.save();
-    if (previousImage !== currentProject.img) {
-        await cleanupOrphanedUpload(previousImage);
+    try {
+        await currentProject.save();
+    } catch (error) {
+        if (projectWithImageKey.imgKey !== previousImageKey) {
+            await safelyCleanupOrphanedR2Object(
+                projectWithImageKey.imgKey,
+                'PUT /api/admin/projects rollback'
+            );
+        }
+        throw error;
+    }
+
+    if (previousImageKey !== currentProject.imgKey) {
+        await safelyCleanupOrphanedR2Object(previousImageKey, 'PUT /api/admin/projects cleanup');
     }
 
     return listProjects();
@@ -129,21 +170,29 @@ export async function deleteProjectByHref(href) {
         throw createHttpError(404, 'Project not found.');
     }
 
-    const imageToCleanup = project.img;
+    const imageKeyToCleanup = project.imgKey;
 
     await project.deleteOne();
 
-    await cleanupOrphanedUpload(imageToCleanup);
+    await safelyCleanupOrphanedR2Object(imageKeyToCleanup, 'DELETE /api/admin/projects');
 
     return listProjects();
 }
 
 export async function appendMediaItem(mediaItem) {
+    const nextMediaItem = withManagedImageKey(mediaItem);
+
     try {
-        await MediaModel.create(mediaItem);
+        await MediaModel.create(nextMediaItem);
     } catch (error) {
-        if (isDuplicateKeyError(error)) {
+        await safelyCleanupOrphanedR2Object(nextMediaItem.imgKey, 'POST /api/admin/media rollback');
+
+        if (isDuplicateFieldError(error, 'sourceUrl')) {
             throw createHttpError(409, 'A media item with this source URL already exists.');
+        }
+
+        if (isDuplicateKeyError(error)) {
+            throw createHttpError(409, 'A media item conflicts with an existing record.');
         }
 
         throw error;
@@ -167,13 +216,25 @@ export async function updateMediaBySourceUrl(currentSourceUrl, nextMediaItem) {
         }
     }
 
-    const previousImage = currentMediaItem.img;
+    const previousImageKey = currentMediaItem.imgKey;
+    const mediaItemWithImageKey = withManagedImageKey(nextMediaItem);
 
-    currentMediaItem.set(nextMediaItem);
+    currentMediaItem.set(mediaItemWithImageKey);
 
-    await currentMediaItem.save();
-    if (previousImage !== currentMediaItem.img) {
-        await cleanupOrphanedUpload(previousImage);
+    try {
+        await currentMediaItem.save();
+    } catch (error) {
+        if (mediaItemWithImageKey.imgKey !== previousImageKey) {
+            await safelyCleanupOrphanedR2Object(
+                mediaItemWithImageKey.imgKey,
+                'PUT /api/admin/media rollback'
+            );
+        }
+        throw error;
+    }
+
+    if (previousImageKey !== currentMediaItem.imgKey) {
+        await safelyCleanupOrphanedR2Object(previousImageKey, 'PUT /api/admin/media cleanup');
     }
 
     return listMedia();
@@ -186,10 +247,10 @@ export async function deleteMediaBySourceUrl(sourceUrl) {
         throw createHttpError(404, 'Media item not found.');
     }
 
-    const imageToCleanup = mediaItem.img;
+    const imageKeyToCleanup = mediaItem.imgKey;
 
     await mediaItem.deleteOne();
-    await cleanupOrphanedUpload(imageToCleanup);
+    await safelyCleanupOrphanedR2Object(imageKeyToCleanup, 'DELETE /api/admin/media');
 
     return listMedia();
 }

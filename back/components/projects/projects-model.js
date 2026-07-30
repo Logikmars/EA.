@@ -32,6 +32,7 @@ export const projectSchema = z.object({
 
 const projectMongoSchema = new mongoose.Schema({
     img: { type: String, default: '/imgs/projects/1.png', trim: true },
+    imgKey: { type: String, default: null, trim: true },
     href: { type: String, required: true, unique: true, trim: true },
     category: { type: localizedMongoTextSchema, default: () => ({ ua: 'Загальне', en: 'General' }) },
     title: { type: localizedMongoTextSchema, required: true },

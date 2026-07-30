@@ -34,6 +34,7 @@ export const mediaSchema = z.object({
 
 const mediaMongoSchema = new mongoose.Schema({
     img: { type: String, default: '/imgs/projects/1.png', trim: true },
+    imgKey: { type: String, default: null, trim: true },
     type: { type: localizedMongoTextSchema, required: true },
     title: { type: localizedMongoTextSchema, required: true },
     summary: { type: localizedMongoOptionalTextSchema, default: () => ({ ua: '', en: '' }) },

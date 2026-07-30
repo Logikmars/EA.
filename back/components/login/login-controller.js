@@ -1,7 +1,7 @@
 import { getAdminSession, initiateAdminLogin, mapSessionResponse } from './login-service.js';
 import projectsService from '../projects/projects-service.js';
 import mediaService from '../media/media-service.js';
-import { buildAbsoluteUploadedFileUrl, persistUploadedImage } from '../../src/upload.js';
+import { persistUploadedImage } from '../../src/upload.js';
 import { createHttpError } from '../../src/httpError.js';
 
 class LoginController {
@@ -51,11 +51,9 @@ class LoginController {
 
     uploadImage = async (req, res, next) => {
         try {
-            const filename = await persistUploadedImage(req.file);
+            const uploadedImage = await persistUploadedImage(req.file);
 
-            return res.status(201).json({
-                url: buildAbsoluteUploadedFileUrl(req, filename),
-            });
+            return res.status(201).json(uploadedImage);
         } catch (error) {
             return next(error);
         }

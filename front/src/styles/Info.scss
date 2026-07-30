@@ -44,22 +44,12 @@
 
 
         &_line{
-            color: transparent;
-            background: linear-gradient(
-                180deg,
-                rgba(255, 255, 255, 0.98) 0%,
-                rgba(196, 196, 196, 0.88) 100%
-            );
-            -webkit-background-clip: text;
-            background-clip: text;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         &_char{
             display: inline-block;
-            color: transparent;
-            background: inherit;
-            -webkit-background-clip: text;
-            background-clip: text;
+            color: inherit;
             will-change: opacity;
         }
 

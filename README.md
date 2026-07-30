@@ -17,7 +17,7 @@ cd ../back && npm install
 2. Create local env files from the examples:
 
 ```bash
-copy front\.env.local.example front\.env.local
+copy front\.env.example front\.env.local
 copy back\.env.example back\.env
 ```
 

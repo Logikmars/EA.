@@ -9,7 +9,7 @@ function isExternalLink(href) {
 }
 
 function shouldUseUnoptimizedImage(src) {
-    return isManagedUploadUrl(src);
+    return isManagedUploadUrl(src) || /^https?:\/\//i.test(src);
 }
 
 function renderProjectImage(src, alt) {

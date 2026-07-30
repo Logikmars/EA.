@@ -1,32 +1,12 @@
-import { existsSync, mkdirSync, unlink, writeFile } from 'node:fs';
-import path from 'node:path';
-import { promisify } from 'node:util';
 import multer from 'multer';
-import { uploadsDirectoryPath } from './paths.js';
 import { createHttpError } from './httpError.js';
-
-const writeFileAsync = promisify(writeFile);
-const unlinkAsync = promisify(unlink);
+import { uploadFileToR2 } from './r2.js';
 const allowedMimeTypes = new Map([
     ['image/jpeg', '.jpg'],
     ['image/png', '.png'],
     ['image/webp', '.webp'],
     ['image/gif', '.gif'],
 ]);
-
-if (!existsSync(uploadsDirectoryPath)) {
-    mkdirSync(uploadsDirectoryPath, { recursive: true });
-}
-
-function sanitizeBaseName(originalname) {
-    const extension = path.extname(originalname || '');
-
-    return path.basename(originalname || 'upload', extension)
-        .toLowerCase()
-        .replace(/[^a-z0-9-]+/g, '-')
-        .replace(/-{2,}/g, '-')
-        .replace(/^-|-$/g, '') || 'upload';
-}
 
 function isPng(buffer) {
     return buffer.length >= 8
@@ -103,77 +83,5 @@ export async function persistUploadedImage(file) {
         throw createHttpError(400, 'Uploaded file content does not match a supported image type.');
     }
 
-    const safeBaseName = sanitizeBaseName(file.originalname);
-    const filename = `${Date.now()}-${safeBaseName}${detectedExtension}`;
-    const destinationPath = path.join(uploadsDirectoryPath, filename);
-
-    await writeFileAsync(destinationPath, file.buffer);
-
-    return filename;
-}
-
-export function getManagedUploadFilename(value) {
-    if (typeof value !== 'string' || !value.trim()) {
-        return null;
-    }
-
-    const normalizedValue = value.trim();
-    let pathname = normalizedValue;
-
-    try {
-        if (/^https?:\/\//i.test(normalizedValue)) {
-            pathname = new URL(normalizedValue).pathname;
-        }
-    } catch {
-        return null;
-    }
-
-    if (!pathname.startsWith('/uploads/')) {
-        return null;
-    }
-
-    const filename = path.posix.basename(pathname);
-
-    if (!filename || filename !== pathname.slice('/uploads/'.length)) {
-        return null;
-    }
-
-    return filename;
-}
-
-export async function deleteManagedUploadByFilename(filename) {
-    if (!filename) {
-        return;
-    }
-
-    const uploadPath = path.join(uploadsDirectoryPath, filename);
-    const resolvedUploadPath = path.resolve(uploadPath);
-    const resolvedUploadsDirectoryPath = path.resolve(uploadsDirectoryPath);
-
-    if (!resolvedUploadPath.startsWith(`${resolvedUploadsDirectoryPath}${path.sep}`)) {
-        throw createHttpError(400, 'Refused to delete a file outside the uploads directory.');
-    }
-
-    try {
-        await unlinkAsync(resolvedUploadPath);
-    } catch (error) {
-        if (error?.code !== 'ENOENT') {
-            throw error;
-        }
-    }
-}
-
-export function buildUploadedFileUrl(filename) {
-    return `/uploads/${filename}`;
-}
-
-export function buildAbsoluteUploadedFileUrl(req, filename) {
-    const relativeUrl = buildUploadedFileUrl(filename);
-    const publicOrigin = process.env.BACKEND_PUBLIC_URL?.trim().replace(/\/$/, '');
-
-    if (publicOrigin) {
-        return `${publicOrigin}${relativeUrl}`;
-    }
-
-    return `${req.protocol}://${req.get('host')}${relativeUrl}`;
+    return uploadFileToR2(file);
 }
