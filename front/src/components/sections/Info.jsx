@@ -147,7 +147,7 @@ const Info = () => {
                 </div>
                 <div className='Info_text'>
                     {texts.map((el) => (
-                        <Text fw_medium fs_xl className='Info_text_line' key={`Info_text_key_${el}`}>
+                        <Text white fw_medium fs_xl className='Info_text_line' key={`Info_text_key_${el}`}>
                             {isDesktopAnimated ? renderAnimatedText(el) : el}
                         </Text>
                     ))}
