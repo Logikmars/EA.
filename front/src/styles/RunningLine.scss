@@ -14,6 +14,9 @@
         align-items: center;
         gap: 48px;
         width: max-content;
+        transform: translate3d(0, 0, 0);
+        will-change: transform;
+        backface-visibility: hidden;
     }
 
     &_img{

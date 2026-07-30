@@ -45,15 +45,20 @@ export default function RunningLine() {
         }
 
         let cleanup = () => {};
+        let disposed = false;
 
         const init = async () => {
             const { default: gsap } = await import("gsap");
+
+            if (disposed) return;
 
             const ctx = gsap.context(() => {
             let tween = null;
             let resizeTimeout = null;
             let observer = null;
             let cancelled = false;
+            let measuredContainerWidth = 0;
+            let measuredTrackWidth = 0;
 
             gsap.set(track, {
                 x: 0,
@@ -63,13 +68,30 @@ export default function RunningLine() {
             const createTween = () => {
                 if (cancelled) return;
 
+                const containerWidth = container.getBoundingClientRect().width;
+                const trackWidth = track.scrollWidth;
+
+                // Mobile browser chrome changes the viewport height while scrolling and
+                // dispatches resize events. Rebuilding the tween in that case causes a
+                // visible jump even though the marquee dimensions did not change.
+                if (
+                    tween
+                    && Math.abs(containerWidth - measuredContainerWidth) < 1
+                    && Math.abs(trackWidth - measuredTrackWidth) < 1
+                ) {
+                    return;
+                }
+
+                measuredContainerWidth = containerWidth;
+                measuredTrackWidth = trackWidth;
+
                 if (tween) {
                     tween.kill();
                 }
 
                 gsap.set(track, { x: 0 });
 
-                const maxOffset = Math.max(track.scrollWidth - container.offsetWidth, 0);
+                const maxOffset = Math.max(trackWidth - containerWidth, 0);
                 gsap.set(track, { opacity: 1 });
 
                 if (!maxOffset) return;
@@ -122,7 +144,6 @@ export default function RunningLine() {
 
             waitForTrackAssets();
 
-            window.addEventListener("resize", scheduleInit);
             observer = new ResizeObserver(scheduleInit);
             observer.observe(container);
             observer.observe(track);
@@ -135,7 +156,6 @@ export default function RunningLine() {
                 if (observer) {
                     observer.disconnect();
                 }
-                window.removeEventListener("resize", scheduleInit);
                 if (tween) {
                     tween.kill();
                 }
@@ -147,7 +167,10 @@ export default function RunningLine() {
 
         init();
 
-        return () => cleanup();
+        return () => {
+            disposed = true;
+            cleanup();
+        };
     }, []);
 
     return (
