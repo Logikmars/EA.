@@ -8,6 +8,12 @@ import { buildMetadata } from '@/lib/seo';
 import { buildFAQPageSchema, buildItemListSchema, buildWebPageSchema } from '@/lib/schema';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Faq from '@/components/sections/Faq';
+import {
+    BusinessReviews,
+    Clients,
+    CreativeBusiness,
+    TrackRecord,
+} from '@/components/sections/ExpertiseSections';
 
 const Projects = dynamic(() => import('@/components/sections/Projects'));
 const Cooperation = dynamic(() => import('@/components/sections/Cooperation'));
@@ -92,10 +98,14 @@ const HomePage = async ({ params }) => {
             <StructuredData data={structuredData} />
             <Hero />
             <Info />
+            <Clients />
             <Projects locale={locale} projects={projects} />
+            <TrackRecord />
             <Cooperation />
+            <BusinessReviews />
             <Achivment />
             <Media locale={locale} mediaItems={mediaItems} />
+            <CreativeBusiness />
             <Faq />
             <MainForm />
         </div>

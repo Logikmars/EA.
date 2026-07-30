@@ -32,10 +32,7 @@ const Hero = async () => {
                         {t('description')}
                     </Text>
                     <div className='Hero_info_social'>
-                        <Btn color_blue fw_medium className='Hero_animate_button' href='/invite'>
-                            {t('invite')}
-                        </Btn>
-                        <Btn color_transparent text_black fw_medium className='Hero_animate_button' href='#contact'>
+                        <Btn color_blue fw_medium className='Hero_animate_button' href='#contact'>
                             {t('consultation')}
                         </Btn>
                     </div>

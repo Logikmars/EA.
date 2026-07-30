@@ -12,12 +12,6 @@ const Cooperation = () => {
 
     const els = [
         {
-            id: 'lecture',
-            img: '/imgs/icons/mic.svg',
-            alt: 'Lecture icon',
-            href: '/invite',
-        },
-        {
             id: 'speech',
             img: '/imgs/icons/users.svg',
             alt: 'Public speaking icon',
@@ -27,6 +21,12 @@ const Cooperation = () => {
             id: 'consulting',
             img: '/imgs/icons/case.svg',
             alt: 'Consulting icon',
+            href: '/invite',
+        },
+        {
+            id: 'mentoring',
+            img: '/imgs/icons/mic.svg',
+            alt: 'Mentoring icon',
             href: '/invite',
         },
     ];
