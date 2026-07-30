@@ -5,24 +5,38 @@
         linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
 
     &_container{
-        padding: $pt_xl $pr_l;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        padding: 80px 0;
         display: flex;
         flex-direction: column;
-        gap: $gap_l;
+        justify-content: center;
+        gap: $gap_m;
+        overflow: hidden;
 
-        @media(max-width: 900px){
-            padding: $pt_l $pr_s;
+        @media(max-width: 767px){
+            position: static;
+            height: auto;
+            min-height: auto;
+            padding: $pt_l 0;
             gap: $gap_m;
+            overflow: visible;
         }
     }
 
     &_heading{
-        max-width: 760px;
+        width: 100%;
+        max-width: 1500px;
+        padding: 0 $pr_l;
         display: flex;
         flex-direction: column;
+        align-items: center;
         gap: 18px;
+        text-align: center;
 
-        @media(max-width: 900px){
+        @media(max-width: 767px){
+            padding: 0 $pr_s;
             gap: 12px;
 
             h2{
@@ -36,24 +50,65 @@
         max-width: 640px;
         color: rgba(11, 11, 11, 0.72);
 
-        @media(max-width: 900px){
+        @media(max-width: 767px){
             text-align: center;
         }
     }
 
-    &_list{
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: $gap_l;
-        align-items: start;
+    &_viewport{
+        width: 100%;
+        position: relative;
 
-        @media(max-width: 980px){
+        &::before,
+        &::after{
+            content: '';
+            position: absolute;
+            z-index: 3;
+            top: -40px;
+            bottom: -40px;
+            width: clamp(60px, 10vw, 180px);
+            pointer-events: none;
+        }
+
+        &::before{
+            left: 0;
+            background: linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, .92) 28%, rgba(255, 255, 255, 0) 100%);
+        }
+
+        &::after{
+            right: 0;
+            background: linear-gradient(270deg, #fff 0%, rgba(255, 255, 255, .92) 28%, rgba(255, 255, 255, 0) 100%);
+        }
+
+        @media(max-width: 767px){
+            &::before,
+            &::after{
+                display: none;
+            }
+        }
+    }
+
+    &_list{
+        width: max-content;
+        display: flex;
+        gap: $gap_l;
+        align-items: stretch;
+        padding-inline: calc((100vw - min(760px, calc(100vw - 160px))) / 2);
+        will-change: transform;
+
+        @media(max-width: 767px){
+            width: 100%;
+            padding: 0;
+            display: grid;
             grid-template-columns: 1fr;
             gap: $gap_s;
+            will-change: auto;
         }
     }
 
     &_card{
+        width: min(760px, calc(100vw - 160px));
+        flex: 0 0 auto;
         min-height: 440px;
         display: grid;
         grid-template-columns: minmax(0, 1.1fr) minmax(240px, 0.9fr);
@@ -65,14 +120,18 @@
         box-shadow: 0 28px 72px rgba(10, 102, 255, 0.08);
         overflow: hidden;
 
-        @media(max-width: 1200px){
+        @media(max-width: 1200px) and (min-width: 768px){
             grid-template-columns: 1fr;
             min-height: unset;
         }
 
-        @media(max-width: 900px){
+        @media(max-width: 767px){
+            width: 100%;
+            min-height: auto;
             padding: 22px 20px;
-            border-radius: 26px;
+            border-radius: 0;
+            grid-template-columns: 1fr;
+            box-shadow: none;
         }
     }
 
@@ -101,7 +160,7 @@
     &_cardTitle{
         max-width: 420px;
 
-        @media(max-width: 900px){
+        @media(max-width: 767px){
             font-size: $fs_l;
         }
     }
@@ -127,6 +186,10 @@
 
         @media(max-width: 1200px){
             min-height: 220px;
+        }
+
+        @media(max-width: 767px){
+            border-radius: 20px;
         }
     }
 

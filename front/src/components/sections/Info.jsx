@@ -4,7 +4,6 @@ import '../../styles/Info.scss';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import InfoBlock from '../ui/InfoBlock';
-import Text from '../ui/Text';
 
 const Info = () => {
     const rootRef = useRef(null);
@@ -24,12 +23,6 @@ const Info = () => {
             amount: t('stats.campaigns.amount'),
             description: t('stats.campaigns.description'),
         },
-    ];
-
-    const texts = [
-        t('paragraphs.first'),
-        t('paragraphs.second'),
-        t('paragraphs.third'),
     ];
 
     useEffect(() => {
@@ -66,15 +59,9 @@ const Info = () => {
 
             const ctx = gsap.context(() => {
                 const blocks = gsap.utils.toArray('.Info_list .InfoBlock');
-                const chars = gsap.utils.toArray('.Info_text_char');
-
                 gsap.set(blocks, {
                     opacity: 0.2,
                     y: 40
-                });
-
-                gsap.set(chars, {
-                    opacity: 0.16
                 });
 
                 const blocksTimeline = gsap.timeline({
@@ -94,20 +81,6 @@ const Info = () => {
                     stagger: 0.08
                 });
 
-                gsap.to(chars, {
-                    opacity: 1,
-                    duration: 0.45,
-                    ease: 'power1.out',
-                    stagger: {
-                        each: 0.01,
-                        from: 'start',
-                    },
-                    scrollTrigger: {
-                        trigger: root,
-                        start: 'top 82%',
-                        once: true,
-                    }
-                });
             }, root);
 
             cleanup = () => ctx.revert();
@@ -118,38 +91,12 @@ const Info = () => {
         return () => cleanup();
     }, [isDesktopAnimated]);
 
-    const renderAnimatedText = (value) => (
-        value.split(' ').map((word, wordIndex, words) => (
-            <span
-                className='Info_text_word'
-                key={`Info_text_word_${wordIndex}_${word}`}
-            >
-                {word.split('').map((char, charIndex) => (
-                    <span
-                        className='Info_text_char'
-                        key={`Info_text_char_${wordIndex}_${charIndex}_${char}`}
-                    >
-                        {char}
-                    </span>
-                ))}
-                {wordIndex < words.length - 1 ? '\u00A0' : null}
-            </span>
-        ))
-    );
-
     return (
         <section className='Info' id='about' ref={rootRef}>
             <div className='Info_container container'>
                 <div className='Info_list'>
                     {els.map((el) => (
                         <InfoBlock amount={el.amount} description={el.description} key={`InfoBlock_ley_${el.amount}_${el.description}`} />
-                    ))}
-                </div>
-                <div className='Info_text'>
-                    {texts.map((el) => (
-                        <Text white fw_medium fs_xl className='Info_text_line' key={`Info_text_key_${el}`}>
-                            {isDesktopAnimated ? renderAnimatedText(el) : el}
-                        </Text>
                     ))}
                 </div>
             </div>

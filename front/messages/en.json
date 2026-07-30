@@ -44,9 +44,51 @@
       "third": "Today I work with founders, executive teams and event organizers who need strategic thinking, market insight and a speaker who can translate complex business growth topics into clear, usable frameworks."
     }
   },
+  "Clients": {
+    "title": "Selected clients",
+    "description": "Working with leading retailers, FMCG brands and national market leaders"
+  },
+  "TrackRecord": {
+    "title": "Educational activity",
+    "description": "Practical business education measured by entrepreneur growth rather than the number of lectures completed.",
+    "items": {
+      "methodology": {
+        "title": "MOPS methodologist and founder",
+        "description": "One of the creators of a modern entrepreneur education methodology built on practical tools rather than theory."
+      },
+      "cohorts": {
+        "value": "6",
+        "title": "training cohorts",
+        "description": "for entrepreneurs within the BILSHE project"
+      },
+      "growth": {
+        "value": "90%+",
+        "title": "of participants",
+        "description": "achieved 2–3x profit growth"
+      }
+    }
+  },
+  "BusinessReviews": {
+    "title": "Business reviews",
+    "description": "Practical reviews of real businesses, from identifying weak points to building a concrete growth plan.",
+    "mediaTitle": "Reviews on the BILSHE channel",
+    "mediaDescription": "Videos about products, sales, teams and systematic scaling.",
+    "button": "Watch videos"
+  },
+  "CreativeBusiness": {
+    "title": "Production & creative business",
+    "studioTitle": "Major animation experience",
+    "studioDescription": "Former CEO of the state animation studio Ukranimafilm.",
+    "worksTitle": "Animation producer",
+    "works": "Cossacks. Football, Cossacks. Around the World, Babai, and The Adventures of Kotyhoroshko and His Friends.",
+    "peopleTitle": "Creative partners",
+    "people": "Helping creative people build sustainable, profitable businesses: Eugenia Gapchinska, Magic Five, Nadiia Kushnir, Olya Polyakova, Yevhen Klopotenko, Eduard Kyrych and Davyd Cherkaskyi."
+  },
   "Achivment": {
     "title": "Selected achievements",
     "description": "A few milestones that reflect commercial scale, product resonance and public recognition across Eduard Akhramovych's business projects.",
+    "previous": "Previous achievement",
+    "next": "Next achievement",
     "items": {
       "0": {
         "source": "Book of Records of Ukraine",
@@ -59,11 +101,23 @@
         "title": "Forbes Ukraine recognition in 2023",
         "description": "Art Nation Loyalty was included in Forbes Ukraine's list of 250 promising small and medium-sized Ukrainian companies in 2023.",
         "imageLabel": "Image placeholder"
+      },
+      "2": {
+        "source": "Union of Ukrainian Entrepreneurs",
+        "title": "Breakthrough of the Year",
+        "description": "Recognition for outstanding business results and development dynamics.",
+        "imageLabel": "Image placeholder"
+      },
+      "3": {
+        "source": "Union of Ukrainian Entrepreneurs",
+        "title": "Creative of the Year",
+        "description": "Recognition for a creative approach to product creation and development.",
+        "imageLabel": "Image placeholder"
       }
     }
   },
   "Projects": {
-    "title": "Projects",
+    "title": "Own projects",
     "all": "All projects"
   },
   "ProjectsPage": {
@@ -96,7 +150,7 @@
     }
   },
   "Cooperation": {
-    "title": "Collaboration",
+    "title": "Collaboration formats",
     "items": {
       "lecture": {
         "title": "Keynote lecture",
@@ -112,6 +166,11 @@
         "title": "Strategic consulting",
         "description": "Work directly on growth bottlenecks, monetization models, brand architecture, licensing strategy or market expansion with advice grounded in operating experience, not theory.",
         "button": "Get a consultation"
+      },
+      "mentoring": {
+        "title": "Mentorship program",
+        "description": "A 14-week program built on experience scaling products and businesses by 100x. Together we rebuild the sales model through product and team audit, product architecture, implementation, training and rigorous tracking. The result is a clear offer and a repeatable profit system.",
+        "button": "Apply for mentorship"
       }
     }
   },

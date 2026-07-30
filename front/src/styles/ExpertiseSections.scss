@@ -1,0 +1,211 @@
+.Clients{
+    width: 100%;
+    padding: $pt_l $pr_l;
+    display: flex;
+    flex-direction: column;
+    gap: $gap_l;
+
+    &_heading{
+        display: flex;
+        flex-direction: column;
+        gap: $gap_xs;
+    }
+
+    &_list{
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: $gap_xs;
+    }
+
+    &_item{
+        min-height: 120px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background: #fff;
+        border: 1px solid rgba(11, 11, 11, 0.1);
+        border-radius: $brad_12;
+        box-shadow: 0 8px 24px rgba(11, 11, 11, 0.04);
+    }
+
+    &_logo{
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: 84px;
+        object-fit: contain;
+    }
+
+    @media(max-width: 900px){
+        padding: $pt_l $pr_s;
+
+        h2{ font-size: $fs_xl; }
+        &_list{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        &_item{ min-height: 88px; }
+    }
+}
+
+.TrackRecord{
+    width: 100%;
+    background: #f5f7f9;
+
+    &_container{
+        padding: $pt_xl $pr_l;
+        display: flex;
+        flex-direction: column;
+        gap: $gap_xl;
+    }
+
+    &_grid{
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+        gap: $gap_m;
+    }
+
+    &_methodology, &_metric{
+        padding: 34px;
+        display: flex;
+        flex-direction: column;
+        gap: $gap_s;
+        border-radius: $brad_12;
+        background: #fff;
+        border: 1px solid rgba(11, 11, 11, .08);
+    }
+
+    &_methodology{
+        min-height: 470px;
+        justify-content: space-between;
+    }
+
+    &_metrics{
+        display: grid;
+        grid-template-rows: repeat(2, minmax(0, 1fr));
+        gap: $gap_m;
+    }
+
+    &_metric{
+        position: relative;
+        overflow: hidden;
+
+        &::after{
+            content: '';
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            right: -42px;
+            top: -42px;
+            border-radius: 50%;
+            opacity: .12;
+        }
+
+        &__blue::after{ background: $c_primary_blue; }
+        &__green::after{ background: #4f8b45; }
+    }
+
+    @media(max-width: 900px){
+        &_container{ padding: $pt_l $pr_s; gap: $gap_l; }
+        &_grid{ grid-template-columns: 1fr; }
+        &_methodology{ min-height: 320px; padding: 24px; }
+        &_metric{ padding: 24px; }
+        h2{ font-size: $fs_xl; }
+    }
+}
+
+.BusinessReviews{
+    width: 100%;
+    padding: $pt_xl $pr_l;
+    display: grid;
+    grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr);
+    gap: $gap_l;
+    align-items: stretch;
+
+    &_copy{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: $gap_s;
+    }
+
+    &_media{
+        min-height: 420px;
+        padding: 40px;
+        border-radius: $brad_12;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        background:
+            radial-gradient(circle at 80% 20%, rgba(10, 102, 255, .55), transparent 35%),
+            $c_primary_black;
+    }
+
+    &_play{
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-left: 4px;
+        color: $c_primary_black;
+        background: #fff;
+    }
+
+    @media(max-width: 900px){
+        padding: $pt_l $pr_s;
+        grid-template-columns: 1fr;
+        h2{ font-size: $fs_xl; }
+        &_media{ min-height: 340px; padding: 24px; }
+    }
+}
+
+.CreativeBusiness{
+    width: 100%;
+    background: #f5f7f9;
+
+    &_container{
+        padding: $pt_xl $pr_l;
+        display: flex;
+        flex-direction: column;
+        gap: $gap_l;
+    }
+
+    &_grid{
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: $gap_m;
+    }
+
+    &_lead, &_card{
+        min-height: 300px;
+        padding: 34px;
+        border-radius: $brad_12;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: $gap_s;
+    }
+
+    &_lead{
+        grid-row: span 2;
+        min-height: 624px;
+        background:
+            radial-gradient(circle at 75% 20%, rgba(10, 102, 255, .55), transparent 32%),
+            $c_primary_black;
+    }
+
+    &_card{
+        background: #fff;
+        border: 1px solid rgba(11, 11, 11, .08);
+    }
+
+    @media(max-width: 900px){
+        &_container{ padding: $pt_l $pr_s; }
+        &_grid{ grid-template-columns: 1fr; }
+        &_lead{ grid-row: auto; min-height: 380px; }
+        &_card{ min-height: 240px; padding: 24px; }
+        h2{ font-size: $fs_xl; }
+    }
+}
