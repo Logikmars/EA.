@@ -43,13 +43,15 @@
         max-width: 1000px;
 
 
-        &_line{
+        .Text.Info_text_line{
             color: rgba(255, 255, 255, 0.9);
+            -webkit-text-fill-color: rgba(255, 255, 255, 0.9);
         }
 
-        &_char{
+        .Info_text_char{
             display: inline-block;
-            color: inherit;
+            color: rgba(255, 255, 255, 0.9);
+            -webkit-text-fill-color: rgba(255, 255, 255, 0.9);
             will-change: opacity;
         }
 
