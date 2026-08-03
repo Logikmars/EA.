@@ -50,9 +50,9 @@ const Hero = async () => {
                     />
                 </div>
             </div>
-            <div className='Hero_list Hero_animate_line'>
+            {/* <div className='Hero_list Hero_animate_line'>
                 <RunningLine />
-            </div>
+            </div> */}
         </section>
     );
 };
