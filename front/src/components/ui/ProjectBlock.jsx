@@ -49,14 +49,16 @@ const ProjectBlock = ({
             <div className='ProjectBlock_media'>
                 {renderProjectImage(resolvedImage, normalizedAlt)}
             </div>
-            <Text fw_semibold fs_xl tac>
-                {title}
-            </Text>
-            {shortDescription ? (
-                <Text light_gray fs_m tac>
-                    {shortDescription}
+            <div className='ProjectBlock_content'>
+                <Text fw_semibold fs_l className='ProjectBlock_title'>
+                    {title}
                 </Text>
-            ) : null}
+                {shortDescription ? (
+                    <Text light_gray fs_m className='ProjectBlock_description'>
+                        {shortDescription}
+                    </Text>
+                ) : null}
+            </div>
         </>
     );
 

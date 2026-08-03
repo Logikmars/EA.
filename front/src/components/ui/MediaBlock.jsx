@@ -48,9 +48,10 @@ const MediaBlock = ({
         : normalizedDescription;
     const content = (
         <>
-            <div className='MediaBlock_decor free_img'>
+            <div className='MediaBlock_media'>
+                {renderMediaImage(resolvedImage, normalizedAlt)}
                 {normalizedType ? (
-                    <div className='MediaBlock_decor_type'>
+                    <div className='MediaBlock_type'>
                         <Text fs_2xs fw_semibold>
                             {normalizedType.toUpperCase()}
                         </Text>
@@ -58,15 +59,11 @@ const MediaBlock = ({
                 ) : null}
             </div>
             <div className='MediaBlock_content'>
-                <div className='MediaBlock_media'>
-                    {renderMediaImage(resolvedImage, normalizedAlt)}
-                </div>
-
-                <Text fw_medium fs_l>
+                <Text fw_semibold fs_l className='MediaBlock_title'>
                     {text}
                 </Text>
                 {shortDescription ? (
-                    <Text light_gray fs_m>
+                    <Text light_gray fs_m className='MediaBlock_description'>
                         {shortDescription}
                     </Text>
                 ) : null}
