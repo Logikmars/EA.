@@ -18,28 +18,27 @@ const Achivment = () => {
 
     useLayoutEffect(() => {
         const root = rootRef.current;
+        const track = trackRef.current;
 
-        if (!root) return;
+        if (!root || !track) return;
 
-        const shouldReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
+        const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const mobileQuery = window.matchMedia('(max-width: 767px)');
+        let sceneCleanup = () => {};
+        let sceneVersion = 0;
 
-        if (shouldReduceMotion || isMobileViewport) return;
-
-        let cleanup = () => {};
-
-        const init = async () => {
+        const init = async (version) => {
             const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([
                 import('gsap'),
                 import('gsap/ScrollTrigger'),
             ]);
 
+            if (version !== sceneVersion || reducedMotionQuery.matches || mobileQuery.matches) return;
+
             gsap.registerPlugin(ScrollTrigger);
 
             const ctx = gsap.context(() => {
                 const heading = gsap.utils.toArray('.Achivment_heading > *');
-                const track = trackRef.current;
-
                 gsap.fromTo(heading, {
                     opacity: 0,
                     y: 28,
@@ -94,16 +93,38 @@ const Achivment = () => {
                 renderTrackPosition(horizontalTrigger.progress);
             }, root);
 
-            cleanup = () => {
+            sceneCleanup = () => {
                 ctx.revert();
                 root.style.removeProperty('height');
-                trackRef.current?.style.removeProperty('transform');
+                track.style.removeProperty('transform');
             };
         };
 
-        init();
+        const syncSceneWithViewport = () => {
+            sceneVersion += 1;
+            sceneCleanup();
+            sceneCleanup = () => {};
 
-        return () => cleanup();
+            root.style.removeProperty('height');
+            track.style.removeProperty('transform');
+
+            if (!reducedMotionQuery.matches && !mobileQuery.matches) {
+                init(sceneVersion);
+            }
+        };
+
+        reducedMotionQuery.addEventListener('change', syncSceneWithViewport);
+        mobileQuery.addEventListener('change', syncSceneWithViewport);
+        syncSceneWithViewport();
+
+        return () => {
+            sceneVersion += 1;
+            reducedMotionQuery.removeEventListener('change', syncSceneWithViewport);
+            mobileQuery.removeEventListener('change', syncSceneWithViewport);
+            sceneCleanup();
+            root.style.removeProperty('height');
+            track.style.removeProperty('transform');
+        };
     }, []);
 
     return (
