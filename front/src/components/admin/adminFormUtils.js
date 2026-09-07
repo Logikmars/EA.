@@ -5,8 +5,8 @@ export function normalizeText(value) {
 export const emptyProjectForm = {
     img: '',
     href: '',
-    categoryUa: '',
-    categoryEn: '',
+    categoryUa: 'Загальне',
+    categoryEn: 'General',
     titleUa: '',
     titleEn: '',
     summaryUa: '',
@@ -20,6 +20,7 @@ export const emptyMediaForm = {
     titleUa: '',
     titleEn: '',
     sourceUrl: '',
+    publishedAt: '',
     summaryUa: '',
     summaryEn: '',
 };
@@ -52,6 +53,9 @@ export function mapMediaToForm(mediaItem) {
         titleUa: mediaItem?.title?.ua || '',
         titleEn: mediaItem?.title?.en || '',
         sourceUrl: mediaItem?.sourceUrl || '',
+        publishedAt: mediaItem?.publishedAt
+            ? String(mediaItem.publishedAt).slice(0, 10)
+            : '',
         summaryUa: mediaItem?.summary?.ua || '',
         summaryEn: mediaItem?.summary?.en || '',
     };
@@ -93,5 +97,6 @@ export function buildMediaPayload(form) {
         },
         outlet: '',
         sourceUrl: normalizeText(form.sourceUrl),
+        publishedAt: normalizeText(form.publishedAt) || null,
     };
 }

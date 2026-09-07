@@ -93,6 +93,10 @@ const AdminMediaEditClient = observer(() => {
                             <span>Source URL</span>
                             <input name='sourceUrl' onChange={updateField('sourceUrl')} required type='url' value={form.sourceUrl} />
                         </label>
+                        <label className='AdminField'>
+                            <span>Publication date</span>
+                            <input name='publishedAt' onChange={updateField('publishedAt')} type='date' value={form.publishedAt} />
+                        </label>
                         <div className='AdminActionsRow'>
                             <button className='AdminButton' disabled={adminStore.isSubmitting} type='submit'>
                                 {adminStore.isSubmitting ? 'Saving...' : 'Update media'}

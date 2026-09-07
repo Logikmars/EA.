@@ -70,6 +70,9 @@ const MediaPage = async ({ params }) => {
                 locale={locale}
                 clearLabel={t('clearFilters')}
                 emptyLabel={t('empty')}
+                sortLabel={t('sortLabel')}
+                newestLabel={t('newestFirst')}
+                oldestLabel={t('oldestFirst')}
             />
         </div>
     );

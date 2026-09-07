@@ -22,6 +22,11 @@ const localizedMongoOptionalTextSchema = new mongoose.Schema({
     en: { type: String, default: '', trim: true },
 }, { _id: false });
 
+const optionalDateSchema = z.preprocess(
+    (value) => (value === '' || value === undefined ? null : value),
+    z.coerce.date().nullable()
+).default(null);
+
 export const mediaSchema = z.object({
     img: imageReferenceSchema.default('/imgs/projects/1.png'),
     type: localizedTextSchema,
@@ -30,6 +35,7 @@ export const mediaSchema = z.object({
     outlet: z.string().trim().default(''),
     sourceUrl: httpUrlSchema,
     sourceLabel: localizedOptionalTextSchema.default({ ua: '', en: '' }),
+    publishedAt: optionalDateSchema,
 });
 
 const mediaMongoSchema = new mongoose.Schema({
@@ -41,6 +47,7 @@ const mediaMongoSchema = new mongoose.Schema({
     outlet: { type: String, default: '', trim: true },
     sourceUrl: { type: String, required: true, unique: true, trim: true },
     sourceLabel: { type: localizedMongoOptionalTextSchema, default: () => ({ ua: '', en: '' }) },
+    publishedAt: { type: Date, default: null },
 }, {
     timestamps: true,
     versionKey: false,
@@ -56,6 +63,7 @@ export function mapMediaListItem(mediaItem, locale) {
         summary: mediaItem.summary[locale],
         outlet: mediaItem.outlet,
         sourceUrl: mediaItem.sourceUrl,
+        publishedAt: mediaItem.publishedAt,
         createdAt: mediaItem.createdAt,
     };
 }

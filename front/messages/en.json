@@ -189,7 +189,10 @@
   "MediaPage": {
     "title": "All media",
     "clearFilters": "Clear",
-    "empty": "No media items match the selected tags."
+    "empty": "No media items match the selected tags.",
+    "sortLabel": "Sort by date",
+    "newestFirst": "Newest first",
+    "oldestFirst": "Oldest first"
   },
   "Faq": {
     "title": "Frequently asked questions",

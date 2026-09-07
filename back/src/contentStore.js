@@ -29,7 +29,7 @@ async function listProjects() {
 async function listMedia() {
     const items = await MediaModel
         .find({})
-        .sort({ createdAt: -1 })
+        .sort({ publishedAt: -1, createdAt: -1 })
         .lean()
         .exec();
 

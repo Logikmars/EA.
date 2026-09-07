@@ -48,6 +48,35 @@
     align-items: center;
 }
 
+.AdminCardHeaderControls,
+.AdminSort {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.AdminCardHeaderControls {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.AdminSort select {
+    min-height: 40px;
+    padding: 0 36px 0 12px;
+    border: 1px solid rgba(11, 11, 11, 0.12);
+    border-radius: 12px;
+    color: $c_primary_black;
+    background: rgba(255, 255, 255, 0.92);
+    cursor: pointer;
+    font: inherit;
+    outline: none;
+}
+
+.AdminSort select:focus {
+    border-color: rgba(10, 102, 255, 0.5);
+    box-shadow: 0 0 0 4px rgba(10, 102, 255, 0.12);
+}
+
 .AdminTopbar h1,
 .AdminCardHeader h2,
 .AdminLoginCard h1 {
@@ -325,5 +354,17 @@
     .AdminCardHeader,
     .AdminListItem {
         flex-direction: column;
+    }
+
+    .AdminCardHeaderControls {
+        width: 100%;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+    }
+
+    .AdminSort {
+        width: 100%;
+        justify-content: space-between;
     }
 }
