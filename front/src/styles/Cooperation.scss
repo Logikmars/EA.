@@ -1,29 +1,52 @@
-.Cooperation{
-    min-height: 100vh;
+.Cooperation {
     width: 100%;
-    background-color: $c_white_mint;
+    background:
+        radial-gradient(circle at 8% 30%, rgba(219, 231, 247, 0.48), transparent 30%),
+        radial-gradient(circle at 92% 14%, rgba(255, 255, 255, 0.9), transparent 25%),
+        #f7f8fa;
 
-    &_container{
-        padding: $pt_xl $pr_l;
+    &_container {
         width: 100%;
+        padding: 72px 40px 80px;
         display: flex;
         flex-direction: column;
-        gap: $gap_xl;
-        @media(max-width: 900px){
-            padding: $pt_l $pr_s;
-            gap: $gap_xs;
-            h2{
-                font-size: $fs_xl;
-                text-align: center;
-            }
+        gap: 34px;
+
+        > h2 {
+            font-size: 48px;
+            line-height: 1.05;
+            letter-spacing: -0.045em;
         }
     }
 
-    &_list{
+    &_list {
         width: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: $gap_l;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+    }
+
+    @media (max-width: 1200px) {
+        &_list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 767px) {
+        &_container {
+            padding: 56px 20px 64px;
+            gap: 28px;
+
+            > h2 {
+                font-size: 32px;
+                text-align: left;
+            }
+        }
+
+        &_list {
+            gap: 18px;
+        }
     }
 }

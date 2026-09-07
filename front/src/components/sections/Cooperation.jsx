@@ -14,20 +14,20 @@ const Cooperation = () => {
         {
             id: 'speech',
             img: '/imgs/icons/users.svg',
-            alt: 'Public speaking icon',
             href: '/invite',
+            outlined: false,
         },
         {
             id: 'consulting',
             img: '/imgs/icons/case.svg',
-            alt: 'Consulting icon',
             href: '/invite',
+            outlined: true,
         },
         {
             id: 'mentoring',
             img: '/imgs/icons/mic.svg',
-            alt: 'Mentoring icon',
             href: '/invite',
+            outlined: false,
         },
     ];
 
@@ -98,11 +98,13 @@ const Cooperation = () => {
                     {els.map((el) => (
                         <CooperationBlock
                             img={el.img}
-                            alt={el.alt}
                             title={t(`items.${el.id}.title`)}
                             description={t(`items.${el.id}.description`)}
+                            priceLabel={t('priceLabel')}
+                            price={t(`items.${el.id}.price`)}
                             btnText={t(`items.${el.id}.button`)}
                             href={el.href}
+                            outlined={el.outlined}
                             key={el.id}
                         />
                     ))}

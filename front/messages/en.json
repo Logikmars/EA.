@@ -53,8 +53,8 @@
     "description": "Practical business education measured by entrepreneur growth rather than the number of lectures completed.",
     "items": {
       "methodology": {
-        "title": "MOPS methodologist and founder",
-        "description": "One of the creators of a modern entrepreneur education methodology built on practical tools rather than theory."
+        "title": "Business communities",
+        "description": "Regular participant in educational events organized by the Board business community and the Union of Ukrainian Entrepreneurs"
       },
       "cohorts": {
         "value": "6",
@@ -65,6 +65,10 @@
         "value": "90%+",
         "title": "of participants",
         "description": "achieved 2–3x profit growth"
+      },
+      "mops": {
+        "title": "MOPS methodologist and founder",
+        "description": "One of the creators of a modern entrepreneur education methodology built on practical tools rather than theory."
       }
     }
   },
@@ -151,6 +155,7 @@
   },
   "Cooperation": {
     "title": "Collaboration formats",
+    "priceLabel": "Price",
     "items": {
       "lecture": {
         "title": "Keynote lecture",
@@ -159,17 +164,20 @@
       },
       "speech": {
         "title": "Business speaking",
-        "description": "For business forums, corporate events and industry panels, Eduard delivers practical talks on entrepreneurship, marketing systems, sales, licensing and scalable product thinking.",
+        "description": "For business forums, corporate events and industry panels.\n\nEduard delivers practical talks on entrepreneurship, marketing systems, sales, licensing and scalable product thinking.",
+        "price": "from UAH 50,000",
         "button": "Invite to speak"
       },
       "consulting": {
         "title": "Strategic consulting",
-        "description": "Work directly on growth bottlenecks, monetization models, brand architecture, licensing strategy or market expansion with advice grounded in operating experience, not theory.",
+        "description": "Work directly on growth bottlenecks, monetization models, brand architecture, licensing strategy or market expansion.\n\nGet advice grounded in operating experience, not theory.",
+        "price": "UAH 12,000 / 90 min",
         "button": "Get a consultation"
       },
       "mentoring": {
         "title": "Mentorship program",
-        "description": "A 14-week program built on experience scaling products and businesses by 100x. Together we rebuild the sales model through product and team audit, product architecture, implementation, training and rigorous tracking. The result is a clear offer and a repeatable profit system.",
+        "description": "A 14-week program built on experience scaling products and businesses by 100x.\n\nTogether we rebuild the sales model through product and team audit, product architecture, implementation, training and rigorous tracking.\n\nThe result is a clear offer and a repeatable profit system.",
+        "price": "UAH 140,000 / 14 weeks",
         "button": "Apply for mentorship"
       }
     }

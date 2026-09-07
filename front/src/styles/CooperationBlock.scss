@@ -1,158 +1,166 @@
-.CooperationBlock{
-    width: calc(100% / 3 - 40px);
-    padding: $pr_xl;
+.CooperationBlock {
+    width: min(100%, 410px);
+    min-height: 554px;
+    padding: 32px;
     display: flex;
-    flex-wrap: wrap;
-    align-content: space-between;
-    gap: $gap_l;
-    min-height: 580px;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 28px;
     position: relative;
     overflow: hidden;
     isolation: isolate;
-    background: linear-gradient(
-        155deg,
-        rgba(255, 255, 255, 0.96),
-        rgba(255, 255, 255, 0.82)
-    );
-    border: 1px solid rgba(11, 11, 11, 0.08);
-    border-radius: $brad_12;
-    box-shadow: 0 16px 32px rgba(11, 11, 11, 0.06);
-    transition:
-        transform 350ms ease,
-        box-shadow 350ms ease,
-        border-color 350ms ease,
-        background-color 350ms ease;
+    background:
+        radial-gradient(circle at 0 0, rgba(228, 241, 255, 0.72), transparent 34%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(250, 252, 255, 0.92));
+    border: 1px solid rgba(10, 102, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(35, 69, 122, 0.1);
+    transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
 
-    &::before{
-        content: '';
-        position: absolute;
-        inset: -30%;
-        z-index: 0;
-        background:
-            radial-gradient(circle at 18% 18%, rgba(10, 102, 255, 0.14), transparent 28%),
-            radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 0.8), transparent 26%),
-            radial-gradient(circle at 50% 100%, rgba(11, 11, 11, 0.08), transparent 44%);
-        animation: cooperationBlockAura 11s ease-in-out infinite alternate;
-        opacity: 0.82;
-        pointer-events: none;
-    }
-
-    > *{
-        position: relative;
-        z-index: 1;
-    }
-
-    @media(max-width: 1120px){
-        width: calc(100% / 2 - 40px);
-        gap: $gap_xs;
-    }
-
-    @media(max-width: 750px){
-        width: calc(100% - 40px);
-        min-height: 250px;
-        padding: $pr_s;
-    }
-
-    &_img{
-        width: 64px;
-        height: 64px;
-        position: relative;
-        overflow: hidden;
-        background:
-            linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(232, 245, 239, 0.92));
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: $brad_8;
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        box-shadow:
-            0 10px 24px rgba(10, 102, 255, 0.12),
-            inset 0 1px 0 rgba(255, 255, 255, 0.9);
-        transition: transform 350ms ease, box-shadow 350ms ease;
-
-        &::before{
-            content: '';
-            position: absolute;
-            inset: -70% -25%;
-            background: linear-gradient(
-                120deg,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.35) 24%,
-                rgba(10, 102, 255, 0.24) 52%,
-                rgba(255, 255, 255, 0.88) 74%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: translateX(-32%) rotate(8deg);
-            animation: cooperationIconFlow 6s ease-in-out infinite alternate;
-            pointer-events: none;
-        }
-
-        &_image{
-            width: 32px;
-            height: 32px;
-            position: relative;
-            z-index: 1;
-            transition: transform 350ms ease;
-        }
-    }
-
-    &_text{
-        width: 100%;
+    &_content {
         display: flex;
         flex-direction: column;
-        justify-content: start;
-        gap: $gap_xs;
+        gap: 22px;
     }
 
-    &:hover{
-        transform: translateY(-8px);
-        border-color: rgba(10, 102, 255, 0.18);
-        box-shadow:
-            0 24px 44px rgba(11, 11, 11, 0.12),
-            0 0 0 1px rgba(10, 102, 255, 0.06);
+    &_img {
+        width: 52px;
+        height: 52px;
+        display: grid;
+        place-items: center;
+        position: relative;
+        color: $c_primary_black;
+        background: linear-gradient(145deg, #f0f7ff 10%, #dceeff 100%);
+        border: 1px solid rgba(255, 255, 255, 0.88);
+        border-radius: 9px;
+        box-shadow: 0 10px 22px rgba(10, 102, 255, 0.14), inset 0 1px 0 #fff;
 
-        &::before{
-            opacity: 1;
+        &_image {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    &_text {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        h3 {
+            color: $c_primary_black;
+            font-family: 'Inter', sans-serif;
+            font-size: 24px;
+            font-weight: $fw_bold;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
         }
 
-        .CooperationBlock_img{
-            transform: translateY(-2px);
-            box-shadow:
-                0 14px 30px rgba(10, 102, 255, 0.18),
-                inset 0 1px 0 rgba(255, 255, 255, 0.94);
+        p {
+            color: #64748b;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            line-height: 1.28;
+            letter-spacing: -0.02em;
+        }
+    }
+
+    &_footer {
+        padding-top: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        border-top: 1px solid #e5edf6;
+    }
+
+    &_price {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        > span {
+            color: #718096;
+            font-size: 12px;
+            line-height: 1;
         }
 
-        .CooperationBlock_img_image{
-            transform: scale(1.06);
+        > strong {
+            min-height: 50px;
+            padding: 0 18px;
+            display: flex;
+            align-items: center;
+            color: #072d83;
+            background: #edf5ff;
+            border-radius: 9px;
+            font-size: 17px;
+            font-weight: $fw_bold;
+            line-height: 1.15;
+            letter-spacing: -0.035em;
+        }
+    }
+
+    .CooperationBlock_button {
+        min-height: 54px;
+        justify-content: space-between;
+        padding: 0 24px;
+        border-color: $c_primary_blue;
+        color: $c_primary_white;
+        font-size: 14px;
+        letter-spacing: -0.025em;
+
+        > span {
+            color: inherit;
         }
 
-        @media(max-width: 1000px){
+        svg {
+            width: 18px;
+            height: 18px;
+            flex: 0 0 auto;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.7;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: transform 250ms ease;
+        }
+
+        &.Btn_color_transparent {
+            color: $c_primary_blue;
+            background: #fff;
+        }
+
+        &:hover svg {
+            transform: translateX(3px);
+        }
+    }
+
+    &:hover {
+        transform: translateY(-6px);
+        border-color: rgba(10, 102, 255, 0.2);
+        box-shadow: 0 20px 42px rgba(35, 69, 122, 0.15);
+    }
+
+    @media (max-width: 1200px) {
+        width: calc(50% - 12px);
+    }
+
+    @media (max-width: 767px) {
+        width: 100%;
+        min-height: 520px;
+        padding: 26px;
+
+        &_text h3 {
+            font-size: 22px;
+        }
+
+        &:hover {
             transform: none;
-            box-shadow: 0 16px 32px rgba(11, 11, 11, 0.06);
-            border-color: rgba(11, 11, 11, 0.08);
-
-            .CooperationBlock_img,
-            .CooperationBlock_img_image{
-                transform: none;
-            }
         }
     }
 }
 
-@keyframes cooperationBlockAura{
-    0%{
-        transform: translate3d(-2%, -1%, 0) scale(1);
-    }
-    100%{
-        transform: translate3d(3%, 2%, 0) scale(1.08);
-    }
-}
-
-@keyframes cooperationIconFlow{
-    0%{
-        transform: translateX(-32%) rotate(8deg);
-    }
-    100%{
-        transform: translateX(20%) rotate(8deg);
+@media (prefers-reduced-motion: reduce) {
+    .CooperationBlock,
+    .CooperationBlock_button svg {
+        transition: none;
     }
 }

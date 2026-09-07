@@ -77,6 +77,17 @@
     &_methodology{
         min-height: 470px;
         justify-content: space-between;
+        max-height: 520px;
+
+        &_img{
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            object-fit: fill;
+            min-height: 180px;
+            max-height: 300px;
+            border-radius: $brad_12;
+        }
     }
 
     &_metrics{
@@ -139,6 +150,10 @@
         background:
             radial-gradient(circle at 80% 20%, rgba(10, 102, 255, .55), transparent 35%),
             $c_primary_black;
+        // background-image: url('/imgs/youtube/banner.webp');
+        // background-size: cover;
+        // background-position: center;
+        // background-repeat: no-repeat;
     }
 
     &_play{

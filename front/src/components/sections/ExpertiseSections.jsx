@@ -55,6 +55,7 @@ export const TrackRecord = () => {
                 <div className='TrackRecord_grid'>
                     <article className='TrackRecord_methodology'>
                         <Text h3 fw_semibold fs_xl>{t('items.methodology.title')}</Text>
+                        <img src="/imgs/eduard/ Board_horizontal.webp" alt="" className='TrackRecord_methodology_img'/>
                         <Text light_gray fs_m>{t('items.methodology.description')}</Text>
                     </article>
                     <div className='TrackRecord_metrics'>
@@ -67,6 +68,10 @@ export const TrackRecord = () => {
                             <Text fw_bold fs_2xl>{t('items.growth.value')}</Text>
                             <Text h3 fw_semibold fs_l>{t('items.growth.title')}</Text>
                             <Text light_gray fs_m>{t('items.growth.description')}</Text>
+                        </article>
+                        <article className='TrackRecord_metric TrackRecord_metric__green'>
+                            <Text h3 fw_semibold fs_l>{t('items.mops.title')}</Text>
+                            <Text light_gray fs_m>{t('items.mops.description')}</Text>
                         </article>
                     </div>
                 </div>
