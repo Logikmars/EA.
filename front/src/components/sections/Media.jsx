@@ -96,7 +96,7 @@ const Media = observer(({
                         description={media.summary}
                         href={media.sourceUrl || '#'}
                         alt={media.title}
-                        key={media.sourceUrl || media.title}
+                        key={media.id || media.sourceUrl || media.title}
                     />
                 ))}
             </div>

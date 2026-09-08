@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import AdminPageShell from './AdminPageShell';
 import ImageDropzone from './ImageDropzone';
 import adminStore from '@/stores/AdminStore';
@@ -15,12 +15,11 @@ import {
 } from './adminFormUtils';
 
 const AdminMediaEditClient = observer(() => {
-    const router = useRouter();
     const searchParams = useSearchParams();
-    const currentSourceUrl = searchParams.get('sourceUrl') || '';
+    const mediaId = searchParams.get('id') || '';
     const [form, setForm] = useState(emptyMediaForm);
     const [isLoaded, setIsLoaded] = useState(false);
-    const mediaItem = adminStore.content.media.find((item) => item.sourceUrl === currentSourceUrl);
+    const mediaItem = adminStore.content.media.find((item) => item.id === mediaId);
 
     useEffect(() => {
         if (mediaItem) {
@@ -28,7 +27,7 @@ const AdminMediaEditClient = observer(() => {
         }
 
         setIsLoaded(true);
-    }, [currentSourceUrl, mediaItem]);
+    }, [mediaId, mediaItem]);
 
     const updateField = (field) => (event) => {
         updateFormValue(setForm, field, event.target.value);
@@ -38,17 +37,13 @@ const AdminMediaEditClient = observer(() => {
         event.preventDefault();
 
         const payload = buildMediaPayload(form);
-        const result = await adminStore.updateMedia(currentSourceUrl, payload);
+        const result = await adminStore.updateMedia(mediaId, payload);
 
         if (result.ok) {
-            const updatedMedia = adminStore.content.media.find((item) => item.sourceUrl === payload.sourceUrl);
+            const updatedMedia = adminStore.content.media.find((item) => item.id === mediaId);
 
             if (updatedMedia) {
                 setForm(mapMediaToForm(updatedMedia));
-            }
-
-            if (payload.sourceUrl !== currentSourceUrl) {
-                router.replace(`/admin/media/edit?sourceUrl=${encodeURIComponent(payload.sourceUrl)}`);
             }
         }
     };
@@ -58,7 +53,7 @@ const AdminMediaEditClient = observer(() => {
             <section className='AdminCard'>
                 {!isLoaded || adminStore.isLoadingContent ? (
                     <div className='AdminEmptyState'>Loading...</div>
-                ) : currentSourceUrl && mediaItem ? (
+                ) : mediaId && mediaItem ? (
                     <form className='AdminForm' onSubmit={handleSubmit}>
                         <ImageDropzone
                             label='Media image'
@@ -90,8 +85,8 @@ const AdminMediaEditClient = observer(() => {
                             <textarea name='summaryEn' onChange={updateField('summaryEn')} rows='4' value={form.summaryEn} />
                         </label>
                         <label className='AdminField'>
-                            <span>Source URL</span>
-                            <input name='sourceUrl' onChange={updateField('sourceUrl')} required type='url' value={form.sourceUrl} />
+                            <span>Source URL (optional)</span>
+                            <input name='sourceUrl' onChange={updateField('sourceUrl')} type='url' value={form.sourceUrl} />
                         </label>
                         <label className='AdminField'>
                             <span>Publication date</span>

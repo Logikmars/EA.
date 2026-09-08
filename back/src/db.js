@@ -1,27 +1,49 @@
 import mongoose from 'mongoose';
 
-async function removeObsoleteIndexes() {
-    const projectsCollectionExists = await mongoose.connection.db
-        .listCollections({ name: 'projects' }, { nameOnly: true })
+async function removeObsoleteUniqueIndex(collectionName, fieldName) {
+    const collectionExists = await mongoose.connection.db
+        .listCollections({ name: collectionName }, { nameOnly: true })
         .hasNext();
 
-    if (!projectsCollectionExists) {
+    if (!collectionExists) {
         return;
     }
 
-    const projectsCollection = mongoose.connection.collection('projects');
-    const indexes = await projectsCollection.indexes();
-    const obsoleteSlugIndex = indexes.find((index) => (
-        index.name === 'slug_1'
-        && index.unique === true
+    const collection = mongoose.connection.collection(collectionName);
+    const indexes = await collection.indexes();
+    const obsoleteIndexes = indexes.filter((index) => (
+        index.unique === true
+        && index.name !== `${fieldName}_optional_unique`
         && Object.keys(index.key || {}).length === 1
-        && index.key.slug === 1
+        && index.key[fieldName] === 1
     ));
 
-    if (obsoleteSlugIndex) {
-        await projectsCollection.dropIndex(obsoleteSlugIndex.name);
-        console.log('Removed obsolete projects slug index.');
+    for (const index of obsoleteIndexes) {
+        await collection.dropIndex(index.name);
+        console.log(`Removed obsolete ${collectionName}.${fieldName} unique index.`);
     }
+}
+
+async function ensureOptionalUniqueIndex(collectionName, fieldName) {
+    await removeObsoleteUniqueIndex(collectionName, fieldName);
+
+    const collection = mongoose.connection.collection(collectionName);
+    await collection.createIndex(
+        { [fieldName]: 1 },
+        {
+            name: `${fieldName}_optional_unique`,
+            unique: true,
+            partialFilterExpression: {
+                [fieldName]: { $type: 'string' },
+            },
+        }
+    );
+}
+
+async function removeObsoleteIndexes() {
+    await removeObsoleteUniqueIndex('projects', 'slug');
+    await ensureOptionalUniqueIndex('projects', 'href');
+    await ensureOptionalUniqueIndex('media', 'sourceUrl');
 }
 
 export async function connectDatabase() {

@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 import { z } from 'zod';
 import { httpUrlSchema, imageReferenceSchema } from '../../src/validation.js';
 
+const optionalHttpUrlSchema = z.preprocess(
+    (value) => (value === '' || value === undefined ? null : value),
+    httpUrlSchema.nullable()
+).default(null);
+
 const localizedTextSchema = z.object({
     ua: z.string().trim().min(1),
     en: z.string().trim().min(1),
@@ -33,7 +38,7 @@ export const mediaSchema = z.object({
     title: localizedTextSchema,
     summary: localizedOptionalTextSchema.default({ ua: '', en: '' }),
     outlet: z.string().trim().default(''),
-    sourceUrl: httpUrlSchema,
+    sourceUrl: optionalHttpUrlSchema,
     sourceLabel: localizedOptionalTextSchema.default({ ua: '', en: '' }),
     publishedAt: optionalDateSchema,
 });
@@ -45,7 +50,7 @@ const mediaMongoSchema = new mongoose.Schema({
     title: { type: localizedMongoTextSchema, required: true },
     summary: { type: localizedMongoOptionalTextSchema, default: () => ({ ua: '', en: '' }) },
     outlet: { type: String, default: '', trim: true },
-    sourceUrl: { type: String, required: true, unique: true, trim: true },
+    sourceUrl: { type: String, default: null, trim: true },
     sourceLabel: { type: localizedMongoOptionalTextSchema, default: () => ({ ua: '', en: '' }) },
     publishedAt: { type: Date, default: null },
 }, {
@@ -57,6 +62,7 @@ export const MediaModel = mongoose.models.Media || mongoose.model('Media', media
 
 export function mapMediaListItem(mediaItem, locale) {
     return {
+        id: String(mediaItem._id || mediaItem.id),
         img: mediaItem.img,
         type: mediaItem.type[locale],
         title: mediaItem.title[locale],

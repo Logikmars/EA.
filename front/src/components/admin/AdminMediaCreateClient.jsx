@@ -57,8 +57,8 @@ const AdminMediaCreateClient = observer(() => {
                         <textarea name='summaryEn' onChange={updateField('summaryEn')} rows='4' value={form.summaryEn} />
                     </label>
                     <label className='AdminField'>
-                        <span>Source URL</span>
-                        <input name='sourceUrl' onChange={updateField('sourceUrl')} required type='url' value={form.sourceUrl} />
+                        <span>Source URL (optional)</span>
+                        <input name='sourceUrl' onChange={updateField('sourceUrl')} type='url' value={form.sourceUrl} />
                     </label>
                     <label className='AdminField'>
                         <span>Publication date</span>

@@ -33,8 +33,8 @@ const AdminProjectCreateClient = observer(() => {
                         value={form.img}
                     />
                     <label className='AdminField'>
-                        <span>Link</span>
-                        <input name='href' onChange={updateField('href')} required type='url' value={form.href} />
+                        <span>Link (optional)</span>
+                        <input name='href' onChange={updateField('href')} type='url' value={form.href} />
                     </label>
                     <label className='AdminField'>
                         <span>Title UA</span>

@@ -94,7 +94,7 @@ const AdminDashboardClient = observer(() => {
     };
 
     const createStartEditHandler = (setEditingSlug, setForm, mapItemToForm) => (item) => {
-        setEditingSlug(item.href || item.sourceUrl || '');
+        setEditingSlug(item.id || '');
         setForm(mapItemToForm(item));
         clearAdminMessages();
     };
@@ -176,7 +176,7 @@ const AdminDashboardClient = observer(() => {
         setForm: setProjectForm,
         emptyForm: emptyProjectForm,
         createAction: (payload) => adminStore.createProject(payload),
-        updateAction: (href, payload) => adminStore.updateProject(href, payload),
+        updateAction: (id, payload) => adminStore.updateProject(id, payload),
         buildPayload: (currentForm) => ({
             img: normalizeText(currentForm.img) || '/imgs/projects/1.png',
             href: normalizeText(currentForm.href),
@@ -202,7 +202,7 @@ const AdminDashboardClient = observer(() => {
         setForm: setMediaForm,
         emptyForm: emptyMediaForm,
         createAction: (payload) => adminStore.createMedia(payload),
-        updateAction: (sourceUrl, payload) => adminStore.updateMedia(sourceUrl, payload),
+        updateAction: (id, payload) => adminStore.updateMedia(id, payload),
         buildPayload: (currentForm) => ({
             img: normalizeText(currentForm.img) || '/imgs/projects/1.png',
             type: {
@@ -224,14 +224,14 @@ const AdminDashboardClient = observer(() => {
 
     const handleProjectDelete = createDeleteHandler({
         confirmMessage: 'Delete this project?',
-        deleteAction: (href) => adminStore.deleteProject(href),
+        deleteAction: (id) => adminStore.deleteProject(id),
         editingKey: editingProjectHref,
         cancelEdit: cancelProjectEdit,
     });
 
     const handleMediaDelete = createDeleteHandler({
         confirmMessage: 'Delete this media item?',
-        deleteAction: (sourceUrl) => adminStore.deleteMedia(sourceUrl),
+        deleteAction: (id) => adminStore.deleteMedia(id),
         editingKey: editingMediaSourceUrl,
         cancelEdit: cancelMediaEdit,
     });
@@ -283,8 +283,8 @@ const AdminDashboardClient = observer(() => {
                                 value={projectForm.img}
                             />
                             <label className='AdminField'>
-                                <span>Link</span>
-                                <input name='href' onChange={updateProjectField('href')} required type='url' value={projectForm.href} />
+                                <span>Link (optional)</span>
+                                <input name='href' onChange={updateProjectField('href')} type='url' value={projectForm.href} />
                             </label>
                             <label className='AdminField'>
                                 <span>Category UA</span>
@@ -324,16 +324,16 @@ const AdminDashboardClient = observer(() => {
 
                         <div className='AdminList'>
                             {adminStore.content.projects.map((project) => (
-                                <article className='AdminListItem' key={project.href}>
+                                <article className='AdminListItem' key={project.id}>
                                     <div className='AdminListItemMain'>
                                         <strong>{project.title?.en || project.title?.ua || 'Untitled project'}</strong>
-                                        <span>{project.href}</span>
+                                        <span>{project.href || 'No link'}</span>
                                     </div>
                                     <div className='AdminListItemActions'>
                                         <button className='AdminButton AdminButton__secondary AdminButton__small' onClick={() => startProjectEdit(project)} type='button'>
                                             Edit
                                         </button>
-                                        <button className='AdminButton AdminButton__danger AdminButton__small' onClick={() => handleProjectDelete(project.href)} type='button'>
+                                        <button className='AdminButton AdminButton__danger AdminButton__small' onClick={() => handleProjectDelete(project.id)} type='button'>
                                             Delete
                                         </button>
                                     </div>
@@ -378,8 +378,8 @@ const AdminDashboardClient = observer(() => {
                                 <textarea name='summaryEn' onChange={updateMediaField('summaryEn')} rows='4' value={mediaForm.summaryEn} />
                             </label>
                             <label className='AdminField'>
-                                <span>Source URL</span>
-                                <input name='sourceUrl' onChange={updateMediaField('sourceUrl')} required type='url' value={mediaForm.sourceUrl} />
+                                <span>Source URL (optional)</span>
+                                <input name='sourceUrl' onChange={updateMediaField('sourceUrl')} type='url' value={mediaForm.sourceUrl} />
                             </label>
                             <div className='AdminActionsRow'>
                                 <button className='AdminButton' disabled={adminStore.isSubmitting} type='submit'>
@@ -395,16 +395,16 @@ const AdminDashboardClient = observer(() => {
 
                         <div className='AdminList'>
                             {adminStore.content.media.map((mediaItem) => (
-                                <article className='AdminListItem' key={mediaItem.sourceUrl}>
+                                <article className='AdminListItem' key={mediaItem.id}>
                                     <div className='AdminListItemMain'>
                                         <strong>{mediaItem.title?.en || mediaItem.title?.ua || 'Untitled media item'}</strong>
-                                        <span>{mediaItem.sourceUrl}</span>
+                                        <span>{mediaItem.sourceUrl || 'No source URL'}</span>
                                     </div>
                                     <div className='AdminListItemActions'>
                                         <button className='AdminButton AdminButton__secondary AdminButton__small' onClick={() => startMediaEdit(mediaItem)} type='button'>
                                             Edit
                                         </button>
-                                        <button className='AdminButton AdminButton__danger AdminButton__small' onClick={() => handleMediaDelete(mediaItem.sourceUrl)} type='button'>
+                                        <button className='AdminButton AdminButton__danger AdminButton__small' onClick={() => handleMediaDelete(mediaItem.id)} type='button'>
                                             Delete
                                         </button>
                                     </div>

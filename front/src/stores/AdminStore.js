@@ -321,13 +321,13 @@ class AdminStore {
         }
     }
 
-    async updateProject(currentHref, payload) {
+    async updateProject(id, payload) {
         this.isSubmitting = true;
         this.clearError();
         this.clearSuccess();
 
         try {
-            const data = await requestAdminJson(`/projects/by-link/${encodeURIComponent(currentHref)}`, {
+            const data = await requestAdminJson(`/projects/by-id/${encodeURIComponent(id)}`, {
                 method: 'PUT',
                 body: payload,
             });
@@ -351,13 +351,13 @@ class AdminStore {
         }
     }
 
-    async deleteProject(href) {
+    async deleteProject(id) {
         this.isSubmitting = true;
         this.clearError();
         this.clearSuccess();
 
         try {
-            const data = await requestAdmin(`/projects/by-link/${encodeURIComponent(href)}`, {
+            const data = await requestAdmin(`/projects/by-id/${encodeURIComponent(id)}`, {
                 method: 'DELETE',
             });
 
@@ -380,13 +380,13 @@ class AdminStore {
         }
     }
 
-    async updateMedia(currentSourceUrl, payload) {
+    async updateMedia(id, payload) {
         this.isSubmitting = true;
         this.clearError();
         this.clearSuccess();
 
         try {
-            const data = await requestAdminJson(`/media/by-source/${encodeURIComponent(currentSourceUrl)}`, {
+            const data = await requestAdminJson(`/media/by-id/${encodeURIComponent(id)}`, {
                 method: 'PUT',
                 body: payload,
             });
@@ -410,13 +410,13 @@ class AdminStore {
         }
     }
 
-    async deleteMedia(sourceUrl) {
+    async deleteMedia(id) {
         this.isSubmitting = true;
         this.clearError();
         this.clearSuccess();
 
         try {
-            const data = await requestAdmin(`/media/by-source/${encodeURIComponent(sourceUrl)}`, {
+            const data = await requestAdmin(`/media/by-id/${encodeURIComponent(id)}`, {
                 method: 'DELETE',
             });
 

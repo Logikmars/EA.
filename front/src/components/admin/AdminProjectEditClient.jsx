@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import AdminPageShell from './AdminPageShell';
 import ImageDropzone from './ImageDropzone';
 import adminStore from '@/stores/AdminStore';
@@ -15,12 +15,11 @@ import {
 } from './adminFormUtils';
 
 const AdminProjectEditClient = observer(() => {
-    const router = useRouter();
     const searchParams = useSearchParams();
-    const currentHref = searchParams.get('href') || '';
+    const projectId = searchParams.get('id') || '';
     const [form, setForm] = useState(emptyProjectForm);
     const [isLoaded, setIsLoaded] = useState(false);
-    const project = adminStore.content.projects.find((item) => item.href === currentHref);
+    const project = adminStore.content.projects.find((item) => item.id === projectId);
 
     useEffect(() => {
         if (project) {
@@ -28,7 +27,7 @@ const AdminProjectEditClient = observer(() => {
         }
 
         setIsLoaded(true);
-    }, [currentHref, project]);
+    }, [projectId, project]);
 
     const updateField = (field) => (event) => {
         updateFormValue(setForm, field, event.target.value);
@@ -38,17 +37,13 @@ const AdminProjectEditClient = observer(() => {
         event.preventDefault();
 
         const payload = buildProjectPayload(form);
-        const result = await adminStore.updateProject(currentHref, payload);
+        const result = await adminStore.updateProject(projectId, payload);
 
         if (result.ok) {
-            const updatedProject = adminStore.content.projects.find((item) => item.href === payload.href);
+            const updatedProject = adminStore.content.projects.find((item) => item.id === projectId);
 
             if (updatedProject) {
                 setForm(mapProjectToForm(updatedProject));
-            }
-
-            if (payload.href !== currentHref) {
-                router.replace(`/admin/projects/edit?href=${encodeURIComponent(payload.href)}`);
             }
         }
     };
@@ -58,7 +53,7 @@ const AdminProjectEditClient = observer(() => {
             <section className='AdminCard'>
                 {!isLoaded || adminStore.isLoadingContent ? (
                     <div className='AdminEmptyState'>Loading...</div>
-                ) : currentHref && project ? (
+                ) : projectId && project ? (
                     <form className='AdminForm' onSubmit={handleSubmit}>
                         <ImageDropzone
                             label='Project image'
@@ -66,8 +61,8 @@ const AdminProjectEditClient = observer(() => {
                             value={form.img}
                         />
                         <label className='AdminField'>
-                            <span>Link</span>
-                            <input name='href' onChange={updateField('href')} required type='url' value={form.href} />
+                            <span>Link (optional)</span>
+                            <input name='href' onChange={updateField('href')} type='url' value={form.href} />
                         </label>
                         <label className='AdminField'>
                             <span>Category UA</span>

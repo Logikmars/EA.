@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 import { z } from 'zod';
 import { httpUrlSchema, imageReferenceSchema } from '../../src/validation.js';
 
+const optionalHttpUrlSchema = z.preprocess(
+    (value) => (value === '' || value === undefined ? null : value),
+    httpUrlSchema.nullable()
+).default(null);
+
 const localizedTextSchema = z.object({
     ua: z.string().trim().min(1),
     en: z.string().trim().min(1),
@@ -24,7 +29,7 @@ const localizedMongoOptionalTextSchema = new mongoose.Schema({
 
 export const projectSchema = z.object({
     img: imageReferenceSchema.default('/imgs/projects/1.png'),
-    href: httpUrlSchema,
+    href: optionalHttpUrlSchema,
     category: localizedTextSchema.default({ ua: 'Загальне', en: 'General' }),
     title: localizedTextSchema,
     summary: localizedOptionalTextSchema.default({ ua: '', en: '' }),
@@ -33,7 +38,7 @@ export const projectSchema = z.object({
 const projectMongoSchema = new mongoose.Schema({
     img: { type: String, default: '/imgs/projects/1.png', trim: true },
     imgKey: { type: String, default: null, trim: true },
-    href: { type: String, required: true, unique: true, trim: true },
+    href: { type: String, default: null, trim: true },
     category: { type: localizedMongoTextSchema, default: () => ({ ua: 'Загальне', en: 'General' }) },
     title: { type: localizedMongoTextSchema, required: true },
     summary: { type: localizedMongoOptionalTextSchema, default: () => ({ ua: '', en: '' }) },
@@ -51,6 +56,7 @@ export function mapProjectListItem(project, locale) {
     };
 
     return {
+        id: String(project._id || project.id),
         img: project.img,
         href: project.href,
         category: (project.category || fallbackCategory)[locale],

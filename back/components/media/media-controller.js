@@ -23,7 +23,7 @@ class MediaController {
 
     updateMedia = async (req, res, next) => {
         try {
-            const items = await mediaService.updateMedia(req.params.sourceUrl, req.body);
+            const items = await mediaService.updateMedia(req.params.id, req.body);
 
             return res.json({ items });
         } catch (error) {
@@ -33,7 +33,7 @@ class MediaController {
 
     deleteMedia = async (req, res, next) => {
         try {
-            const items = await mediaService.deleteMedia(req.params.sourceUrl);
+            const items = await mediaService.deleteMedia(req.params.id);
 
             return res.json({ items });
         } catch (error) {

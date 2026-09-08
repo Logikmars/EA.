@@ -104,7 +104,7 @@ const ProjectsCatalog = observer(({
                 <AnimatedRevealList className='ProjectsPage_list' itemSelector='.ProjectBlock'>
                     {visibleItems.map((project) => (
                         <ProjectBlock
-                            key={project.href || project.title}
+                            key={project.id || project.href || project.title}
                             img={project.img}
                             title={project.title}
                             description={project.summary}

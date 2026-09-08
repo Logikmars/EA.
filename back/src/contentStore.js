@@ -2,6 +2,7 @@ import { MediaModel } from '../components/media/media-model.js';
 import { ProjectModel } from '../components/projects/projects-model.js';
 import { deleteFileFromR2, getR2ObjectKeyFromUrl } from './r2.js';
 import { createHttpError } from './httpError.js';
+import { isValidObjectId } from 'mongoose';
 
 function serializeDocument(document) {
     if (!document) {
@@ -13,7 +14,10 @@ function serializeDocument(document) {
         : document;
     const { _id, tags, ...rest } = rawDocument;
 
-    return rest;
+    return {
+        id: String(_id),
+        ...rest,
+    };
 }
 
 async function listProjects() {
@@ -124,19 +128,13 @@ export async function appendProject(project) {
     return listProjects();
 }
 
-export async function updateProjectByHref(currentHref, nextProject) {
-    const currentProject = await ProjectModel.findOne({ href: currentHref }).exec();
+export async function updateProjectById(id, nextProject) {
+    const currentProject = isValidObjectId(id)
+        ? await ProjectModel.findById(id).exec()
+        : null;
 
     if (!currentProject) {
         throw createHttpError(404, 'Project not found.');
-    }
-
-    if (nextProject.href !== currentHref) {
-        const existingProject = await ProjectModel.exists({ href: nextProject.href });
-
-        if (existingProject) {
-            throw createHttpError(409, 'A project with this link already exists.');
-        }
     }
 
     const previousImageKey = currentProject.imgKey;
@@ -153,6 +151,11 @@ export async function updateProjectByHref(currentHref, nextProject) {
                 'PUT /api/admin/projects rollback'
             );
         }
+
+        if (isDuplicateFieldError(error, 'href')) {
+            throw createHttpError(409, 'A project with this link already exists.');
+        }
+
         throw error;
     }
 
@@ -163,8 +166,10 @@ export async function updateProjectByHref(currentHref, nextProject) {
     return listProjects();
 }
 
-export async function deleteProjectByHref(href) {
-    const project = await ProjectModel.findOne({ href }).exec();
+export async function deleteProjectById(id) {
+    const project = isValidObjectId(id)
+        ? await ProjectModel.findById(id).exec()
+        : null;
 
     if (!project) {
         throw createHttpError(404, 'Project not found.');
@@ -201,19 +206,13 @@ export async function appendMediaItem(mediaItem) {
     return listMedia();
 }
 
-export async function updateMediaBySourceUrl(currentSourceUrl, nextMediaItem) {
-    const currentMediaItem = await MediaModel.findOne({ sourceUrl: currentSourceUrl }).exec();
+export async function updateMediaById(id, nextMediaItem) {
+    const currentMediaItem = isValidObjectId(id)
+        ? await MediaModel.findById(id).exec()
+        : null;
 
     if (!currentMediaItem) {
         throw createHttpError(404, 'Media item not found.');
-    }
-
-    if (nextMediaItem.sourceUrl !== currentSourceUrl) {
-        const existingMediaItem = await MediaModel.exists({ sourceUrl: nextMediaItem.sourceUrl });
-
-        if (existingMediaItem) {
-            throw createHttpError(409, 'A media item with this source URL already exists.');
-        }
     }
 
     const previousImageKey = currentMediaItem.imgKey;
@@ -230,6 +229,11 @@ export async function updateMediaBySourceUrl(currentSourceUrl, nextMediaItem) {
                 'PUT /api/admin/media rollback'
             );
         }
+
+        if (isDuplicateFieldError(error, 'sourceUrl')) {
+            throw createHttpError(409, 'A media item with this source URL already exists.');
+        }
+
         throw error;
     }
 
@@ -240,8 +244,10 @@ export async function updateMediaBySourceUrl(currentSourceUrl, nextMediaItem) {
     return listMedia();
 }
 
-export async function deleteMediaBySourceUrl(sourceUrl) {
-    const mediaItem = await MediaModel.findOne({ sourceUrl }).exec();
+export async function deleteMediaById(id) {
+    const mediaItem = isValidObjectId(id)
+        ? await MediaModel.findById(id).exec()
+        : null;
 
     if (!mediaItem) {
         throw createHttpError(404, 'Media item not found.');

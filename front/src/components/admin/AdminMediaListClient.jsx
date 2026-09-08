@@ -20,14 +20,14 @@ const AdminMediaListClient = observer(() => {
             : getTimestamp(secondItem) - getTimestamp(firstItem)
     ));
 
-    const handleDelete = async (sourceUrl) => {
+    const handleDelete = async (id) => {
         const isConfirmed = window.confirm('Delete this media item?');
 
         if (!isConfirmed) {
             return;
         }
 
-        await adminStore.deleteMedia(sourceUrl);
+        await adminStore.deleteMedia(id);
     };
 
     return (
@@ -50,21 +50,21 @@ const AdminMediaListClient = observer(() => {
                 {adminStore.content.media.length ? (
                     <div className='AdminList'>
                         {sortedMedia.map((mediaItem) => (
-                            <article className='AdminListItem' key={mediaItem.sourceUrl}>
+                            <article className='AdminListItem' key={mediaItem.id}>
                                 <div className='AdminListItemMain'>
                                     <strong>{mediaItem.title?.en || mediaItem.title?.ua || 'Untitled media item'}</strong>
-                                    <span>{mediaItem.sourceUrl}</span>
+                                    <span>{mediaItem.sourceUrl || 'No source URL'}</span>
                                     <span>
                                         Date: {String(mediaItem.publishedAt || mediaItem.createdAt || 'Not specified').slice(0, 10)}
                                     </span>
                                 </div>
                                 <div className='AdminListItemActions'>
-                                    <Link className='AdminButton AdminButton__secondary AdminButton__small' href={`/admin/media/edit?sourceUrl=${encodeURIComponent(mediaItem.sourceUrl)}`}>
+                                    <Link className='AdminButton AdminButton__secondary AdminButton__small' href={`/admin/media/edit?id=${encodeURIComponent(mediaItem.id)}`}>
                                         Edit
                                     </Link>
                                     <button
                                         className='AdminButton AdminButton__danger AdminButton__small'
-                                        onClick={() => handleDelete(mediaItem.sourceUrl)}
+                                        onClick={() => handleDelete(mediaItem.id)}
                                         type='button'
                                     >
                                         Delete
