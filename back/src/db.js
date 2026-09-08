@@ -42,6 +42,7 @@ async function ensureOptionalUniqueIndex(collectionName, fieldName) {
 
 async function removeObsoleteIndexes() {
     await removeObsoleteUniqueIndex('projects', 'slug');
+    await removeObsoleteUniqueIndex('media', 'slug');
     await ensureOptionalUniqueIndex('projects', 'href');
     await ensureOptionalUniqueIndex('media', 'sourceUrl');
 }
