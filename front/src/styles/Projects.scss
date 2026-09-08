@@ -24,15 +24,29 @@
 
     &_list{
         width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: start;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: stretch;
         gap: $gap_l;
-        @media(max-width: 800px){
-            gap: $gap_xs;
-            flex-wrap: wrap;
-            justify-content: center;
 
+        .ProjectBlock{
+            width: 100%;
+            max-width: none;
         }
+
+        @media(max-width: 1300px){
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+
+            .ProjectBlock:nth-child(n + 3){
+                display: none;
+            }
+        }
+
+        @media(max-width: 800px){
+            grid-template-columns: minmax(0, 520px);
+            gap: $gap_xs;
+            justify-content: center;
+        }
+
     }
 }
