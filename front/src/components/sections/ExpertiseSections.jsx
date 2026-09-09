@@ -111,18 +111,18 @@ export const BusinessReviews = () => {
 export const CreativeBusiness = () => {
     const t = useTranslations('CreativeBusiness');
     const cartoons = [
-        { file: 'Козаки. Навколо світу.webp', alt: 'Козаки. Навколо світу' },
-        { file: 'Пригоди Котигорошка та и\u0306ого друзів.webp', alt: 'Пригоди Котигорошка та його друзів' },
-        { file: 'Козаки футбол.webp', alt: 'Козаки. Футбол' },
-        { file: 'Бабаи\u0306.webp', alt: 'Бабай' },
+        { file: 'cossacks-around-the-world.webp', alt: 'Козаки. Навколо світу' },
+        { file: 'kotyhoroshko-adventures.webp', alt: 'Пригоди Котигорошка та його друзів' },
+        { file: 'cossacks-football.webp', alt: 'Козаки. Футбол' },
+        { file: 'babai.webp', alt: 'Бабай' },
     ];
     const partners = [
-        { key: 'gapchinska', file: 'Євгенія Гапчинська.webp' },
+        { key: 'gapchinska', file: 'yevheniia-gapchynska.webp' },
         { key: 'magicFive', file: 'Magic Five.webp' },
-        { key: 'kushnir', file: 'Надія Кушнір (Гусь).webp' },
-        { key: 'polyakova', file: 'Оля Полякова.webp' },
-        { key: 'klopotenko', file: 'Євген Клопотенко.webp' },
-        { key: 'cherkaskyi', file: 'Давид Черкаськии\u0306.webp' },
+        { key: 'kushnir', file: 'nadiia-kushnir.webp' },
+        { key: 'polyakova', file: 'olya-polyakova.webp' },
+        { key: 'klopotenko', file: 'yevhen-klopotenko.webp' },
+        { key: 'cherkaskyi', file: 'davyd-cherkaskyi.webp' },
     ];
 
     return (
@@ -133,7 +133,7 @@ export const CreativeBusiness = () => {
                     <article className='CreativeBusiness_lead'>
                         <Text h3 white fw_semibold fs_xl>{t('studioTitle')}</Text>
                         <Image
-                            src='/imgs/Укранімафільм.webp'
+                            src='/imgs/ukranimafilm.webp'
                             alt='Укранімафільм'
                             fill
                             sizes='(max-width: 900px) calc(100vw - 48px), 44vw'
