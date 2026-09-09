@@ -49,78 +49,160 @@
 
 .TrackRecord{
     width: 100%;
-    background: #f5f7f9;
+    background: #f4f6f8;
 
     &_container{
-        padding: $pt_xl $pr_l;
+        padding: clamp(58px, 6.1vw, 88px) clamp(60px, 6.25vw, 90px) clamp(28px, 2.9vw, 42px);
         display: flex;
         flex-direction: column;
-        gap: $gap_xl;
+        gap: clamp(26px, 2.78vw, 40px);
+
+        > h2.Text{
+            font-size: clamp(40px, 3.89vw, 56px);
+        }
     }
 
     &_grid{
         display: grid;
-        grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
-        gap: $gap_m;
+        grid-template-columns: minmax(0, 1.24fr) minmax(0, 1fr);
+        gap: clamp(14px, 1.53vw, 22px);
+    }
+
+    &_methodology, &_metric, &_mops{
+        border-radius: clamp(11px, 1.1vw, 16px);
+        background: #fff;
+        box-shadow: 0 12px 42px rgba(38, 50, 67, .035);
     }
 
     &_methodology, &_metric{
-        padding: 34px;
+        padding: clamp(20px, 2.08vw, 30px);
         display: flex;
         flex-direction: column;
-        gap: $gap_s;
-        border-radius: $brad_12;
-        background: #fff;
-        border: 1px solid rgba(11, 11, 11, .08);
     }
 
     &_methodology{
-        min-height: 470px;
-        justify-content: space-between;
-        max-height: 520px;
+        min-height: clamp(339px, 35.56vw, 512px);
+        gap: clamp(11px, 1.1vw, 16px);
+
+        > h3.Text{
+            font-size: clamp(19px, 1.95vw, 28px);
+        }
 
         &_img{
             width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-            object-fit: fill;
-            min-height: 180px;
-            max-height: 300px;
-            border-radius: $brad_12;
+            height: clamp(228px, 23.96vw, 345px);
+            object-fit: cover;
+            object-position: center 41%;
+            border-radius: clamp(9px, .9vw, 13px);
+        }
+
+        > .Text:last-child{
+            font-size: clamp(12px, 1.25vw, 18px);
+            line-height: 1.35;
         }
     }
 
     &_metrics{
         display: grid;
         grid-template-rows: repeat(2, minmax(0, 1fr));
-        gap: $gap_m;
+        gap: clamp(14px, 1.53vw, 22px);
     }
 
     &_metric{
         position: relative;
         overflow: hidden;
+        justify-content: center;
+        gap: clamp(6px, .625vw, 9px);
+
+        > .Text:first-child{
+            font-size: clamp(58px, 6.1vw, 88px);
+            line-height: .95;
+            letter-spacing: clamp(-4px, -.28vw, -2.5px);
+        }
+
+        > h3.Text{
+            font-size: clamp(16px, 1.67vw, 24px);
+            line-height: 1.2;
+        }
+
+        > .Text:last-child{
+            margin-top: clamp(6px, .625vw, 9px);
+            font-size: clamp(12px, 1.25vw, 18px);
+            line-height: 1.3;
+        }
 
         &::after{
             content: '';
             position: absolute;
-            width: 140px;
-            height: 140px;
-            right: -42px;
-            top: -42px;
+            width: clamp(112px, 11.74vw, 169px);
+            height: clamp(112px, 11.74vw, 169px);
+            right: clamp(-59px, -4.1vw, -39px);
+            top: clamp(-66px, -4.58vw, -44px);
             border-radius: 50%;
-            opacity: .12;
+            opacity: .1;
         }
 
         &__blue::after{ background: $c_primary_blue; }
         &__green::after{ background: #4f8b45; }
     }
 
+    &_mops{
+        grid-column: 1 / -1;
+        min-height: clamp(82px, 8.61vw, 124px);
+        padding: clamp(18px, 1.88vw, 27px) clamp(22px, 2.3vw, 33px);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: clamp(7px, .7vw, 10px);
+
+        > h3.Text{
+            font-size: clamp(16px, 1.67vw, 24px);
+            line-height: 1.2;
+        }
+
+        > .Text:last-child{
+            font-size: clamp(12px, 1.25vw, 18px);
+            line-height: 1.3;
+        }
+
+        &::after{
+            content: '';
+            position: absolute;
+            width: clamp(108px, 11.32vw, 163px);
+            height: clamp(108px, 11.32vw, 163px);
+            right: clamp(-80px, -5.56vw, -53px);
+            top: clamp(-83px, -5.76vw, -55px);
+            border-radius: 50%;
+            background: #4f8b45;
+            opacity: .1;
+        }
+    }
+
     @media(max-width: 900px){
         &_container{ padding: $pt_l $pr_s; gap: $gap_l; }
         &_grid{ grid-template-columns: 1fr; }
-        &_methodology{ min-height: 320px; padding: 24px; }
+        &_methodology{ min-height: auto; padding: 20px; }
+        &_methodology_img{ height: auto; aspect-ratio: 1.82 / 1; }
+        &_methodology > .Text:last-child{ font-size: 14px; }
+        &_metrics{ grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; }
         &_metric{ padding: 24px; }
+        &_metric > .Text:first-child{ font-size: 58px; }
+        &_metric > h3.Text{ font-size: 18px; }
+        &_metric > .Text:last-child{ font-size: 14px; }
+        &_mops{ grid-column: 1; }
+        &_mops > h3.Text{ font-size: 18px; }
+        &_mops > .Text:last-child{ font-size: 14px; }
         h2{ font-size: $fs_xl; }
+    }
+
+    @media(max-width: 600px){
+        &_container{ gap: 24px; }
+        &_grid{ gap: 12px; }
+        &_metrics{ grid-template-columns: 1fr; gap: 12px; }
+        &_metric{ min-height: 170px; }
+        &_mops{ min-height: 130px; padding: 20px; }
     }
 }
 
@@ -160,6 +242,7 @@
         width: 72px;
         height: 72px;
         border-radius: 50%;
+        font-size: 24px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -178,49 +261,214 @@
 
 .CreativeBusiness{
     width: 100%;
-    background: #f5f7f9;
+    background: #f4f6f8;
 
     &_container{
-        padding: $pt_xl $pr_l;
+        padding: clamp(28px, 3.2vw, 46px) clamp(48px, 7.5vw, 108px) clamp(18px, 2.8vw, 40px);
         display: flex;
         flex-direction: column;
-        gap: $gap_l;
+        gap: clamp(20px, 2vw, 29px);
+
+        > h2.Text{
+            font-size: clamp(38px, 4vw, 58px);
+            line-height: 1.05;
+        }
     }
 
     &_grid{
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: $gap_m;
+        grid-template-columns: minmax(0, .9fr) minmax(0, 1fr);
+        column-gap: clamp(16px, 1.67vw, 24px);
+        row-gap: clamp(39px, 4.1vw, 59px);
+        align-items: start;
     }
 
-    &_lead, &_card{
-        min-height: 300px;
-        padding: 34px;
-        border-radius: $brad_12;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: $gap_s;
+    &_lead, &_works, &_people{
+        border-radius: clamp(8px, .8vw, 12px);
+        overflow: hidden;
+        box-shadow: 0 10px 34px rgba(30, 42, 56, .08);
     }
 
     &_lead{
-        grid-row: span 2;
-        min-height: 624px;
-        background:
-            radial-gradient(circle at 75% 20%, rgba(10, 102, 255, .55), transparent 32%),
-            $c_primary_black;
+        height: clamp(344px, 36vw, 520px);
+        padding: clamp(17px, 1.8vw, 26px);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        isolation: isolate;
+        background: $c_primary_black;
+
+        &::after{
+            content: '';
+            position: absolute;
+            z-index: -1;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(4, 12, 25, .18) 55%, rgba(4, 12, 25, .82) 100%);
+        }
+
+        img{
+            z-index: -2;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        > h3.Text{
+            font-size: clamp(16px, 1.67vw, 24px);
+        }
+
+        > .Text:last-child{
+            max-width: 94%;
+            font-size: clamp(12px, 1.18vw, 17px);
+            line-height: 1.25;
+        }
     }
 
-    &_card{
+    &_works{
+        height: clamp(344px, 36vw, 520px);
+        padding: clamp(10px, 1.1vw, 16px);
+        min-width: 0;
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        gap: clamp(7px, .75vw, 11px);
         background: #fff;
-        border: 1px solid rgba(11, 11, 11, .08);
+
+        > h3.Text{
+            font-size: clamp(15px, 1.5vw, 22px);
+            line-height: 1.15;
+        }
+
+        > .Text:last-child{
+            font-size: clamp(9px, .85vw, 12px);
+            line-height: 1.3;
+        }
+    }
+
+    &_posters{
+        width: 90%;
+        height: 100%;
+        margin: 0 auto;
+        min-height: 0;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: repeat(2, minmax(0, 1fr));
+        gap: clamp(5px, .55vw, 8px);
+
+    }
+
+    &_poster{
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+        border-radius: clamp(7px, .65vw, 10px);
+
+        img{
+            width: 100%;
+            height: 100%;
+            padding: clamp(3px, .35vw, 5px);
+            object-fit: contain;
+            object-position: center;
+        }
+    }
+
+    &_people{
+        grid-column: 1 / -1;
+        margin: 0 2px;
+        padding: clamp(13px, 1.4vw, 20px) clamp(14px, 1.5vw, 22px);
+        background: #fff;
+
+        > h3.Text{
+            margin-bottom: clamp(10px, 1.1vw, 16px);
+            font-size: clamp(14px, 1.45vw, 21px);
+            font-weight: $fw_norm;
+            line-height: 1.2;
+        }
+    }
+
+    &_people_marquee{
+        width: 100%;
+        overflow: hidden;
+        mask-image: linear-gradient(to right, transparent, #000 3%, #000 97%, transparent);
+    }
+
+    &_people_track{
+        width: max-content;
+        display: flex;
+        transform: translateX(-25%);
+        animation: creativePeopleMarquee 60s linear infinite;
+        will-change: transform;
+
+        &:hover{
+            animation-play-state: paused;
+        }
+    }
+
+    &_people_group{
+        flex: 0 0 auto;
+        display: flex;
+        align-items: flex-start;
+        gap: clamp(26px, 2.6vw, 38px);
+        padding-right: clamp(26px, 2.6vw, 38px);
+    }
+
+    &_person{
+        min-width: 0;
+        width: clamp(76px, 7.5vw, 108px);
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        text-align: center;
+
+        img{
+            width: clamp(60px, 6.67vw, 96px);
+            height: clamp(60px, 6.67vw, 96px);
+            flex: 0 0 auto;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            clip-path: circle(50%);
+            object-fit: cover;
+            object-position: center top;
+        }
+
+        .Text{
+            font-size: clamp(8px, .75vw, 11px);
+            line-height: 1.15;
+        }
     }
 
     @media(max-width: 900px){
-        &_container{ padding: $pt_l $pr_s; }
-        &_grid{ grid-template-columns: 1fr; }
-        &_lead{ grid-row: auto; min-height: 380px; }
-        &_card{ min-height: 240px; padding: 24px; }
-        h2{ font-size: $fs_xl; }
+        &_container{ padding: $pt_l $pr_s; gap: 24px; }
+        &_grid{ grid-template-columns: 1fr; row-gap: 24px; }
+        &_lead, &_works{ height: 520px; }
+        &_people{ grid-column: 1; margin-top: 0; }
+        &_person .Text{ font-size: 11px; }
+        &_container > h2.Text{ font-size: $fs_xl; }
+    }
+
+    @media(max-width: 600px){
+        &_grid{ gap: 14px; }
+        &_lead, &_works{ height: 410px; }
+        &_posters{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+}
+
+@keyframes creativePeopleMarquee{
+    0%, 100%{
+        transform: translateX(-25%);
+    }
+    50%{
+        transform: translateX(-50%);
+    }
+}
+
+@media(prefers-reduced-motion: reduce){
+    .CreativeBusiness_people_track{
+        animation: none;
     }
 }

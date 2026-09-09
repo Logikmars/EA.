@@ -85,8 +85,15 @@
     "studioDescription": "Former CEO of the state animation studio Ukranimafilm.",
     "worksTitle": "Animation producer",
     "works": "Cossacks. Football, Cossacks. Around the World, Babai, and The Adventures of Kotyhoroshko and His Friends.",
-    "peopleTitle": "Creative partners",
-    "people": "Helping creative people build sustainable, profitable businesses: Eugenia Gapchinska, Magic Five, Nadiia Kushnir, Olya Polyakova, Yevhen Klopotenko, Eduard Kyrych and Davyd Cherkaskyi."
+    "peopleTitle": "Helping creative people build sustainable and profitable businesses:",
+    "partners": {
+      "gapchinska": "Eugenia Gapchinska",
+      "magicFive": "Magic Five",
+      "kushnir": "Nadiia Kushnir (Hus)",
+      "polyakova": "Olya Polyakova",
+      "klopotenko": "Yevhen Klopotenko",
+      "cherkaskyi": "Davyd Cherkaskyi"
+    }
   },
   "Achivment": {
     "title": "Selected achievements",

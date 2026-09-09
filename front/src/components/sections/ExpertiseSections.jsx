@@ -55,7 +55,14 @@ export const TrackRecord = () => {
                 <div className='TrackRecord_grid'>
                     <article className='TrackRecord_methodology'>
                         <Text h3 fw_semibold fs_xl>{t('items.methodology.title')}</Text>
-                        <img src="/imgs/eduard/ Board_horizontal.webp" alt="" className='TrackRecord_methodology_img'/>
+                        <Image
+                            src='/imgs/eduard/ Board_horizontal.webp'
+                            alt=''
+                            className='TrackRecord_methodology_img'
+                            width={1617}
+                            height={1080}
+                            sizes='(max-width: 900px) calc(100vw - 88px), 48vw'
+                        />
                         <Text light_gray fs_m>{t('items.methodology.description')}</Text>
                     </article>
                     <div className='TrackRecord_metrics'>
@@ -69,11 +76,11 @@ export const TrackRecord = () => {
                             <Text h3 fw_semibold fs_l>{t('items.growth.title')}</Text>
                             <Text light_gray fs_m>{t('items.growth.description')}</Text>
                         </article>
-                        <article className='TrackRecord_metric TrackRecord_metric__green'>
-                            <Text h3 fw_semibold fs_l>{t('items.mops.title')}</Text>
-                            <Text light_gray fs_m>{t('items.mops.description')}</Text>
-                        </article>
                     </div>
+                    <article className='TrackRecord_mops'>
+                        <Text h3 fw_semibold fs_l>{t('items.mops.title')}</Text>
+                        <Text light_gray fs_m>{t('items.mops.description')}</Text>
+                    </article>
                 </div>
             </div>
         </section>
@@ -103,23 +110,74 @@ export const BusinessReviews = () => {
 
 export const CreativeBusiness = () => {
     const t = useTranslations('CreativeBusiness');
+    const cartoons = [
+        { file: 'Козаки. Навколо світу.webp', alt: 'Козаки. Навколо світу' },
+        { file: 'Пригоди Котигорошка та и\u0306ого друзів.webp', alt: 'Пригоди Котигорошка та його друзів' },
+        { file: 'Козаки футбол.webp', alt: 'Козаки. Футбол' },
+        { file: 'Бабаи\u0306.webp', alt: 'Бабай' },
+    ];
+    const partners = [
+        { key: 'gapchinska', file: 'Євгенія Гапчинська.webp' },
+        { key: 'magicFive', file: 'Magic Five.webp' },
+        { key: 'kushnir', file: 'Надія Кушнір (Гусь).webp' },
+        { key: 'polyakova', file: 'Оля Полякова.webp' },
+        { key: 'klopotenko', file: 'Євген Клопотенко.webp' },
+        { key: 'cherkaskyi', file: 'Давид Черкаськии\u0306.webp' },
+    ];
 
     return (
-        <section className='CreativeBusiness'>
+        <section className='CreativeBusiness' id='creative-business'>
             <div className='CreativeBusiness_container container'>
                 <Text h2 fw_semibold fs_2xl>{t('title')}</Text>
                 <div className='CreativeBusiness_grid'>
                     <article className='CreativeBusiness_lead'>
                         <Text h3 white fw_semibold fs_xl>{t('studioTitle')}</Text>
-                        <Text white fs_l>{t('studioDescription')}</Text>
+                        <Image
+                            src='/imgs/Укранімафільм.webp'
+                            alt='Укранімафільм'
+                            fill
+                            sizes='(max-width: 900px) calc(100vw - 48px), 44vw'
+                        />
+                        <Text white fs_m>{t('studioDescription')}</Text>
                     </article>
-                    <article className='CreativeBusiness_card'>
+                    <article className='CreativeBusiness_works'>
                         <Text h3 fw_semibold fs_l>{t('worksTitle')}</Text>
+                        <div className='CreativeBusiness_posters'>
+                            {cartoons.map((cartoon) => (
+                                <div className='CreativeBusiness_poster' key={cartoon.file}>
+                                    <Image
+                                        src={`/imgs/cartoons/${cartoon.file}`}
+                                        alt={cartoon.alt}
+                                        fill
+                                        sizes='(max-width: 600px) 40vw, (max-width: 900px) 42vw, 20vw'
+                                    />
+                                </div>
+                            ))}
+                        </div>
                         <Text light_gray fs_m>{t('works')}</Text>
                     </article>
-                    <article className='CreativeBusiness_card'>
-                        <Text h3 fw_semibold fs_l>{t('peopleTitle')}</Text>
-                        <Text light_gray fs_m>{t('people')}</Text>
+                    <article className='CreativeBusiness_people'>
+                        <Text h3 fs_l>{t('peopleTitle')}</Text>
+                        <div className='CreativeBusiness_people_marquee'>
+                            <div className='CreativeBusiness_people_track'>
+                                {[0, 1, 2, 3].map((groupIndex) => (
+                                    <div className='CreativeBusiness_people_group' key={groupIndex} aria-hidden={groupIndex > 0}>
+                                        {partners.map((partner) => (
+                                            <div className='CreativeBusiness_person' key={`${groupIndex}-${partner.key}`}>
+                                                <Image
+                                                    src={`/imgs/people/${partner.file}`}
+                                                    alt={groupIndex === 0 ? t(`partners.${partner.key}`) : ''}
+                                                    width={144}
+                                                    height={144}
+                                                    sizes='96px'
+                                                />
+                                                <Text>{t(`partners.${partner.key}`)}</Text>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </article>
                 </div>
             </div>
