@@ -27,6 +27,10 @@ const AdminProjectCreateClient = observer(() => {
         <AdminPageShell title='Add project'>
             <section className='AdminCard'>
                 <form className='AdminForm' onSubmit={handleSubmit}>
+                    <label className='AdminField'>
+                        <span>Display order (1 = first)</span>
+                        <input min='1' name='order' onChange={updateField('order')} required step='1' type='number' value={form.order} />
+                    </label>
                     <ImageDropzone
                         label='Project image'
                         onUploaded={(url) => updateFormValue(setForm, 'img', url)}

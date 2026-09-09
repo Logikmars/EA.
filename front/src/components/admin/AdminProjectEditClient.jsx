@@ -55,6 +55,10 @@ const AdminProjectEditClient = observer(() => {
                     <div className='AdminEmptyState'>Loading...</div>
                 ) : projectId && project ? (
                     <form className='AdminForm' onSubmit={handleSubmit}>
+                        <label className='AdminField'>
+                            <span>Display order (1 = first)</span>
+                            <input min='1' name='order' onChange={updateField('order')} required step='1' type='number' value={form.order} />
+                        </label>
                         <ImageDropzone
                             label='Project image'
                             onUploaded={(url) => updateFormValue(setForm, 'img', url)}

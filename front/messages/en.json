@@ -190,7 +190,8 @@
     "title": "All media",
     "clearFilters": "Clear",
     "empty": "No media items match the selected tags.",
-    "sortLabel": "Sort by date",
+    "sortLabel": "Sort",
+    "displayOrder": "Display order",
     "newestFirst": "Newest first",
     "oldestFirst": "Oldest first"
   },

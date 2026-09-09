@@ -20,6 +20,19 @@ function serializeDocument(document) {
     };
 }
 
+function sortByDisplayOrder(items) {
+    return items.sort((firstItem, secondItem) => {
+        const firstOrder = Number.isInteger(firstItem.order) && firstItem.order > 0
+            ? firstItem.order
+            : Number.POSITIVE_INFINITY;
+        const secondOrder = Number.isInteger(secondItem.order) && secondItem.order > 0
+            ? secondItem.order
+            : Number.POSITIVE_INFINITY;
+
+        return firstOrder - secondOrder;
+    });
+}
+
 async function listProjects() {
     const items = await ProjectModel
         .find({})
@@ -27,7 +40,7 @@ async function listProjects() {
         .lean()
         .exec();
 
-    return items.map(serializeDocument);
+    return sortByDisplayOrder(items.map(serializeDocument));
 }
 
 async function listMedia() {
@@ -37,7 +50,7 @@ async function listMedia() {
         .lean()
         .exec();
 
-    return items.map(serializeDocument);
+    return sortByDisplayOrder(items.map(serializeDocument));
 }
 
 function isDuplicateKeyError(error) {

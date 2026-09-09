@@ -3,6 +3,7 @@ export function normalizeText(value) {
 }
 
 export const emptyProjectForm = {
+    order: '1',
     img: '',
     href: '',
     categoryUa: 'Загальне',
@@ -14,6 +15,7 @@ export const emptyProjectForm = {
 };
 
 export const emptyMediaForm = {
+    order: '1',
     img: '',
     typeUa: '',
     typeEn: '',
@@ -34,6 +36,7 @@ export function updateFormValue(setForm, field, value) {
 
 export function mapProjectToForm(project) {
     return {
+        order: String(project?.order || 1),
         img: project?.img || '',
         href: project?.href || '',
         categoryUa: project?.category?.ua || '',
@@ -47,6 +50,7 @@ export function mapProjectToForm(project) {
 
 export function mapMediaToForm(mediaItem) {
     return {
+        order: String(mediaItem?.order || 1),
         img: mediaItem?.img || '',
         typeUa: mediaItem?.type?.ua || '',
         typeEn: mediaItem?.type?.en || '',
@@ -63,6 +67,7 @@ export function mapMediaToForm(mediaItem) {
 
 export function buildProjectPayload(form) {
     return {
+        order: Number(form.order),
         img: normalizeText(form.img) || '/imgs/projects/1.png',
         href: normalizeText(form.href),
         category: {
@@ -82,6 +87,7 @@ export function buildProjectPayload(form) {
 
 export function buildMediaPayload(form) {
     return {
+        order: Number(form.order),
         img: normalizeText(form.img) || '/imgs/projects/1.png',
         type: {
             ua: normalizeText(form.typeUa),

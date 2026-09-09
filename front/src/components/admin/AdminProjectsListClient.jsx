@@ -30,6 +30,7 @@ const AdminProjectsListClient = observer(() => {
                             <article className='AdminListItem' key={project.id}>
                                 <div className='AdminListItemMain'>
                                     <strong>{project.title?.en || project.title?.ua || 'Untitled project'}</strong>
+                                    <span>Display order: {project.order || 'Not set'}</span>
                                     <span>{project.href || 'No link'}</span>
                                 </div>
                                 <div className='AdminListItemActions'>

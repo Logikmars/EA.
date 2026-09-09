@@ -71,6 +71,7 @@ const MediaPage = async ({ params }) => {
                 clearLabel={t('clearFilters')}
                 emptyLabel={t('empty')}
                 sortLabel={t('sortLabel')}
+                displayOrderLabel={t('displayOrder')}
                 newestLabel={t('newestFirst')}
                 oldestLabel={t('oldestFirst')}
             />

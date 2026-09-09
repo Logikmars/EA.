@@ -28,6 +28,7 @@ const localizedMongoOptionalTextSchema = new mongoose.Schema({
 }, { _id: false });
 
 export const projectSchema = z.object({
+    order: z.coerce.number().int().min(1).default(1),
     img: imageReferenceSchema.default('/imgs/projects/1.png'),
     href: optionalHttpUrlSchema,
     category: localizedTextSchema.default({ ua: 'Загальне', en: 'General' }),
@@ -36,6 +37,7 @@ export const projectSchema = z.object({
 });
 
 const projectMongoSchema = new mongoose.Schema({
+    order: { type: Number, default: 1, min: 1 },
     img: { type: String, default: '/imgs/projects/1.png', trim: true },
     imgKey: { type: String, default: null, trim: true },
     href: { type: String, default: null, trim: true },
@@ -57,6 +59,7 @@ export function mapProjectListItem(project, locale) {
 
     return {
         id: String(project._id || project.id),
+        order: project.order,
         img: project.img,
         href: project.href,
         category: (project.category || fallbackCategory)[locale],

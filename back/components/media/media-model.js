@@ -33,6 +33,7 @@ const optionalDateSchema = z.preprocess(
 ).default(null);
 
 export const mediaSchema = z.object({
+    order: z.coerce.number().int().min(1).default(1),
     img: imageReferenceSchema.default('/imgs/projects/1.png'),
     type: localizedTextSchema,
     title: localizedTextSchema,
@@ -44,6 +45,7 @@ export const mediaSchema = z.object({
 });
 
 const mediaMongoSchema = new mongoose.Schema({
+    order: { type: Number, default: 1, min: 1 },
     img: { type: String, default: '/imgs/projects/1.png', trim: true },
     imgKey: { type: String, default: null, trim: true },
     type: { type: localizedMongoTextSchema, required: true },
@@ -63,6 +65,7 @@ export const MediaModel = mongoose.models.Media || mongoose.model('Media', media
 export function mapMediaListItem(mediaItem, locale) {
     return {
         id: String(mediaItem._id || mediaItem.id),
+        order: mediaItem.order,
         img: mediaItem.img,
         type: mediaItem.type[locale],
         title: mediaItem.title[locale],

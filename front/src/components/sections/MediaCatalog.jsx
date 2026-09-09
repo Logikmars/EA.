@@ -11,12 +11,13 @@ const MediaCatalog = observer(({
     initialItems = [],
     clearLabel = 'Clear',
     emptyLabel = 'No media items match the selected tags.',
-    sortLabel = 'Sort by date',
+    sortLabel = 'Sort',
+    displayOrderLabel = 'Display order',
     newestLabel = 'Newest first',
     oldestLabel = 'Oldest first',
 }) => {
     const [selectedTypes, setSelectedTypes] = useState([]);
-    const [sortOrder, setSortOrder] = useState('newest');
+    const [sortOrder, setSortOrder] = useState('displayOrder');
 
     useEffect(() => {
         mediaStore.hydrate(locale, initialItems);
@@ -39,11 +40,13 @@ const MediaCatalog = observer(({
             ? items.filter((item) => selectedTypes.includes(item?.type))
             : items;
 
-        return [...filteredItems].sort((firstItem, secondItem) => (
-            sortOrder === 'oldest'
-                ? getTimestamp(firstItem) - getTimestamp(secondItem)
-                : getTimestamp(secondItem) - getTimestamp(firstItem)
-        ));
+        return sortOrder === 'displayOrder'
+            ? filteredItems
+            : [...filteredItems].sort((firstItem, secondItem) => (
+                sortOrder === 'oldest'
+                    ? getTimestamp(firstItem) - getTimestamp(secondItem)
+                    : getTimestamp(secondItem) - getTimestamp(firstItem)
+            ));
     }, [items, selectedTypes, sortOrder]);
 
     const toggleType = (type) => {
@@ -91,6 +94,7 @@ const MediaCatalog = observer(({
                 <label className='MediaPage_sort'>
                     <span>{sortLabel}</span>
                     <select value={sortOrder} onChange={(event) => setSortOrder(event.target.value)}>
+                        <option value='displayOrder'>{displayOrderLabel}</option>
                         <option value='newest'>{newestLabel}</option>
                         <option value='oldest'>{oldestLabel}</option>
                     </select>

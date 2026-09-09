@@ -7,18 +7,20 @@ import AdminPageShell from './AdminPageShell';
 import adminStore from '@/stores/AdminStore';
 
 const AdminMediaListClient = observer(() => {
-    const [sortOrder, setSortOrder] = useState('newest');
+    const [sortOrder, setSortOrder] = useState('displayOrder');
     const getTimestamp = (mediaItem) => {
         const timestamp = Date.parse(mediaItem?.publishedAt || mediaItem?.createdAt || '');
 
         return Number.isNaN(timestamp) ? 0 : timestamp;
     };
 
-    const sortedMedia = [...adminStore.content.media].sort((firstItem, secondItem) => (
-        sortOrder === 'oldest'
-            ? getTimestamp(firstItem) - getTimestamp(secondItem)
-            : getTimestamp(secondItem) - getTimestamp(firstItem)
-    ));
+    const sortedMedia = sortOrder === 'displayOrder'
+        ? adminStore.content.media
+        : [...adminStore.content.media].sort((firstItem, secondItem) => (
+            sortOrder === 'oldest'
+                ? getTimestamp(firstItem) - getTimestamp(secondItem)
+                : getTimestamp(secondItem) - getTimestamp(firstItem)
+        ));
 
     const handleDelete = async (id) => {
         const isConfirmed = window.confirm('Delete this media item?');
@@ -38,8 +40,9 @@ const AdminMediaListClient = observer(() => {
                     <div className='AdminCardHeaderControls'>
                         <span>{adminStore.content.media.length} items</span>
                         <label className='AdminSort'>
-                            <span>Sort by date</span>
+                            <span>Sort</span>
                             <select value={sortOrder} onChange={(event) => setSortOrder(event.target.value)}>
+                                <option value='displayOrder'>Display order</option>
                                 <option value='newest'>Newest first</option>
                                 <option value='oldest'>Oldest first</option>
                             </select>
@@ -53,6 +56,7 @@ const AdminMediaListClient = observer(() => {
                             <article className='AdminListItem' key={mediaItem.id}>
                                 <div className='AdminListItemMain'>
                                     <strong>{mediaItem.title?.en || mediaItem.title?.ua || 'Untitled media item'}</strong>
+                                    <span>Display order: {mediaItem.order || 'Not set'}</span>
                                     <span>{mediaItem.sourceUrl || 'No source URL'}</span>
                                     <span>
                                         Date: {String(mediaItem.publishedAt || mediaItem.createdAt || 'Not specified').slice(0, 10)}

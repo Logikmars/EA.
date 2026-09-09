@@ -101,9 +101,9 @@ const HomePage = async ({ params }) => {
             <Clients />
             <Projects locale={locale} projects={projects} />
             <TrackRecord />
-            <Cooperation />
             <BusinessReviews />
-            <Achivment />
+            <Cooperation />
+            {/* <Achivment /> */}
             <Media locale={locale} mediaItems={mediaItems} />
             <CreativeBusiness />
             <Faq />
